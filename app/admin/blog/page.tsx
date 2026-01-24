@@ -16,25 +16,54 @@ interface BlogPost {
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const { data } = await supabaseAdmin
-          .from("blog_posts")
-          .select("id, title, slug, published, created_at, published_at")
-          .order("created_at", { ascending: false });
-
-        setPosts(data || []);
-      } catch (error) {
-        console.error("Error fetching blog posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchPosts();
   }, []);
+
+  async function fetchPosts() {
+    try {
+      const { data } = await supabaseAdmin
+        .from("blog_posts")
+        .select("id, title, slug, published, created_at, published_at")
+        .order("created_at", { ascending: false });
+
+      setPosts(data || []);
+    } catch (error) {
+      console.error("Error fetching blog posts:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function deletePost(id: string, title: string) {
+    if (
+      !confirm(
+        `Are you sure you want to delete "${title}"? This action cannot be undone.`
+      )
+    ) {
+      return;
+    }
+
+    setDeleting(id);
+    try {
+      const { error } = await supabaseAdmin
+        .from("blog_posts")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+
+      // Refresh the list
+      setPosts(posts.filter((post) => post.id !== id));
+    } catch (error: any) {
+      console.error("Error deleting post:", error);
+      alert("Failed to delete post: " + error.message);
+    } finally {
+      setDeleting(null);
+    }
+  }
 
   if (loading) {
     return (
@@ -125,11 +154,19 @@ export default function BlogPage() {
                     </Link>
                     <span className="mx-2 text-gray-300">|</span>
                     <Link
-                      href={`/admin/blog/${post.id}/edit`}
+                      href={`/admin/blog/${post.slug}/edit`}
                       className="text-gray-600 hover:text-gray-900"
                     >
                       Edit
                     </Link>
+                    <span className="mx-2 text-gray-300">|</span>
+                    <button
+                      onClick={() => deletePost(post.id, post.title)}
+                      disabled={deleting === post.id}
+                      className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                    >
+                      {deleting === post.id ? "Deleting..." : "Delete"}
+                    </button>
                   </td>
                 </tr>
               ))
