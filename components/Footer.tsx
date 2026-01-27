@@ -24,7 +24,7 @@ export default function Footer() {
             >
               WedList
             </Link>
-            <p className="mt-4 text-sm leading-relaxed text-gray-400">
+            <p className="mt-4 text-sm leading-relaxed text-gray-500">
               Find the perfect wedding MC in Sydney. Professional masters of
               ceremony for your special day.
             </p>
@@ -64,7 +64,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/wedding-mc-sydney"
-                  className="text-sm text-gray-400 transition-colors hover:text-black"
+                  className="text-sm text-gray-500 transition-colors hover:text-black"
                 >
                   Wedding MCs Sydney
                 </Link>
@@ -72,7 +72,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="text-sm text-gray-400 transition-colors hover:text-black"
+                  className="text-sm text-gray-500 transition-colors hover:text-black"
                 >
                   Blog & Resources
                 </Link>
@@ -80,7 +80,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-sm text-gray-400 transition-colors hover:text-black"
+                  className="text-sm text-gray-500 transition-colors hover:text-black"
                 >
                   FAQ
                 </Link>
@@ -97,7 +97,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="text-sm text-gray-400 transition-colors hover:text-black"
+                  className="text-sm text-gray-500 transition-colors hover:text-black"
                 >
                   About Us
                 </Link>
@@ -105,7 +105,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-sm text-gray-400 transition-colors hover:text-black"
+                  className="text-sm text-gray-500 transition-colors hover:text-black"
                 >
                   Contact
                 </Link>
@@ -113,7 +113,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/terms"
-                  className="text-sm text-gray-400 transition-colors hover:text-black"
+                  className="text-sm text-gray-500 transition-colors hover:text-black"
                 >
                   Terms of Service
                 </Link>
@@ -130,7 +130,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-sm text-gray-400 transition-colors hover:text-black"
+                  className="text-sm text-gray-500 transition-colors hover:text-black"
                 >
                   Privacy Policy
                 </Link>
@@ -138,7 +138,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/cookies"
-                  className="text-sm text-gray-400 transition-colors hover:text-black"
+                  className="text-sm text-gray-500 transition-colors hover:text-black"
                 >
                   Cookie Policy
                 </Link>
@@ -146,7 +146,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/disclaimer"
-                  className="text-sm text-gray-400 transition-colors hover:text-black"
+                  className="text-sm text-gray-500 transition-colors hover:text-black"
                 >
                   Disclaimer
                 </Link>
@@ -164,14 +164,14 @@ export default function Footer() {
                 <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-500" />
                 <a
                   href="mailto:hello@wedlist.com.au"
-                  className="text-sm text-gray-400 transition-colors hover:text-black break-all"
+                  className="text-sm text-gray-500 transition-colors hover:text-black break-all"
                 >
                   hello@wedlist.com.au
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-500" />
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-gray-500">
                   Sydney, NSW
                   <br />
                   Australia
@@ -182,13 +182,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 border-t border-gray-800 pt-8">
+        <div className="mt-12 border-t border-gray-400 pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-center text-sm text-gray-500 sm:text-left">
               © {currentYear} WedList. All rights reserved.
-            </p>
-            <p className="text-center text-xs text-gray-600">
-              Connecting couples with professional wedding MCs across Sydney
             </p>
           </div>
         </div>

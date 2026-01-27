@@ -1,7 +1,7 @@
 "use client";
 
+import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
-import { supabaseAdmin } from "@/lib/supabase/admin";
 
 interface DashboardStats {
   totalMCs: number;
@@ -27,19 +27,20 @@ export default function AdminDashboard() {
   });
   const [recentInquiries, setRecentInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
+  const supabase = createClient();
 
   useEffect(() => {
     async function fetchData() {
       try {
         // Fetch stats
         const [mcsResult, inquiriesResult, reviewsResult] = await Promise.all([
-          supabaseAdmin
+          supabase
             .from("mc_profiles")
             .select("id", { count: "exact", head: true }),
-          supabaseAdmin
+          supabase
             .from("contact_inquiries")
             .select("id", { count: "exact", head: true }),
-          supabaseAdmin.from("google_reviews").select("rating"),
+          supabase.from("google_reviews").select("rating"),
         ]);
 
         const totalMCs = mcsResult.count || 0;
@@ -53,7 +54,7 @@ export default function AdminDashboard() {
         setStats({ totalMCs, totalInquiries, avgRating });
 
         // Fetch recent inquiries
-        const { data: inquiries } = await supabaseAdmin
+        const { data: inquiries } = await supabase
           .from("contact_inquiries")
           .select("*, mc_profiles(name)")
           .order("created_at", { ascending: false })
