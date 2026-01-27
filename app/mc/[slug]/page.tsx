@@ -9,20 +9,22 @@ import {
   Mail,
   Languages,
   DollarSign,
+  Star,
+  PlayCircle,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import Rating from "@/components/Rating";
 import ImageGallery from "@/components/ImageGallery";
-import PackageModalTrigger from "@/components/PackageModalTrigger";
 import ReviewsModalTrigger from "@/components/ReviewsModalTrigger";
+import PackagesSection from "@/components/PackagesSection";
 import { MCProfileWithRelations } from "@/types/database";
 import { formatPrice, getYouTubeEmbedUrl, getVimeoEmbedUrl } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server";
 
 async function getMCBySlug(
-  slug: string
+  slug: string,
 ): Promise<MCProfileWithRelations | null> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -35,7 +37,7 @@ async function getMCBySlug(
       packages:mc_packages(*),
       additional_info:mc_additional_info(*),
       reviews:google_reviews(*)
-    `
+    `,
     )
     .eq("slug", slug)
     .single();
@@ -139,7 +141,6 @@ export default async function MCProfilePage({
       ? Math.min(...sortedPackages.map((pkg) => pkg.price))
       : null;
 
-  // Get most recent review date
   const mostRecentReviewDate =
     sortedReviews.length > 0 && sortedReviews[0].review_date
       ? new Date(sortedReviews[0].review_date).toLocaleDateString("en-AU", {
@@ -183,7 +184,7 @@ export default async function MCProfilePage({
                 featured={mc.featured}
               />
             ) : (
-              <div className="relative aspect-video overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200">
+              <div className="relative aspect-video overflow-hidden rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200">
                 {mc.profile_image ? (
                   <Image
                     src={mc.profile_image}
@@ -211,48 +212,60 @@ export default async function MCProfilePage({
               {/* Left Column - Main Info */}
               <div className="lg:col-span-2">
                 {/* Header */}
-                <div className="border-b border-gray-200 pb-6">
+                <div className="border-b border-gray-200 pb-8">
                   <div className="flex items-start justify-between">
-                    <h1 className="text-3xl font-semibold text-gray-900">
-                      {mc.name}
-                    </h1>
+                    <div className="flex-1">
+                      <h1 className="text-4xl font-bold text-gray-900">
+                        {mc.name}
+                      </h1>
+                      <p className="mt-2 text-base text-gray-600">
+                        Professional Wedding MC in Sydney
+                      </p>
+                    </div>
                     {mostRecentReviewDate && (
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-500">
                         Last reviewed {mostRecentReviewDate}
                       </p>
                     )}
                   </div>
-                  <p className="mt-1 text-base text-gray-600">
-                    Professional Wedding MC in Sydney
-                  </p>
 
-                  {/* Icons Row - All same size */}
-                  <div className="mt-6 flex flex-wrap items-center gap-4">
+                  {/* Icons Row - Improved styling */}
+                  <div className="mt-6 flex flex-wrap items-center gap-6">
                     {averageRating > 0 && (
                       <div className="flex items-center gap-2">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                          <Star className="h-4 w-4 fill-gray-900 text-gray-900" />
+                        </div>
                         <Rating
                           rating={averageRating}
                           count={mc.reviews?.length}
                           size="sm"
+                          showStar={false}
                         />
                       </div>
                     )}
 
                     {mc.languages && mc.languages.length > 0 && (
                       <div className="flex items-center gap-2 text-sm text-gray-700">
-                        <Languages className="h-5 w-5 text-gray-400" />
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                          <Languages className="h-4 w-4 text-gray-900" />
+                        </div>
                         <span>{mc.languages.join(", ")}</span>
                       </div>
                     )}
 
                     <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <MapPin className="h-5 w-5 text-gray-400" />
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                        <MapPin className="h-4 w-4 text-gray-900" />
+                      </div>
                       <span>Sydney, NSW</span>
                     </div>
 
                     {minPrice && (
                       <div className="flex items-center gap-2 text-sm text-gray-700">
-                        <DollarSign className="h-5 w-5 text-gray-400" />
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                          <DollarSign className="h-4 w-4 text-gray-900" />
+                        </div>
                         <span>From {formatPrice(minPrice)}</span>
                       </div>
                     )}
@@ -261,11 +274,9 @@ export default async function MCProfilePage({
 
                 {/* About */}
                 {mc.bio && (
-                  <div className="border-b border-gray-200 py-10">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                      About
-                    </h2>
-                    <p className="mt-4 text-base leading-relaxed text-gray-700">
+                  <div className="border-b border-gray-200 py-12">
+                    <h2 className="text-2xl font-bold text-gray-900">About</h2>
+                    <p className="mt-6 text-base leading-relaxed text-gray-700">
                       {mc.bio}
                     </p>
                   </div>
@@ -273,46 +284,23 @@ export default async function MCProfilePage({
 
                 {/* Packages */}
                 {sortedPackages.length > 0 && (
-                  <div className="border-b border-gray-200 py-10">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                      Packages
-                    </h2>
-                    <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-                      {sortedPackages.map((pkg) => (
-                        <div
-                          key={pkg.id}
-                          className={`rounded-lg border p-3 ${
-                            pkg.popular
-                              ? "border-gray-900 bg-gray-50"
-                              : "border-gray-200"
-                          }`}
-                        >
-                          {pkg.popular && (
-                            <span className="mb-2 inline-block rounded bg-gray-900 px-2 py-0.5 text-xs font-medium text-white">
-                              Popular
-                            </span>
-                          )}
-                          <h3 className="text-sm font-semibold text-gray-900">
-                            {pkg.name}
-                          </h3>
-                        </div>
-                      ))}
-                    </div>
-                    <PackageModalTrigger packages={sortedPackages} />
-                  </div>
+                  <PackagesSection packages={sortedPackages} />
                 )}
 
                 {/* Videos */}
                 {sortedVideos.length > 0 && (
-                  <div className="border-b border-gray-200 py-10">
-                    <h2 className="text-xl font-semibold text-gray-900">
+                  <div className="border-b border-gray-200 py-12">
+                    <h2 className="flex items-center gap-3 text-2xl font-bold text-gray-900">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                        <PlayCircle className="h-4 w-4 text-gray-900" />
+                      </div>
                       Videos
                     </h2>
-                    <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    <div className="mt-8 grid gap-6 sm:grid-cols-2">
                       {sortedVideos.map((video) => (
                         <div
                           key={video.id}
-                          className="overflow-hidden rounded-lg"
+                          className="overflow-hidden rounded-xl border border-gray-200"
                         >
                           <div className="relative aspect-video bg-gray-900">
                             <iframe
@@ -328,7 +316,7 @@ export default async function MCProfilePage({
                             />
                           </div>
                           {video.title && (
-                            <p className="mt-2 text-sm font-medium text-gray-900">
+                            <p className="px-4 py-3 text-sm font-medium text-gray-900">
                               {video.title}
                             </p>
                           )}
@@ -340,14 +328,17 @@ export default async function MCProfilePage({
 
                 {/* Reviews */}
                 {sortedReviews.length > 0 && (
-                  <div className="py-10">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                      Google Reviews
+                  <div className="py-12">
+                    <h2 className="flex items-center gap-3 text-2xl font-bold text-gray-900">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                        <Star className="h-4 w-4 fill-gray-900 text-gray-900" />
+                      </div>
+                      Reviews
                     </h2>
 
                     {/* Mobile - Horizontal scroll */}
-                    <div className="mt-6 flex gap-4 overflow-x-auto pb-4 md:hidden">
-                      {sortedReviews.map((review) => (
+                    <div className="mt-8 flex gap-4 overflow-x-auto pb-4 md:hidden">
+                      {sortedReviews.slice(0, 5).map((review) => (
                         <div
                           key={review.id}
                           className="w-[280px] flex-shrink-0 rounded-lg border border-gray-200 p-4"
@@ -361,7 +352,7 @@ export default async function MCProfilePage({
                             {review.review_date && (
                               <span className="text-xs text-gray-500">
                                 {new Date(
-                                  review.review_date
+                                  review.review_date,
                                 ).toLocaleDateString("en-AU", {
                                   year: "numeric",
                                   month: "short",
@@ -382,7 +373,7 @@ export default async function MCProfilePage({
                     </div>
 
                     {/* Desktop - Grid */}
-                    <div className="mt-6 hidden grid-cols-2 gap-6 md:grid">
+                    <div className="mt-8 hidden grid-cols-2 gap-6 md:grid">
                       {sortedReviews.slice(0, 4).map((review) => (
                         <div key={review.id} className="flex flex-col gap-2">
                           <div className="flex items-center justify-between">
@@ -394,7 +385,7 @@ export default async function MCProfilePage({
                             {review.review_date && (
                               <span className="text-xs text-gray-500">
                                 {new Date(
-                                  review.review_date
+                                  review.review_date,
                                 ).toLocaleDateString("en-AU", {
                                   year: "numeric",
                                   month: "short",
@@ -426,41 +417,53 @@ export default async function MCProfilePage({
               {/* Right Column - Sticky Contact Card */}
               <div className="lg:col-span-1">
                 <div className="sticky top-24">
-                  <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
+                  <div className="rounded-2xl bg-white p-8 shadow-lg ring-1 ring-gray-200">
                     {/* Contact Details Above Form */}
-                    <div className="mb-6 space-y-3 border-b border-gray-200 pb-6">
-                      {mc.phone && (
-                        <Link
-                          href={`tel:${mc.phone}`}
-                          className="flex items-center gap-3 text-sm text-gray-700 transition-colors hover:text-gray-900"
-                        >
-                          <Phone className="h-4 w-4 text-gray-400" />
-                          <span>{mc.phone}</span>
-                        </Link>
-                      )}
-                      {mc.email && (
-                        <Link
-                          href={`mailto:${mc.email}`}
-                          className="flex items-center gap-3 text-sm text-gray-700 transition-colors hover:text-gray-900"
-                        >
-                          <Mail className="h-4 w-4 text-gray-400" />
-                          <span>{mc.email}</span>
-                        </Link>
-                      )}
-                      {mc.website && (
-                        <Link
-                          href={mc.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 text-sm text-gray-700 transition-colors hover:text-gray-900"
-                        >
-                          <Globe className="h-4 w-4 text-gray-400" />
-                          <span className="truncate">
-                            {mc.website.replace(/^https?:\/\/(www\.)?/, "")}
-                          </span>
-                        </Link>
-                      )}
-                    </div>
+                    {(mc.phone || mc.email || mc.website) && (
+                      <div className="mb-8 space-y-3 border-b border-gray-200 pb-8">
+                        {mc.phone && (
+                          <Link
+                            href={`tel:${mc.phone}`}
+                            className="group flex items-center gap-3 text-sm transition-all duration-200"
+                          >
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 group-hover:bg-gray-900 group-hover:text-white transition-colors duration-200">
+                              <Phone className="h-4 w-4 text-gray-600 group-hover:text-white" />
+                            </div>
+                            <span className="font-medium text-gray-900 group-hover:underline">
+                              {mc.phone}
+                            </span>
+                          </Link>
+                        )}
+                        {mc.email && (
+                          <Link
+                            href={`mailto:${mc.email}`}
+                            className="group flex items-center gap-3 text-sm transition-all duration-200"
+                          >
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 group-hover:bg-gray-900 group-hover:text-white transition-colors duration-200">
+                              <Mail className="h-4 w-4 text-gray-600 group-hover:text-white" />
+                            </div>
+                            <span className="font-medium text-gray-900 group-hover:underline">
+                              {mc.email}
+                            </span>
+                          </Link>
+                        )}
+                        {mc.website && (
+                          <Link
+                            href={mc.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex items-center gap-3 text-sm transition-all duration-200"
+                          >
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 group-hover:bg-gray-900 group-hover:text-white transition-colors duration-200">
+                              <Globe className="h-4 w-4 text-gray-600 group-hover:text-white" />
+                            </div>
+                            <span className="font-medium text-gray-900 group-hover:underline truncate">
+                              {mc.website.replace(/^https?:\/\/(www\.)?/, "")}
+                            </span>
+                          </Link>
+                        )}
+                      </div>
+                    )}
 
                     <ContactForm mcId={mc.id} mcName={mc.name} />
                   </div>
