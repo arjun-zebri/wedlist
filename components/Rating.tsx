@@ -3,6 +3,7 @@ interface RatingProps {
   count?: number;
   showCount?: boolean;
   size?: "sm" | "md" | "lg";
+  showStar?: boolean;
 }
 
 export default function Rating({
@@ -10,6 +11,7 @@ export default function Rating({
   count,
   showCount = true,
   size = "md",
+  showStar = true,
 }: RatingProps) {
   const sizeClasses = {
     sm: "text-xs",
@@ -22,7 +24,7 @@ export default function Rating({
       <span className={`rating-number ${sizeClasses[size]}`}>
         {rating.toFixed(1)}
       </span>
-      <span className="rating-star">★</span>
+      {showStar && <span className="rating-star">★</span>}
       {showCount && count && (
         <span className="rating-count">
           ({count} {count === 1 ? "review" : "reviews"})

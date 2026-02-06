@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
 interface MC {
@@ -17,6 +17,7 @@ export default function MCsPage() {
   const [mcs, setMcs] = useState<MC[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const supabase = createClient();
 
   useEffect(() => {
     fetchMCs();
@@ -24,7 +25,7 @@ export default function MCsPage() {
 
   async function fetchMCs() {
     try {
-      const { data } = await supabaseAdmin
+      const { data } = await supabase
         .from("mc_profiles")
         .select("id, name, slug, email, featured, created_at")
         .order("created_at", { ascending: false });
@@ -40,7 +41,7 @@ export default function MCsPage() {
   async function deleteMC(id: string, name: string) {
     if (
       !confirm(
-        `Are you sure you want to delete ${name}? This will also delete all their packages, photos, videos, and reviews. This action cannot be undone.`
+        `Are you sure you want to delete ${name}? This will also delete all their packages, photos, videos, and reviews. This action cannot be undone.`,
       )
     ) {
       return;
@@ -49,15 +50,15 @@ export default function MCsPage() {
     setDeleting(id);
     try {
       // Delete related records first (cascading delete should handle this if set up in DB, but doing it manually to be safe)
-      await supabaseAdmin.from("mc_photos").delete().eq("mc_id", id);
-      await supabaseAdmin.from("mc_videos").delete().eq("mc_id", id);
-      await supabaseAdmin.from("mc_packages").delete().eq("mc_id", id);
-      await supabaseAdmin.from("mc_additional_info").delete().eq("mc_id", id);
-      await supabaseAdmin.from("google_reviews").delete().eq("mc_id", id);
-      await supabaseAdmin.from("contact_inquiries").delete().eq("mc_id", id);
+      await supabase.from("mc_photos").delete().eq("mc_id", id);
+      await supabase.from("mc_videos").delete().eq("mc_id", id);
+      await supabase.from("mc_packages").delete().eq("mc_id", id);
+      await supabase.from("mc_additional_info").delete().eq("mc_id", id);
+      await supabase.from("google_reviews").delete().eq("mc_id", id);
+      await supabase.from("contact_inquiries").delete().eq("mc_id", id);
 
       // Delete the MC profile
-      const { error } = await supabaseAdmin
+      const { error } = await supabase
         .from("mc_profiles")
         .delete()
         .eq("id", id);
