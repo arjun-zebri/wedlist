@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import nodemailer from 'nodemailer';
 
 export async function POST(request: NextRequest) {
@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert inquiry into database
+    const supabase = await createClient();
     const { data: inquiry, error: insertError } = await supabase
       .from('contact_inquiries')
       .insert({

@@ -231,10 +231,6 @@
     transition: color var(--transition-fast);
   }
 
-  a:hover {
-    color: hsl(var(--color-accent));
-  }
-
   /* ========================================
      UTILITY CLASSES
   ======================================== */
