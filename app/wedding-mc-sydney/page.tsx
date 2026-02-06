@@ -154,16 +154,17 @@ async function getMCs(searchParams: {
 export default async function WeddingMCSydney({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     search?: string;
     minPrice?: string;
     maxPrice?: string;
     language?: string;
     sort?: string;
-  };
+  }>;
 }) {
+  const params = await searchParams;
   const [mcs, stats] = await Promise.all([
-    getMCs(searchParams),
+    getMCs(params),
     getDirectoryStats(),
   ]);
 
