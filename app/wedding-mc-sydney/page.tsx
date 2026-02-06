@@ -245,55 +245,11 @@ export default async function WeddingMCSydney({
       )}
 
       <main className="min-h-screen bg-gray-50">
-        {/* Hero Section - Empathy-Driven */}
-        <section className="bg-gradient-to-b from-gray-50 to-white px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl text-balance">
-              Find Your Perfect Wedding MC in Sydney. Compare Prices in Minutes.
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
-              Compare {stats.totalMCs}+ verified MCs with transparent pricing,
-              verified Google reviews, and guaranteed responses within 4 hours.
-            </p>
-
-            {/* Trust Badges */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-medium text-gray-700">
-              {stats.totalMCs > 0 && (
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle className="h-4 w-4 text-gray-900" />
-                  {stats.totalMCs}+ Verified MCs
-                </span>
-              )}
-              {stats.avgRating > 0 && (
-                <span className="flex items-center gap-1.5">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  {stats.avgRating.toFixed(1)} Avg Rating
-                </span>
-              )}
-              <span className="flex items-center gap-1.5">
-                <Clock className="h-4 w-4 text-gray-900" />
-                4-Hour Responses
-              </span>
-            </div>
-
-            {/* CTAs */}
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="#filters"
-                className="rounded-md bg-gray-900 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-              >
-                Start Browsing
-                <ArrowRight className="ml-2 inline-block h-4 w-4" />
-              </a>
-            </div>
-          </div>
-        </section>
-
         {/* Filter Bar & Results Section */}
         <MCFilterBar />
 
         <section className="px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-[1760px]">
+          <div className="mx-auto max-w-[1400px]">
             <div className="mb-6 flex items-center justify-between">
               <p className="text-sm text-gray-600">
                 {totalCount} {totalCount === 1 ? "MC" : "MCs"} found
