@@ -2,9 +2,11 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Search, X, SlidersHorizontal } from 'lucide-react';
+import { Search, X, Star, DollarSign, Award, Globe, Clock } from 'lucide-react';
 import { SortOption } from '@/types/filters';
 import { useFilterPersistence } from '@/hooks/useFilterPersistence';
+import { cn } from '@/lib/utils';
+import FilterModal from './FilterModal';
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: 'featured', label: 'Featured' },
@@ -14,6 +16,8 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: 'name', label: 'Name (A-Z)' },
   { value: 'newest', label: 'Newest' },
 ];
+
+type CategoryPill = 'top-rated' | 'budget-friendly' | 'experienced' | 'bilingual' | 'recent' | null;
 
 export default function MCFilterBar() {
   const router = useRouter();
@@ -25,7 +29,10 @@ export default function MCFilterBar() {
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '');
   const [language, setLanguage] = useState(searchParams.get('language') || '');
   const [sort, setSort] = useState<SortOption>((searchParams.get('sort') as SortOption) || 'featured');
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [activePill, setActivePill] = useState<CategoryPill>(null);
+  const [priceModalOpen, setPriceModalOpen] = useState(false);
+  const [priceModalMin, setPriceModalMin] = useState(minPrice);
+  const [priceModalMax, setPriceModalMax] = useState(maxPrice);
 
   // Debounced filter application
   const applyFilters = useCallback(
@@ -64,131 +71,146 @@ export default function MCFilterBar() {
     setMaxPrice('');
     setLanguage('');
     setSort('featured');
+    setActivePill(null);
     router.push('/wedding-mc-sydney');
-    setShowMobileFilters(false);
   };
 
-  const handleRemoveFilter = (filterType: string) => {
-    switch (filterType) {
-      case 'search':
-        setSearch('');
-        break;
-      case 'minPrice':
-        setMinPrice('');
-        break;
-      case 'maxPrice':
-        setMaxPrice('');
-        break;
-      case 'language':
-        setLanguage('');
-        break;
+  const handlePillClick = (pill: CategoryPill) => {
+    if (pill === 'top-rated') {
+      setSort('rating');
+      setActivePill(pill);
+    } else if (pill === 'budget-friendly') {
+      setPriceModalMin('');
+      setPriceModalMax('1000');
+      setPriceModalOpen(true);
+      setActivePill(pill);
+    } else if (pill === 'experienced') {
+      setSort('featured');
+      setActivePill(pill);
+      // Note: filtering by reviews count would need to be done on the page level
+    } else if (pill === 'bilingual') {
+      setLanguage('');
+      setActivePill(pill);
+      // Note: would need to filter by multiple languages
+    } else if (pill === 'recent') {
+      setSort('newest');
+      setActivePill(pill);
     }
+  };
+
+  const handlePriceModalApply = () => {
+    setMinPrice(priceModalMin);
+    setMaxPrice(priceModalMax);
   };
 
   const hasActiveFilters = search || minPrice || maxPrice || language || (sort && sort !== 'featured');
 
   return (
-    <div id="filters" className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
-      <div className="px-4 py-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          {/* Mobile Filter Toggle */}
-          <div className="md:hidden flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-gray-900">Filters</h3>
-            <button
-              onClick={() => setShowMobileFilters(!showMobileFilters)}
-              className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
-            >
-              <SlidersHorizontal className="h-4 w-4" />
-              {showMobileFilters ? 'Hide' : 'Show'}
-            </button>
-          </div>
-
-          {/* Filter Inputs Container */}
-          <div className={`${showMobileFilters ? 'block' : 'hidden'} md:block space-y-4 md:space-y-0`}>
-            {/* Main Filter Row */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 items-end">
-              {/* Search Input */}
-              <div>
-                <label htmlFor="search" className="block text-xs font-medium text-gray-700 mb-1">
-                  Search
-                </label>
+    <>
+      <div id="filters" className="sticky top-0 z-[1100] bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+        <div className="px-4 py-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1760px]">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-4">
+              {/* Search Bar - Left Side */}
+              <div className="flex-shrink-0 lg:w-80">
                 <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
-                    id="search"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search by name..."
-                    className="block w-full rounded-md border border-gray-300 px-3 py-2 pl-9 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    placeholder="Search MCs by name..."
+                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 transition-all"
                   />
-                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 </div>
               </div>
 
-              {/* Min Price Input */}
-              <div>
-                <label htmlFor="minPrice" className="block text-xs font-medium text-gray-700 mb-1">
-                  Min Price
-                </label>
-                <input
-                  type="number"
-                  id="minPrice"
-                  value={minPrice}
-                  onChange={(e) => setMinPrice(e.target.value)}
-                  placeholder="$500"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-                />
+              {/* Category Pills - Right Side (Horizontal Scroll) */}
+              <div className="flex-1 overflow-x-auto scrollbar-hide">
+                <div className="flex items-center gap-2 pb-1 min-w-min">
+                  <button
+                    onClick={() => handlePillClick('top-rated')}
+                    className={cn(
+                      'inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200',
+                      sort === 'rating'
+                        ? 'border-gray-900 bg-gray-900 text-white'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-gray-900'
+                    )}
+                  >
+                    <Star className="h-4 w-4" />
+                    <span>Top Rated</span>
+                  </button>
+
+                  <button
+                    onClick={() => handlePillClick('budget-friendly')}
+                    className={cn(
+                      'inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200',
+                      minPrice === '' && maxPrice === '1000'
+                        ? 'border-gray-900 bg-gray-900 text-white'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-gray-900'
+                    )}
+                  >
+                    <DollarSign className="h-4 w-4" />
+                    <span>Budget</span>
+                  </button>
+
+                  <button
+                    onClick={() => handlePillClick('experienced')}
+                    className={cn(
+                      'inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200',
+                      activePill === 'experienced'
+                        ? 'border-gray-900 bg-gray-900 text-white'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-gray-900'
+                    )}
+                  >
+                    <Award className="h-4 w-4" />
+                    <span>Experienced</span>
+                  </button>
+
+                  <button
+                    onClick={() => handlePillClick('bilingual')}
+                    className={cn(
+                      'inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200',
+                      activePill === 'bilingual'
+                        ? 'border-gray-900 bg-gray-900 text-white'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-gray-900'
+                    )}
+                  >
+                    <Globe className="h-4 w-4" />
+                    <span>Bilingual</span>
+                  </button>
+
+                  <button
+                    onClick={() => handlePillClick('recent')}
+                    className={cn(
+                      'inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200',
+                      sort === 'newest'
+                        ? 'border-gray-900 bg-gray-900 text-white'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-gray-900'
+                    )}
+                  >
+                    <Clock className="h-4 w-4" />
+                    <span>Recent</span>
+                  </button>
+
+                  {/* Clear All */}
+                  {hasActiveFilters && (
+                    <button
+                      onClick={handleClearAll}
+                      className="ml-2 text-sm text-gray-600 hover:text-gray-900 font-medium transition-colors whitespace-nowrap"
+                    >
+                      Clear all
+                    </button>
+                  )}
+                </div>
               </div>
 
-              {/* Max Price Input */}
-              <div>
-                <label htmlFor="maxPrice" className="block text-xs font-medium text-gray-700 mb-1">
-                  Max Price
-                </label>
-                <input
-                  type="number"
-                  id="maxPrice"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(e.target.value)}
-                  placeholder="$2000"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-                />
-              </div>
-
-              {/* Language Select */}
-              <div>
-                <label htmlFor="language" className="block text-xs font-medium text-gray-700 mb-1">
-                  Language
-                </label>
+              {/* Sort Dropdown - Compact */}
+              <div className="flex-shrink-0">
                 <select
-                  id="language"
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-                >
-                  <option value="">All Languages</option>
-                  <option value="English">English</option>
-                  <option value="Mandarin">Mandarin</option>
-                  <option value="Cantonese">Cantonese</option>
-                  <option value="Italian">Italian</option>
-                  <option value="Greek">Greek</option>
-                  <option value="Spanish">Spanish</option>
-                  <option value="French">French</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Sort Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:items-center lg:justify-between gap-4">
-              <div>
-                <label htmlFor="sort" className="block text-xs font-medium text-gray-700 mb-1">
-                  Sort By
-                </label>
-                <select
-                  id="sort"
                   value={sort}
                   onChange={(e) => setSort(e.target.value as SortOption)}
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="rounded-full border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white hover:border-gray-900 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 transition-all"
                 >
                   {SORT_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -197,28 +219,16 @@ export default function MCFilterBar() {
                   ))}
                 </select>
               </div>
-
-              {/* Clear All Button */}
-              {hasActiveFilters && (
-                <div className="lg:flex lg:items-center lg:gap-2">
-                  <button
-                    onClick={handleClearAll}
-                    className="w-full lg:w-auto rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-                  >
-                    Clear All
-                  </button>
-                </div>
-              )}
             </div>
 
             {/* Active Filter Chips */}
             {hasActiveFilters && (
-              <div className="flex flex-wrap gap-2 items-center pt-2">
+              <div className="mt-3 flex flex-wrap gap-2 items-center">
                 {search && (
                   <div className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-900">
-                    Search: {search}
+                    {search}
                     <button
-                      onClick={() => handleRemoveFilter('search')}
+                      onClick={() => setSearch('')}
                       className="text-gray-500 hover:text-gray-700"
                     >
                       <X className="h-3 w-3" />
@@ -229,7 +239,7 @@ export default function MCFilterBar() {
                   <div className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-900">
                     Min: ${minPrice}
                     <button
-                      onClick={() => handleRemoveFilter('minPrice')}
+                      onClick={() => setMinPrice('')}
                       className="text-gray-500 hover:text-gray-700"
                     >
                       <X className="h-3 w-3" />
@@ -240,7 +250,7 @@ export default function MCFilterBar() {
                   <div className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-900">
                     Max: ${maxPrice}
                     <button
-                      onClick={() => handleRemoveFilter('maxPrice')}
+                      onClick={() => setMaxPrice('')}
                       className="text-gray-500 hover:text-gray-700"
                     >
                       <X className="h-3 w-3" />
@@ -251,16 +261,11 @@ export default function MCFilterBar() {
                   <div className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-900">
                     {language}
                     <button
-                      onClick={() => handleRemoveFilter('language')}
+                      onClick={() => setLanguage('')}
                       className="text-gray-500 hover:text-gray-700"
                     >
                       <X className="h-3 w-3" />
                     </button>
-                  </div>
-                )}
-                {sort && sort !== 'featured' && (
-                  <div className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-900">
-                    Sort: {SORT_OPTIONS.find(o => o.value === sort)?.label}
                   </div>
                 )}
               </div>
@@ -268,6 +273,43 @@ export default function MCFilterBar() {
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Price Range Modal */}
+      <FilterModal
+        isOpen={priceModalOpen}
+        onClose={() => setPriceModalOpen(false)}
+        title="Price Range"
+        onApply={handlePriceModalApply}
+      >
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="modal-min-price" className="block text-sm font-medium text-gray-900 mb-2">
+              Minimum Price ($)
+            </label>
+            <input
+              id="modal-min-price"
+              type="number"
+              value={priceModalMin}
+              onChange={(e) => setPriceModalMin(e.target.value)}
+              placeholder="e.g., 500"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+            />
+          </div>
+          <div>
+            <label htmlFor="modal-max-price" className="block text-sm font-medium text-gray-900 mb-2">
+              Maximum Price ($)
+            </label>
+            <input
+              id="modal-max-price"
+              type="number"
+              value={priceModalMax}
+              onChange={(e) => setPriceModalMax(e.target.value)}
+              placeholder="e.g., 2000"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+            />
+          </div>
+        </div>
+      </FilterModal>
+    </>
   );
 }

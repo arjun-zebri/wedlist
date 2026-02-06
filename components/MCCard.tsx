@@ -1,14 +1,21 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star } from 'lucide-react';
+import { Star, Heart } from 'lucide-react';
 import { MCProfileWithRelations } from '@/types/database';
 import { formatPrice } from '@/lib/utils';
+import { useFavorites } from '@/hooks/useFavorites';
+import { cn } from '@/lib/utils';
 
 interface MCCardProps {
   mc: MCProfileWithRelations;
 }
 
 export default function MCCard({ mc }: MCCardProps) {
+  const { isFavorite, toggleFavorite, isLoaded } = useFavorites();
+  const favorited = isLoaded && isFavorite(mc.id);
+
   const averageRating = mc.reviews && mc.reviews.length > 0
     ? mc.reviews.reduce((acc, review) => acc + review.rating, 0) / mc.reviews.length
     : 0;
@@ -17,10 +24,16 @@ export default function MCCard({ mc }: MCCardProps) {
     ? Math.min(...mc.packages.map(pkg => pkg.price))
     : null;
 
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(mc.id);
+  };
+
   return (
-    <Link 
+    <Link
       href={`/mc/${mc.slug}`}
-      className="group block overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg"
+      className="group block overflow-hidden rounded-xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 ease-out"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
         {mc.profile_image ? (
@@ -28,15 +41,32 @@ export default function MCCard({ mc }: MCCardProps) {
             src={mc.profile_image}
             alt={mc.name}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-gray-400">
             <span className="text-4xl font-bold">{mc.name[0]}</span>
           </div>
         )}
+
+        {/* Heart icon - Airbnb style */}
+        <button
+          onClick={handleToggleFavorite}
+          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 hover:bg-white hover:scale-110 transition-all duration-200"
+          aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
+        >
+          <Heart
+            className={cn(
+              'h-5 w-5 transition-all',
+              favorited
+                ? 'fill-red-500 text-red-500'
+                : 'text-gray-700 hover:text-gray-900'
+            )}
+          />
+        </button>
+
         {mc.featured && (
-          <div className="absolute right-3 top-3 rounded-full bg-gray-900 px-3 py-1 text-xs font-medium text-white">
+          <div className="absolute right-3 bottom-3 rounded-full bg-gray-900 px-3 py-1 text-xs font-medium text-white">
             Featured
           </div>
         )}
@@ -46,7 +76,7 @@ export default function MCCard({ mc }: MCCardProps) {
         <h3 className="text-lg font-semibold text-gray-900 group-hover:text-gray-700">
           {mc.name}
         </h3>
-        
+
         {mc.bio && (
           <p className="mt-2 line-clamp-2 text-sm text-gray-600">
             {mc.bio}
@@ -68,7 +98,7 @@ export default function MCCard({ mc }: MCCardProps) {
                 )}
               </div>
             )}
-            
+
             {mc.languages && mc.languages.length > 0 && (
               <span className="text-sm text-gray-500">
                 {mc.languages.join(', ')}

@@ -3,10 +3,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MCCard from "@/components/MCCard";
 import MCFilterBar from "@/components/MCFilterBar";
+import Pagination from "@/components/Pagination";
 import { MCProfileWithRelations } from "@/types/database";
 import { DirectoryStats } from "@/types/filters";
 import { createClient } from "@/lib/supabase/server";
-import { ArrowRight, CheckCircle, Star, Clock, DollarSign, Search } from "lucide-react";
+import { ArrowRight, CheckCircle, Star, Clock, Search } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -51,9 +52,13 @@ async function getMCs(searchParams: {
   maxPrice?: string;
   language?: string;
   sort?: string;
+  page?: string;
 }) {
   const supabase = await createClient();
   const sortBy = searchParams.sort || "featured";
+  const page = parseInt(searchParams.page || "1");
+  const perPage = 20;
+  const offset = (page - 1) * perPage;
 
   let query = supabase.from("mc_profiles").select(
     `
@@ -63,7 +68,8 @@ async function getMCs(searchParams: {
       packages:mc_packages(*),
       additional_info:mc_additional_info(*),
       reviews:google_reviews(*)
-    `
+    `,
+    { count: "exact" }
   );
 
   // Database-level sorting
@@ -88,14 +94,20 @@ async function getMCs(searchParams: {
     query = query.contains("languages", [searchParams.language]);
   }
 
-  const { data, error } = await query;
+  const { data, error, count } = await query;
 
   if (error) {
     console.error("Error fetching MCs:", error);
-    return [];
+    return {
+      mcs: [],
+      totalCount: 0,
+      currentPage: page,
+      totalPages: 0,
+    };
   }
 
   let mcs = data as MCProfileWithRelations[];
+  const totalCount = count || 0;
 
   // Apply price filtering (client-side since it involves related packages)
   if (searchParams.minPrice || searchParams.maxPrice) {
@@ -148,7 +160,19 @@ async function getMCs(searchParams: {
     });
   }
 
-  return mcs;
+  // Calculate total pages based on filtered results
+  const filteredCount = mcs.length;
+  const totalPages = Math.ceil(filteredCount / perPage);
+
+  // Apply pagination
+  mcs = mcs.slice(offset, offset + perPage);
+
+  return {
+    mcs,
+    totalCount: filteredCount,
+    currentPage: page,
+    totalPages,
+  };
 }
 
 export default async function WeddingMCSydney({
@@ -160,13 +184,16 @@ export default async function WeddingMCSydney({
     maxPrice?: string;
     language?: string;
     sort?: string;
+    page?: string;
   }>;
 }) {
   const params = await searchParams;
-  const [mcs, stats] = await Promise.all([
+  const [result, stats] = await Promise.all([
     getMCs(params),
     getDirectoryStats(),
   ]);
+
+  const { mcs, totalCount, currentPage, totalPages } = result;
 
   // Schema.org structured data
   const itemListSchema =
@@ -258,56 +285,6 @@ export default async function WeddingMCSydney({
                 Start Browsing
                 <ArrowRight className="ml-2 inline-block h-4 w-4" />
               </a>
-              <a
-                href="#how-it-works"
-                className="rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-              >
-                How It Works
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* How It Works Section */}
-        <section id="how-it-works" className="bg-white px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                Book your wedding MC in 3 steps
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              {[
-                {
-                  step: 1,
-                  title: "Filter & Sort",
-                  description:
-                    "Use filters to narrow by price, language, and rating. Sort by featured, price, or newest.",
-                },
-                {
-                  step: 2,
-                  title: "Compare Profiles",
-                  description:
-                    "See exact pricing, verified Google reviews, and video samples from each MC.",
-                },
-                {
-                  step: 3,
-                  title: "Send Inquiry",
-                  description:
-                    "Contact MCs directly and expect responses within 4 hours.",
-                },
-              ].map((item) => (
-                <div key={item.step} className="text-center">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-900 text-lg font-semibold text-white">
-                    {item.step}
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-gray-600">{item.description}</p>
-                </div>
-              ))}
             </div>
           </div>
         </section>
@@ -316,15 +293,15 @@ export default async function WeddingMCSydney({
         <MCFilterBar />
 
         <section className="px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-4 flex items-center justify-between">
+          <div className="mx-auto max-w-[1760px]">
+            <div className="mb-6 flex items-center justify-between">
               <p className="text-sm text-gray-600">
-                {mcs.length} {mcs.length === 1 ? "MC" : "MCs"} found
+                {totalCount} {totalCount === 1 ? "MC" : "MCs"} found
               </p>
             </div>
 
             {mcs.length === 0 ? (
-              <div className="rounded-lg border border-gray-200 bg-white p-12 text-center max-w-2xl mx-auto">
+              <div className="rounded-xl bg-white p-12 text-center max-w-2xl mx-auto shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
                   <Search className="h-6 w-6 text-gray-600" />
                 </div>
@@ -336,104 +313,29 @@ export default async function WeddingMCSydney({
                 </p>
                 <Link
                   href="/wedding-mc-sydney"
-                  className="inline-block rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+                  className="inline-block rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
                 >
                   Clear all filters
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-                {mcs.map((mc) => (
-                  <MCCard key={mc.id} mc={mc} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:gap-8">
+                  {mcs.map((mc) => (
+                    <MCCard key={mc.id} mc={mc} />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalResults={totalCount}
+                  />
+                )}
+              </>
             )}
-          </div>
-        </section>
-
-        {/* SEO Content Section - Card Grid */}
-        <section className="bg-white px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                Everything You Need to Know About Wedding MCs in Sydney
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              {[
-                {
-                  title: "Why Choose a Professional MC",
-                  description:
-                    "A professional MC ensures your Sydney wedding runs smoothly from start to finish. They welcome guests, introduce speeches, coordinate timing with vendors, manage unexpected situations, and keep energy high throughout your reception.",
-                  icon: CheckCircle,
-                },
-                {
-                  title: "What Does a Wedding MC Do",
-                  description:
-                    "Professional MCs provide hosting services including welcoming guests, introducing the bridal party, announcing speeches, coordinating with vendors, and managing the timeline. They're experienced in keeping celebrations flowing seamlessly.",
-                  icon: Star,
-                },
-                {
-                  title: "How Much Does a Wedding MC Cost",
-                  description:
-                    "Sydney wedding MC prices typically range from $800 to $2,500 depending on experience and package inclusions. Most MCs offer packages with pre-wedding consultations, reception hosting, and vendor coordination.",
-                  icon: DollarSign,
-                  cta: {
-                    text: "Browse prices",
-                    href: "#filters",
-                  },
-                },
-                {
-                  title: "Finding the Right MC for Your Wedding",
-                  description:
-                    "Consider their experience with your wedding style, personality, language capabilities, and Google reviews from other Sydney couples. Many MCs offer free consultations to ensure compatibility.",
-                  icon: Search,
-                  cta: {
-                    text: "Start browsing",
-                    href: "#filters",
-                  },
-                },
-              ].map((card) => {
-                const Icon = card.icon;
-                return (
-                  <div
-                    key={card.title}
-                    className="rounded-lg border border-gray-200 bg-gray-50 p-6 hover:shadow-lg transition-shadow"
-                  >
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900">
-                      <Icon className="h-5 w-5 text-white" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {card.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-4">
-                      {card.description}
-                    </p>
-                    {card.cta && (
-                      <a
-                        href={card.cta.href}
-                        className="inline-text text-sm font-medium text-gray-900 hover:text-gray-700 underline"
-                      >
-                        {card.cta.text}
-                        <ArrowRight className="ml-1 inline-block h-4 w-4" />
-                      </a>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Bottom CTA */}
-            <div className="mt-12 text-center">
-              <Link
-                href="#filters"
-                className="inline-block rounded-md bg-gray-900 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-              >
-                Browse All Sydney Wedding MCs
-                <ArrowRight className="ml-2 inline-block h-4 w-4" />
-              </Link>
-            </div>
           </div>
         </section>
       </main>
