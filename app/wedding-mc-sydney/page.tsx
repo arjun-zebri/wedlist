@@ -248,52 +248,48 @@ export default async function WeddingMCSydney({
         {/* Filter Bar & Results Section */}
         <MCFilterBar />
 
-        <section className="px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-[1400px]">
-            <div className="mb-6 flex items-center justify-between">
-              <p className="text-sm text-gray-600">
-                {totalCount} {totalCount === 1 ? "MC" : "MCs"} found
-              </p>
-            </div>
-
-            {mcs.length === 0 ? (
-              <div className="rounded-xl bg-white p-12 text-center max-w-2xl mx-auto shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                  <Search className="h-6 w-6 text-gray-600" />
-                </div>
-                <p className="text-lg font-medium text-gray-900">
-                  No MCs found
-                </p>
-                <p className="mt-2 text-sm text-gray-600 mb-6">
-                  Try adjusting your filters or search criteria
-                </p>
-                <Link
-                  href="/wedding-mc-sydney"
-                  className="inline-block rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-                >
-                  Clear all filters
-                </Link>
-              </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:gap-8">
-                  {mcs.map((mc) => (
-                    <MCCard key={mc.id} mc={mc} />
-                  ))}
-                </div>
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    totalResults={totalCount}
-                  />
-                )}
-              </>
-            )}
+        <div className="mx-auto max-w-[1400px] px-4 py-4 sm:px-6 lg:px-8">
+          <div className="mb-6 flex items-center justify-between">
+            <p className="text-sm text-gray-600">
+              {totalCount} {totalCount === 1 ? "MC" : "MCs"} found
+            </p>
           </div>
-        </section>
+
+          {mcs.length === 0 ? (
+            <div className="rounded-xl bg-white p-12 text-center max-w-2xl mx-auto shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+                <Search className="h-6 w-6 text-gray-600" />
+              </div>
+              <p className="text-lg font-medium text-gray-900">No MCs found</p>
+              <p className="mt-2 text-sm text-gray-600 mb-6">
+                Try adjusting your filters or search criteria
+              </p>
+              <Link
+                href="/wedding-mc-sydney"
+                className="inline-block rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+              >
+                Clear all filters
+              </Link>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:gap-8">
+                {mcs.map((mc) => (
+                  <MCCard key={mc.id} mc={mc} />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalResults={totalCount}
+                />
+              )}
+            </>
+          )}
+        </div>
       </main>
 
       <Footer />

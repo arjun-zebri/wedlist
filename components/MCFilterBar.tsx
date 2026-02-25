@@ -2,7 +2,16 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, X, Star, DollarSign, Award, Globe, Clock, ChevronDown } from "lucide-react";
+import {
+  Search,
+  X,
+  Star,
+  DollarSign,
+  Award,
+  Globe,
+  Clock,
+  ChevronDown,
+} from "lucide-react";
 import { SortOption } from "@/types/filters";
 import { useFilterPersistence } from "@/hooks/useFilterPersistence";
 import { cn } from "@/lib/utils";
@@ -78,14 +87,18 @@ export default function MCFilterBar() {
   // Handle click outside dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target as Node)) {
+      if (
+        sortDropdownRef.current &&
+        !sortDropdownRef.current.contains(event.target as Node)
+      ) {
         setSortDropdownOpen(false);
       }
     };
 
     if (sortDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [sortDropdownOpen]);
 
@@ -146,139 +159,139 @@ export default function MCFilterBar() {
         id="filters"
         className="sticky top-0 z-[1100] bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.05)]"
       >
-        <div className="px-4 py-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-[1400px]">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-4">
-              {/* Search Bar - Left Side */}
-              <div className="flex-shrink-0 lg:w-80">
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <input
-                    type="text"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search MCs by name..."
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 transition-all"
-                  />
-                </div>
+        <div className="mx-auto max-w-[1400px] px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-4">
+            {/* Search Bar - Left Side */}
+            <div className="flex-shrink-0 lg:w-80">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search MCs by name..."
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 transition-all"
+                />
               </div>
+            </div>
 
-              {/* Category Pills - Right Side (Horizontal Scroll) */}
-              <div className="flex-1 overflow-x-auto scrollbar-hide">
-                <div className="flex items-center gap-2 pb-1 min-w-min">
-                  <button
-                    onClick={() => handlePillClick("top-rated")}
-                    className={cn(
-                      "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
-                      activePills.has("top-rated")
-                        ? "border-gray-900 bg-gray-900 text-white"
-                        : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
-                    )}
-                  >
-                    <Star className="h-4 w-4" />
-                    <span>Top Rated</span>
-                  </button>
-
-                  <button
-                    onClick={() => handlePillClick("budget-friendly")}
-                    className={cn(
-                      "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
-                      activePills.has("budget-friendly")
-                        ? "border-gray-900 bg-gray-900 text-white"
-                        : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
-                    )}
-                  >
-                    <DollarSign className="h-4 w-4" />
-                    <span>Budget</span>
-                  </button>
-
-                  <button
-                    onClick={() => handlePillClick("experienced")}
-                    className={cn(
-                      "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
-                      activePills.has("experienced")
-                        ? "border-gray-900 bg-gray-900 text-white"
-                        : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
-                    )}
-                  >
-                    <Award className="h-4 w-4" />
-                    <span>Experienced</span>
-                  </button>
-
-                  <button
-                    onClick={() => handlePillClick("bilingual")}
-                    className={cn(
-                      "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
-                      activePills.has("bilingual")
-                        ? "border-gray-900 bg-gray-900 text-white"
-                        : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
-                    )}
-                  >
-                    <Globe className="h-4 w-4" />
-                    <span>Bilingual</span>
-                  </button>
-
-                  <button
-                    onClick={() => handlePillClick("recent")}
-                    className={cn(
-                      "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
-                      activePills.has("recent")
-                        ? "border-gray-900 bg-gray-900 text-white"
-                        : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
-                    )}
-                  >
-                    <Clock className="h-4 w-4" />
-                    <span>Recent</span>
-                  </button>
-
-                  {/* Clear All */}
-                  {hasActiveFilters && (
-                    <button
-                      onClick={handleClearAll}
-                      className="ml-2 text-sm text-gray-600 hover:text-gray-900 font-medium transition-colors whitespace-nowrap"
-                    >
-                      Clear all
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Sort Dropdown - Custom */}
-              <div className="flex-shrink-0 relative" ref={sortDropdownRef}>
+            {/* Category Pills - Right Side (Horizontal Scroll) */}
+            <div className="flex-1 overflow-x-auto scrollbar-hide">
+              <div className="flex items-center gap-2 pb-1 min-w-min">
                 <button
-                  onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
-                  className="rounded-full border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white hover:border-gray-900 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 transition-all flex items-center gap-2 whitespace-nowrap"
+                  onClick={() => handlePillClick("top-rated")}
+                  className={cn(
+                    "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
+                    activePills.has("top-rated")
+                      ? "border-gray-900 bg-gray-900 text-white"
+                      : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
+                  )}
                 >
-                  {SORT_OPTIONS.find((o) => o.value === sort)?.label || "Sort"}
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${
-                      sortDropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
+                  <Star className="h-4 w-4" />
+                  <span>Top Rated</span>
                 </button>
 
-                {sortDropdownOpen && (
-                  <div className="absolute right-0 mt-2 bg-white border border-gray-300 rounded-xl shadow-lg z-[1200] min-w-max overflow-hidden">
-                    {SORT_OPTIONS.map((option, index) => (
-                      <button
-                        key={option.value}
-                        onClick={() => {
-                          setSort(option.value);
-                          setSortDropdownOpen(false);
-                        }}
-                        className={cn(
-                          "block w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors",
-                          sort === option.value ? "bg-gray-100 font-medium text-gray-900" : "text-gray-700",
-                          index === 0 ? "rounded-t-xl" : "",
-                          index === SORT_OPTIONS.length - 1 ? "rounded-b-xl" : ""
-                        )}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
+                <button
+                  onClick={() => handlePillClick("budget-friendly")}
+                  className={cn(
+                    "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
+                    activePills.has("budget-friendly")
+                      ? "border-gray-900 bg-gray-900 text-white"
+                      : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
+                  )}
+                >
+                  <DollarSign className="h-4 w-4" />
+                  <span>Budget</span>
+                </button>
+
+                <button
+                  onClick={() => handlePillClick("experienced")}
+                  className={cn(
+                    "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
+                    activePills.has("experienced")
+                      ? "border-gray-900 bg-gray-900 text-white"
+                      : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
+                  )}
+                >
+                  <Award className="h-4 w-4" />
+                  <span>Experienced</span>
+                </button>
+
+                <button
+                  onClick={() => handlePillClick("bilingual")}
+                  className={cn(
+                    "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
+                    activePills.has("bilingual")
+                      ? "border-gray-900 bg-gray-900 text-white"
+                      : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
+                  )}
+                >
+                  <Globe className="h-4 w-4" />
+                  <span>Bilingual</span>
+                </button>
+
+                <button
+                  onClick={() => handlePillClick("recent")}
+                  className={cn(
+                    "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
+                    activePills.has("recent")
+                      ? "border-gray-900 bg-gray-900 text-white"
+                      : "border-gray-300 bg-white text-gray-700 hover:border-gray-900"
+                  )}
+                >
+                  <Clock className="h-4 w-4" />
+                  <span>Recent</span>
+                </button>
+
+                {/* Clear All */}
+                {hasActiveFilters && (
+                  <button
+                    onClick={handleClearAll}
+                    className="ml-2 text-sm text-gray-600 hover:text-gray-900 font-medium transition-colors whitespace-nowrap"
+                  >
+                    Clear all
+                  </button>
                 )}
               </div>
+            </div>
+
+            {/* Sort Dropdown - Custom */}
+            <div className="flex-shrink-0 relative" ref={sortDropdownRef}>
+              <button
+                onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
+                className="rounded-full border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white hover:border-gray-900 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 transition-all flex items-center gap-2 whitespace-nowrap"
+              >
+                {SORT_OPTIONS.find((o) => o.value === sort)?.label || "Sort"}
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-200 ${
+                    sortDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {sortDropdownOpen && (
+                <div className="absolute right-0 mt-2 bg-white border border-gray-300 rounded-xl shadow-lg z-[1200] min-w-max overflow-hidden">
+                  {SORT_OPTIONS.map((option, index) => (
+                    <button
+                      key={option.value}
+                      onClick={() => {
+                        setSort(option.value);
+                        setSortDropdownOpen(false);
+                      }}
+                      className={cn(
+                        "block w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors",
+                        sort === option.value
+                          ? "bg-gray-100 font-medium text-gray-900"
+                          : "text-gray-700",
+                        index === 0 ? "rounded-t-xl" : "",
+                        index === SORT_OPTIONS.length - 1 ? "rounded-b-xl" : ""
+                      )}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Active Filter Chips */}
