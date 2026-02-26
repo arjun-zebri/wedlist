@@ -45,8 +45,6 @@ export default function HowItWorks() {
 
     const gridRect = grid.getBoundingClientRect();
     const firstRect = firstBadge.getBoundingClientRect();
-    const lastRect = lastBadge.getBoundingClientRect();
-
     // Line starts at center of first badge, ends at right edge of last column
     const startX = firstRect.left + firstRect.width / 2 - gridRect.left;
     const endX = gridRect.width;
@@ -65,7 +63,7 @@ export default function HowItWorks() {
     if (scrollable <= 0) { setProgress(3); return; }
 
     const scrolled = Math.max(0, -rect.top);
-    const animRange = scrollable * 0.6;
+    const animRange = scrollable * 0.85;
     const ratio = Math.min(1, scrolled / animRange);
     setProgress(ratio * 3);
   }, []);
@@ -99,7 +97,7 @@ export default function HowItWorks() {
   const mobileLineScale = lineProgress;
 
   return (
-    <div ref={outerRef} className="relative" style={{ height: "220vh" }}>
+    <div ref={outerRef} className="relative" style={{ height: "150vh" }}>
       <div className="sticky top-0 z-10 h-screen overflow-hidden bg-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
         <div className="mx-auto max-w-7xl w-full relative z-10">
           {/* Heading */}

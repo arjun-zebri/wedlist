@@ -311,7 +311,7 @@ export default async function Home() {
           </section>
 
           {/* Problem section - Before/After comparison */}
-          <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8">
+          <section className="relative bg-white/80 backdrop-blur-sm px-4 pt-20 pb-10 sm:px-6 lg:px-8">
             <BeforeAfterComparison />
           </section>
 
