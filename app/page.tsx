@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MCCard from "@/components/MCCard";
 import FAQAccordion from "@/components/FAQAccordion";
+import HowItWorks from "@/components/HowItWorks";
 import ReviewCarousel from "@/components/ReviewCarousel";
 import { MCProfileWithRelations } from "@/types/database";
 import { createClient } from "@/lib/supabase/server";
@@ -242,7 +243,7 @@ export default async function Home() {
       )}
 
       {/* Dynamic magical background wrapper */}
-      <div className="relative min-h-screen bg-gradient-to-br from-white via-white to-rose-50/30 overflow-hidden">
+      <div className="relative min-h-screen bg-gradient-to-br from-white via-white to-rose-50/30" style={{ overflow: 'clip' }}>
         {/* Animated background orbs - magical floating effect */}
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-[#E31C5F]/15 to-pink-200/10 rounded-full filter blur-3xl opacity-70 animate-drift-slow"></div>
         <div className="absolute top-1/3 -left-40 w-80 h-80 bg-gradient-to-tr from-purple-100/12 to-blue-100/8 rounded-full filter blur-3xl opacity-50 animate-float animation-delay-2000"></div>
@@ -414,148 +415,31 @@ export default async function Home() {
           </section>
 
           {/* ================================================================
-            3. HOW IT WORKS — Superpower-Style 3-Step Process
+            3. HOW IT WORKS — Sequential Card Reveal with Connecting Line
         ================================================================ */}
           <section
             id="how-it-works"
-            className="relative bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8 overflow-hidden"
+            className="relative bg-white/80 backdrop-blur-sm"
           >
-            <div className="mx-auto max-w-7xl relative z-10">
-              {/* Section Header */}
-              <div className="text-center mb-20">
-                <h2 className="text-5xl sm:text-6xl font-bold text-gray-900 font-display mb-6">
-                  Simple as 1, 2, 3
-                </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Finding and booking your perfect MC doesn't need to be
-                  complicated. Follow our straightforward three-step process.
-                </p>
-              </div>
-
-              {/* Three-Step Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                {/* Step 1 */}
-                <div
-                  className="flex flex-col animate-fadeInUp"
-                  style={{ animationDelay: "100ms" }}
-                >
-                  {/* Image Placeholder */}
-                  <div className="mb-8 overflow-hidden rounded-2xl">
-                    <div className="bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200 aspect-video flex items-center justify-center hover:shadow-lg transition-shadow duration-500">
-                      <div className="text-center">
-                        <div className="text-5xl mb-3">🔍</div>
-                        <p className="text-gray-500 font-medium">
-                          Browse & Explore
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Step Indicator */}
-                  <div className="mb-4">
-                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#E31C5F]/10 text-[#E31C5F] font-bold text-lg">
-                      1
-                    </span>
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">
-                    Search & Compare
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Browse verified MCs with real photos, authentic reviews,
-                    transparent pricing, and complete packages. Compare
-                    side-by-side without any surprises.
-                  </p>
-                </div>
-
-                {/* Step 2 */}
-                <div
-                  className="flex flex-col animate-fadeInUp"
-                  style={{ animationDelay: "200ms" }}
-                >
-                  {/* Image Placeholder */}
-                  <div className="mb-8 overflow-hidden rounded-2xl">
-                    <div className="bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200 aspect-video flex items-center justify-center hover:shadow-lg transition-shadow duration-500">
-                      <div className="text-center">
-                        <div className="text-5xl mb-3">💬</div>
-                        <p className="text-gray-500 font-medium">
-                          Connect Directly
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Step Indicator */}
-                  <div className="mb-4">
-                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#E31C5F]/10 text-[#E31C5F] font-bold text-lg">
-                      2
-                    </span>
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">
-                    Message & Discuss
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Found the perfect fit? Send a message with your wedding
-                    date, vision, and special requests. Have a direct
-                    conversation with no middleman.
-                  </p>
-                </div>
-
-                {/* Step 3 */}
-                <div
-                  className="flex flex-col animate-fadeInUp"
-                  style={{ animationDelay: "300ms" }}
-                >
-                  {/* Image Placeholder */}
-                  <div className="mb-8 overflow-hidden rounded-2xl">
-                    <div className="bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200 aspect-video flex items-center justify-center hover:shadow-lg transition-shadow duration-500">
-                      <div className="text-center">
-                        <div className="text-5xl mb-3">✨</div>
-                        <p className="text-gray-500 font-medium">
-                          Confirm & Celebrate
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Step Indicator */}
-                  <div className="mb-4">
-                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#E31C5F]/10 text-[#E31C5F] font-bold text-lg">
-                      3
-                    </span>
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">
-                    Book with Confidence
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    We guarantee a response within 4 hours. Finalize all
-                    details, confirm availability, agree on pricing. Your
-                    perfect MC is locked in.
-                  </p>
-                </div>
-              </div>
-
-              {/* Bottom CTA */}
-              <div className="mt-16 text-center">
-                <p className="text-gray-600 mb-6">
-                  Ready to find your MC? Start browsing our verified
-                  professionals today.
-                </p>
-                <Link
-                  href="/wedding-mc-sydney"
-                  className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
-                >
-                  Browse MCs
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-              </div>
-            </div>
+            <HowItWorks />
           </section>
+
+          {/* How It Works CTA */}
+          <div className="bg-white/80 backdrop-blur-sm px-4 pb-20 sm:px-6 lg:px-8">
+            <div className="text-center max-w-7xl mx-auto">
+              <p className="text-gray-600 mb-6">
+                Ready to find your MC? Start browsing our verified
+                professionals today.
+              </p>
+              <Link
+                href="/wedding-mc-sydney"
+                className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors duration-200"
+              >
+                Browse MCs
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
+          </div>
 
           {/* ================================================================
             4. PRICING TRANSPARENCY — Integrated, Clear, No Games
