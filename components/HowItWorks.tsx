@@ -98,7 +98,7 @@ export default function HowItWorks() {
 
   return (
     <div ref={outerRef} className="relative" style={{ height: "150vh" }}>
-      <div className="sticky top-0 z-10 h-screen overflow-hidden bg-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
+      <div className="sticky top-0 z-10 h-screen overflow-y-auto bg-white px-4 sm:px-6 lg:px-8 flex flex-col justify-start pt-12 md:justify-center md:pt-0">
         <div className="mx-auto max-w-7xl w-full relative z-10">
           {/* Heading */}
           <div className="mb-8">
@@ -196,14 +196,14 @@ export default function HowItWorks() {
 
           {/* ===== MOBILE ===== */}
           <div className="md:hidden relative">
-            <div className="absolute left-[13px] top-0 bottom-0 w-px pointer-events-none bg-[#E31C5F]/10 overflow-hidden">
+            <div className="absolute left-[13px] top-0 bottom-0 w-px pointer-events-none overflow-hidden">
               <div
-                className="bg-[#E31C5F]/30 w-full origin-top"
+                className="bg-[#E31C5F]/30 w-full h-full origin-top"
                 style={{ transform: `scaleY(${mobileLineScale})` }}
               />
             </div>
 
-            <div className="space-y-10">
+            <div className="space-y-6">
               {steps.map((step, i) => {
                 const cp = getCP(i);
                 const visible = cp > 0;

@@ -57,7 +57,7 @@ async function getRecentReviews() {
     .select("*, mc:mc_profiles(name, slug)")
     .gte("rating", 4)
     .order("created_at", { ascending: false })
-    .limit(6);
+    .limit(18);
 
   if (error) {
     console.error("Error fetching reviews:", error);
