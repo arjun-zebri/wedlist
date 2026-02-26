@@ -224,6 +224,7 @@ function ReviewCard({
 
 export default function ReviewCarousel({ reviews }: ReviewCarouselProps) {
   const [showAll, setShowAll] = useState(false);
+  const [cardsVisible, setCardsVisible] = useState(false);
   const buttonRef = useRef<HTMLDivElement>(null);
   const [buttonVisible, setButtonVisible] = useState(false);
 
@@ -291,11 +292,26 @@ export default function ReviewCarousel({ reviews }: ReviewCarouselProps) {
             {col.map((review) => (
               <ReviewCard key={review.id} review={review} />
             ))}
-            {/* Extra reviews appended to same columns */}
-            {showAll &&
-              extraColumns[colIdx].map((review) => (
-                <ReviewCard key={review.id} review={review} />
-              ))}
+            {/* Extra reviews — height expands first, then cards fade in */}
+            <div
+              className="grid transition-[grid-template-rows] duration-500 ease-out"
+              style={{ gridTemplateRows: showAll ? "1fr" : "0fr" }}
+              onTransitionEnd={() => {
+                if (showAll) setCardsVisible(true);
+              }}
+            >
+              <div className="overflow-hidden flex flex-col gap-6">
+                {extraColumns[colIdx].map((review) => (
+                  <div
+                    key={review.id}
+                    className="transition-opacity duration-300"
+                    style={{ opacity: cardsVisible ? 1 : 0 }}
+                  >
+                    <ReviewCard review={review} />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -313,7 +329,10 @@ export default function ReviewCarousel({ reviews }: ReviewCarouselProps) {
           }}
         >
           <button
-            onClick={() => setShowAll(!showAll)}
+            onClick={() => {
+              if (showAll) setCardsVisible(false);
+              setShowAll(!showAll);
+            }}
             className="group relative px-8 py-3.5 bg-[#E31C5F] text-white rounded-lg font-semibold hover:bg-[#C4184F] transition-transform duration-300 shadow-[0_4px_12px_rgba(227,28,95,0.3)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.4)] hover:-translate-y-0.5 active:translate-y-0"
           >
             {showAll ? "Show less reviews" : "See more reviews"}

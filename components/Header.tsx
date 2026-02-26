@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -10,11 +10,13 @@ export default function Header() {
   // Prevent body scroll when panel is open
   useEffect(() => {
     if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
   return (
@@ -67,7 +69,7 @@ export default function Header() {
       {/* Backdrop */}
       <div
         className={`fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 ${
-          mobileOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          mobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setMobileOpen(false)}
         aria-hidden="true"
@@ -76,7 +78,7 @@ export default function Header() {
       {/* Side panel */}
       <div
         className={`fixed inset-y-0 right-0 w-72 bg-white shadow-xl z-50 md:hidden transition-transform duration-300 ease-out ${
-          mobileOpen ? 'translate-x-0' : 'translate-x-full'
+          mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Panel header */}
@@ -94,7 +96,7 @@ export default function Header() {
         </div>
 
         {/* Panel links */}
-        <div className="px-4 py-6 space-y-1">
+        <div className="px-4 py-6">
           <Link
             href="/wedding-mc-sydney"
             className="block rounded-md px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors"
@@ -104,7 +106,7 @@ export default function Header() {
           </Link>
           <Link
             href="/blog"
-            className="block rounded-md px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+            className="block rounded-md px-3 py-2.5 mt-1 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors"
             onClick={() => setMobileOpen(false)}
           >
             Blog

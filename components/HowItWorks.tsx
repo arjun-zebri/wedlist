@@ -45,7 +45,6 @@ export default function HowItWorks() {
 
     const gridRect = grid.getBoundingClientRect();
     const firstRect = firstBadge.getBoundingClientRect();
-    // Line starts at center of first badge, ends at right edge of last column
     const startX = firstRect.left + firstRect.width / 2 - gridRect.left;
     const endX = gridRect.width;
     const centerY = firstRect.top + firstRect.height / 2 - gridRect.top;
@@ -81,7 +80,6 @@ export default function HowItWorks() {
     };
   }, [handleScroll, measureLine]);
 
-  // Re-measure after first render when refs are populated
   useEffect(() => {
     const id = requestAnimationFrame(measureLine);
     return () => cancelAnimationFrame(id);
@@ -90,64 +88,32 @@ export default function HowItWorks() {
   const getCP = (i: number) =>
     Math.max(0, Math.min(1, (progress - i * 0.85) / 0.7));
 
-  // Continuous line progress: 0 at card 1 start, 1 when card 3 is fully revealed
   const lineProgress = Math.max(0, Math.min(1, progress / 2.55));
 
-  // Mobile vertical line
-  const mobileLineScale = lineProgress;
-
   return (
-    <div ref={outerRef} className="relative" style={{ height: "150vh" }}>
-      <div className="sticky top-0 z-10 h-screen overflow-y-auto bg-white px-4 sm:px-6 lg:px-8 flex flex-col justify-start pt-12 md:justify-center md:pt-0">
-        <div className="mx-auto max-w-7xl w-full relative z-10">
-          {/* Heading */}
+    <>
+      {/* ===== MOBILE — Static layout, no sticky/scroll animation ===== */}
+      <div className="md:hidden bg-white px-4 sm:px-6 py-16">
+        <div className="mx-auto max-w-7xl w-full">
           <div className="mb-8">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 font-display">
+            <h2 className="text-4xl font-bold text-gray-900 font-display">
               How it works
             </h2>
           </div>
 
-          {/* ===== DESKTOP ===== */}
-          <div
-            ref={desktopGridRef}
-            className="hidden md:grid grid-cols-3 gap-6 lg:gap-8 relative"
-          >
-            {/* Single continuous line across all badges */}
-            {lineLayout && (
-              <div
-                className="absolute pointer-events-none z-0"
-                style={{
-                  top: lineLayout.top,
-                  left: lineLayout.left,
-                  width: lineLayout.width,
-                  height: "1px",
-                  overflow: "hidden",
-                  transform: "translateY(-0.5px)",
-                }}
-              >
-                <div
-                  className="h-full bg-[#E31C5F]/30 origin-left"
-                  style={{ transform: `scaleX(${lineProgress})` }}
-                />
-              </div>
-            )}
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-[13px] top-0 bottom-0 w-px bg-[#E31C5F]/20 pointer-events-none" />
 
-            {steps.map((step, i) => {
-              const cp = getCP(i);
-              const visible = cp > 0;
+            <div className="space-y-8">
+              {steps.map((step, i) => (
+                <div key={i} className="relative pl-12">
+                  <span className="absolute left-0 top-0 z-10 inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#E31C5F] text-white font-bold text-xs shadow-[0_2px_8px_rgba(227,28,95,0.3)]">
+                    {i + 1}
+                  </span>
 
-              return (
-                <div key={i} className="flex flex-col">
-                  {/* Image — slides DOWN from above */}
-                  <div
-                    className="overflow-hidden rounded-xl mb-4"
-                    style={{
-                      opacity: cp,
-                      transform: `translateY(${(1 - cp) * -30}px)`,
-                      visibility: visible ? "visible" : "hidden",
-                    }}
-                  >
-                    <div className="bg-gradient-to-br from-gray-100 to-gray-50 aspect-[16/10] flex items-center justify-center">
+                  <div className="overflow-hidden rounded-xl mb-3">
+                    <div className="bg-gradient-to-br from-gray-100 to-gray-50 aspect-video flex items-center justify-center">
                       <div className="text-center">
                         <div className="text-4xl mb-1.5">{step.emoji}</div>
                         <p className="text-gray-500 font-medium text-xs">
@@ -157,81 +123,67 @@ export default function HowItWorks() {
                     </div>
                   </div>
 
-                  {/* Badge */}
-                  <div
-                    className="relative flex items-center mb-4 h-7"
-                    style={{
-                      opacity: cp,
-                      visibility: visible ? "visible" : "hidden",
-                    }}
-                  >
-                    <span
-                      ref={(el) => { badgeRefs.current[i] = el; }}
-                      className="relative z-10 inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#E31C5F] text-white font-bold text-xs shadow-[0_2px_8px_rgba(227,28,95,0.3)]"
-                      style={{ transform: `scale(${0.4 + cp * 0.6})` }}
-                    >
-                      {i + 1}
-                    </span>
-                  </div>
-
-                  {/* Text — slides UP from below */}
-                  <div
-                    style={{
-                      opacity: cp,
-                      transform: `translateY(${(1 - cp) * 30}px)`,
-                      visibility: visible ? "visible" : "hidden",
-                    }}
-                  >
-                    <h3 className="text-base font-bold text-gray-900 mb-1.5 font-display">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
+                  <h3 className="text-base font-bold text-gray-900 mb-1 font-display">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {step.description}
+                  </p>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
+        </div>
+      </div>
 
-          {/* ===== MOBILE ===== */}
-          <div className="md:hidden relative">
-            <div className="absolute left-[13px] top-0 bottom-0 w-px pointer-events-none overflow-hidden">
-              <div
-                className="bg-[#E31C5F]/30 w-full h-full origin-top"
-                style={{ transform: `scaleY(${mobileLineScale})` }}
-              />
+      {/* ===== DESKTOP — Sticky scroll-driven animation ===== */}
+      <div ref={outerRef} className="relative hidden md:block" style={{ height: "150vh" }}>
+        <div className="sticky top-0 z-10 h-screen overflow-hidden bg-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
+          <div className="mx-auto max-w-7xl w-full relative z-10">
+            <div className="mb-8">
+              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 font-display">
+                How it works
+              </h2>
             </div>
 
-            <div className="space-y-6">
+            <div
+              ref={desktopGridRef}
+              className="grid grid-cols-3 gap-6 lg:gap-8 relative"
+            >
+              {lineLayout && (
+                <div
+                  className="absolute pointer-events-none z-0"
+                  style={{
+                    top: lineLayout.top,
+                    left: lineLayout.left,
+                    width: lineLayout.width,
+                    height: "1px",
+                    overflow: "hidden",
+                    transform: "translateY(-0.5px)",
+                  }}
+                >
+                  <div
+                    className="h-full bg-[#E31C5F]/30 origin-left"
+                    style={{ transform: `scaleX(${lineProgress})` }}
+                  />
+                </div>
+              )}
+
               {steps.map((step, i) => {
                 const cp = getCP(i);
                 const visible = cp > 0;
 
                 return (
-                  <div
-                    key={i}
-                    className="relative pl-12"
-                    style={{ visibility: visible ? "visible" : "hidden" }}
-                  >
-                    <span
-                      className="absolute left-0 top-0 z-10 inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#E31C5F] text-white font-bold text-xs shadow-[0_2px_8px_rgba(227,28,95,0.3)]"
-                      style={{
-                        opacity: cp,
-                        transform: `scale(${0.4 + cp * 0.6})`,
-                      }}
-                    >
-                      {i + 1}
-                    </span>
-
+                  <div key={i} className="flex flex-col">
                     <div
-                      className="overflow-hidden rounded-xl mb-3"
+                      className="overflow-hidden rounded-xl mb-4"
                       style={{
                         opacity: cp,
-                        transform: `translateY(${(1 - cp) * -20}px)`,
+                        transform: `translateY(${(1 - cp) * -30}px)`,
+                        visibility: visible ? "visible" : "hidden",
                       }}
                     >
-                      <div className="bg-gradient-to-br from-gray-100 to-gray-50 aspect-video flex items-center justify-center">
+                      <div className="bg-gradient-to-br from-gray-100 to-gray-50 aspect-[16/10] flex items-center justify-center">
                         <div className="text-center">
                           <div className="text-4xl mb-1.5">{step.emoji}</div>
                           <p className="text-gray-500 font-medium text-xs">
@@ -242,12 +194,29 @@ export default function HowItWorks() {
                     </div>
 
                     <div
+                      className="relative flex items-center mb-4 h-7"
                       style={{
                         opacity: cp,
-                        transform: `translateY(${(1 - cp) * 20}px)`,
+                        visibility: visible ? "visible" : "hidden",
                       }}
                     >
-                      <h3 className="text-base font-bold text-gray-900 mb-1 font-display">
+                      <span
+                        ref={(el) => { badgeRefs.current[i] = el; }}
+                        className="relative z-10 inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#E31C5F] text-white font-bold text-xs shadow-[0_2px_8px_rgba(227,28,95,0.3)]"
+                        style={{ transform: `scale(${0.4 + cp * 0.6})` }}
+                      >
+                        {i + 1}
+                      </span>
+                    </div>
+
+                    <div
+                      style={{
+                        opacity: cp,
+                        transform: `translateY(${(1 - cp) * 30}px)`,
+                        visibility: visible ? "visible" : "hidden",
+                      }}
+                    >
+                      <h3 className="text-base font-bold text-gray-900 mb-1.5 font-display">
                         {step.title}
                       </h3>
                       <p className="text-gray-600 text-sm leading-relaxed">
@@ -261,6 +230,6 @@ export default function HowItWorks() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
