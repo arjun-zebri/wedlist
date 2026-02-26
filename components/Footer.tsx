@@ -1,12 +1,5 @@
 import Link from "next/link";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Facebook,
-  Instagram,
-  Linkedin,
-} from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -90,9 +83,9 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-gray-200 bg-white">
-      <div className="mx-auto max-w-[1400px] px-4 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1400px] px-4 py-12 lg:py-20 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-8 lg:gap-12 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <Link
@@ -102,7 +95,7 @@ export default function Footer() {
               WedList
             </Link>
             <p className="mt-4 max-w-md text-sm text-gray-600">
-              Discover verified wedding MCs in Sydney with real prices, genuine reviews, and 4-hour response guarantees.
+              Sydney&apos;s marketplace for verified wedding MCs.
             </p>
 
             {/* Social Links */}
@@ -116,7 +109,7 @@ export default function Footer() {
                     aria-label={link.name}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-[background-color,color] hover:bg-[#E31C5F] hover:text-white"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-[background-color,color] hover:bg-[#E31C5F] hover:text-white"
                   >
                     <Icon className="h-5 w-5" />
                   </a>
@@ -278,7 +271,6 @@ export default function Footer() {
             },
             contactPoint: {
               "@type": "ContactPoint",
-              telephone: "",
               contactType: "Customer Service",
               email: "hello@wedlist.com.au",
             },

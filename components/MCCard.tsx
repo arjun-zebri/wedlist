@@ -33,7 +33,7 @@ export default function MCCard({ mc }: MCCardProps) {
   return (
     <Link
       href={`/mc/${mc.slug}`}
-      className="group block overflow-hidden rounded-xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 ease-out"
+      className="group block overflow-hidden rounded-xl bg-white shadow-[0_1px_2px_rgba(227,28,95,0.06)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.12)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300 ease-out focus-visible:outline-2 focus-visible:outline-[#E31C5F] focus-visible:outline-offset-2"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
         {mc.profile_image ? (
@@ -49,15 +49,15 @@ export default function MCCard({ mc }: MCCardProps) {
           </div>
         )}
 
-        {/* Heart icon - Airbnb style */}
+        {/* Heart icon */}
         <button
           onClick={handleToggleFavorite}
-          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 hover:bg-white hover:scale-110 transition-all duration-200"
+          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 hover:bg-white hover:scale-110 transition-[transform,background-color] duration-200"
           aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
         >
           <Heart
             className={cn(
-              'h-5 w-5 transition-all',
+              'h-5 w-5 transition-colors',
               favorited
                 ? 'fill-red-500 text-red-500'
                 : 'text-gray-700 hover:text-gray-900'
@@ -66,14 +66,14 @@ export default function MCCard({ mc }: MCCardProps) {
         </button>
 
         {mc.featured && (
-          <div className="absolute right-3 bottom-3 rounded-full bg-gray-900 px-3 py-1 text-xs font-medium text-white">
+          <div className="absolute right-3 bottom-3 rounded-full bg-[#E31C5F] px-3 py-1 text-xs font-medium text-white">
             Featured
           </div>
         )}
       </div>
 
       <div className="p-5">
-        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-gray-700">
+        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#E31C5F] transition-colors">
           {mc.name}
         </h3>
 
@@ -87,7 +87,7 @@ export default function MCCard({ mc }: MCCardProps) {
           <div className="flex items-center gap-4">
             {averageRating > 0 && (
               <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <Star className="h-4 w-4 fill-[#E31C5F] text-[#E31C5F]" />
                 <span className="text-sm font-medium text-gray-900">
                   {averageRating.toFixed(1)}
                 </span>
