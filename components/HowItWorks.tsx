@@ -99,7 +99,7 @@ export default function HowItWorks() {
   const mobileLineScale = lineProgress;
 
   return (
-    <div ref={outerRef} className="relative" style={{ height: "300vh" }}>
+    <div ref={outerRef} className="relative" style={{ height: "220vh" }}>
       <div className="sticky top-0 z-10 h-screen overflow-hidden bg-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
         <div className="mx-auto max-w-7xl w-full relative z-10">
           {/* Heading */}
