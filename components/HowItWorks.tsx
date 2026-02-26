@@ -28,7 +28,32 @@ const steps = [
 
 export default function HowItWorks() {
   const outerRef = useRef<HTMLDivElement>(null);
+  const desktopGridRef = useRef<HTMLDivElement>(null);
+  const badgeRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [progress, setProgress] = useState(0);
+  const [lineLayout, setLineLayout] = useState<{
+    top: number;
+    left: number;
+    width: number;
+  } | null>(null);
+
+  const measureLine = useCallback(() => {
+    const grid = desktopGridRef.current;
+    const firstBadge = badgeRefs.current[0];
+    const lastBadge = badgeRefs.current[2];
+    if (!grid || !firstBadge || !lastBadge) return;
+
+    const gridRect = grid.getBoundingClientRect();
+    const firstRect = firstBadge.getBoundingClientRect();
+    const lastRect = lastBadge.getBoundingClientRect();
+
+    // Line starts at center of first badge, ends at right edge of last column
+    const startX = firstRect.left + firstRect.width / 2 - gridRect.left;
+    const endX = gridRect.width;
+    const centerY = firstRect.top + firstRect.height / 2 - gridRect.top;
+
+    setLineLayout({ top: centerY, left: startX, width: endX - startX });
+  }, []);
 
   const handleScroll = useCallback(() => {
     const outer = outerRef.current;
@@ -40,8 +65,6 @@ export default function HowItWorks() {
     if (scrollable <= 0) { setProgress(3); return; }
 
     const scrolled = Math.max(0, -rect.top);
-    // All 3 cards reveal in the first 60% of scroll distance,
-    // remaining 40% holds the final state before unsticking
     const animRange = scrollable * 0.6;
     const ratio = Math.min(1, scrolled / animRange);
     setProgress(ratio * 3);
@@ -49,24 +72,37 @@ export default function HowItWorks() {
 
   useEffect(() => {
     handleScroll();
+    measureLine();
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll, { passive: true });
+    window.addEventListener("resize", measureLine);
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("resize", measureLine);
     };
-  }, [handleScroll]);
+  }, [handleScroll, measureLine]);
+
+  // Re-measure after first render when refs are populated
+  useEffect(() => {
+    const id = requestAnimationFrame(measureLine);
+    return () => cancelAnimationFrame(id);
+  }, [measureLine]);
 
   const getCP = (i: number) =>
     Math.max(0, Math.min(1, (progress - i * 0.85) / 0.7));
 
-  const lineScale = Math.max(0, Math.min(1, progress / 2.55));
+  // Continuous line progress: 0 at card 1 start, 1 when card 3 is fully revealed
+  const lineProgress = Math.max(0, Math.min(1, progress / 2.55));
+
+  // Mobile vertical line
+  const mobileLineScale = lineProgress;
 
   return (
     <div ref={outerRef} className="relative" style={{ height: "300vh" }}>
-      <div className="sticky top-0 z-10 h-screen overflow-hidden bg-white px-4 sm:px-6 lg:px-8 pt-[12vh]">
+      <div className="sticky top-0 z-10 h-screen overflow-hidden bg-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
         <div className="mx-auto max-w-7xl w-full relative z-10">
-          {/* Heading — compact */}
+          {/* Heading */}
           <div className="mb-8">
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 font-display">
               How it works
@@ -74,7 +110,30 @@ export default function HowItWorks() {
           </div>
 
           {/* ===== DESKTOP ===== */}
-          <div className="hidden md:grid grid-cols-3 gap-6 lg:gap-8">
+          <div
+            ref={desktopGridRef}
+            className="hidden md:grid grid-cols-3 gap-6 lg:gap-8 relative"
+          >
+            {/* Single continuous line across all badges */}
+            {lineLayout && (
+              <div
+                className="absolute pointer-events-none z-0"
+                style={{
+                  top: lineLayout.top,
+                  left: lineLayout.left,
+                  width: lineLayout.width,
+                  height: "1px",
+                  overflow: "hidden",
+                  transform: "translateY(-0.5px)",
+                }}
+              >
+                <div
+                  className="h-full bg-[#E31C5F]/30 origin-left"
+                  style={{ transform: `scaleX(${lineProgress})` }}
+                />
+              </div>
+            )}
+
             {steps.map((step, i) => {
               const cp = getCP(i);
               const visible = cp > 0;
@@ -100,7 +159,7 @@ export default function HowItWorks() {
                     </div>
                   </div>
 
-                  {/* Badge row with line */}
+                  {/* Badge */}
                   <div
                     className="relative flex items-center mb-4 h-7"
                     style={{
@@ -108,19 +167,8 @@ export default function HowItWorks() {
                       visibility: visible ? "visible" : "hidden",
                     }}
                   >
-                    <div
-                      className="absolute inset-y-0 flex items-center pointer-events-none"
-                      style={{ left: 0, right: i < 2 ? "-1.5rem" : "0" }}
-                    >
-                      <div className="w-full h-px overflow-hidden">
-                        <div
-                          className="h-full bg-[#E31C5F]/30 origin-left"
-                          style={{ transform: `scaleX(${lineScale})` }}
-                        />
-                      </div>
-                    </div>
-
                     <span
+                      ref={(el) => { badgeRefs.current[i] = el; }}
                       className="relative z-10 inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#E31C5F] text-white font-bold text-xs shadow-[0_2px_8px_rgba(227,28,95,0.3)]"
                       style={{ transform: `scale(${0.4 + cp * 0.6})` }}
                     >
@@ -153,7 +201,7 @@ export default function HowItWorks() {
             <div className="absolute left-[13px] top-0 bottom-0 w-px pointer-events-none bg-[#E31C5F]/10 overflow-hidden">
               <div
                 className="bg-[#E31C5F]/30 w-full origin-top"
-                style={{ transform: `scaleY(${lineScale})` }}
+                style={{ transform: `scaleY(${mobileLineScale})` }}
               />
             </div>
 
