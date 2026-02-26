@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Metadata } from "next";
-import { ArrowRight, Star, Clock, CheckCircle } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MCCard from "@/components/MCCard";
 import FAQAccordion from "@/components/FAQAccordion";
+import ReviewCarousel from "@/components/ReviewCarousel";
 import { MCProfileWithRelations } from "@/types/database";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice } from "@/lib/utils";
@@ -13,9 +14,9 @@ import { formatPrice } from "@/lib/utils";
 // Page-level SEO metadata (overrides layout defaults)
 // ---------------------------------------------------------------------------
 export const metadata: Metadata = {
-  title: "Wedding MC Sydney | Compare Prices & Book Today | WedList",
+  title: "Find Your Perfect Wedding MC in Sydney | WedList",
   description:
-    "Compare Sydney wedding MC prices, read verified Google reviews, and get responses within 4 hours. WedList makes finding and booking your wedding MC simple and transparent.",
+    "Discover verified wedding MCs in Sydney with real prices, genuine reviews, and 4-hour response guarantees. Book the perfect MC for your celebration.",
 };
 
 // ---------------------------------------------------------------------------
@@ -240,401 +241,510 @@ export default async function Home() {
         />
       )}
 
-      <main>
-        {/* ================================================================
-            1. HERO — Empathy-Led Value Proposition
+      {/* Dynamic magical background wrapper */}
+      <div className="relative min-h-screen bg-gradient-to-br from-white via-white to-rose-50/30 overflow-hidden">
+        {/* Animated background orbs - magical floating effect */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-[#E31C5F]/15 to-pink-200/10 rounded-full filter blur-3xl opacity-70 animate-drift-slow"></div>
+        <div className="absolute top-1/3 -left-40 w-80 h-80 bg-gradient-to-tr from-purple-100/12 to-blue-100/8 rounded-full filter blur-3xl opacity-50 animate-float animation-delay-2000"></div>
+        <div
+          className="absolute bottom-0 right-1/4 w-72 h-72 bg-gradient-to-t from-rose-100/15 via-amber-100/5 to-transparent rounded-full filter blur-3xl opacity-60 animate-drift-slow"
+          style={{ animationDuration: "24s" }}
+        ></div>
+        <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-gradient-to-br from-cyan-100/8 to-blue-100/5 rounded-full filter blur-3xl opacity-40"></div>
+
+        <main>
+          {/* ================================================================
+            1. HERO + PROBLEM — Unified, Compelling, Minimal
         ================================================================ */}
-        <section className="bg-gradient-to-b from-gray-50 to-white px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl text-balance">
-              Planning a wedding is stressful enough. Finding your MC shouldn&apos;t be.
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
-              Compare Sydney wedding MCs with transparent pricing, verified
-              Google reviews, and guaranteed responses within 4 hours.
-            </p>
+          <section className="relative bg-white/80 backdrop-blur-sm overflow-hidden px-4 py-20 sm:px-6 lg:px-8">
+            {/* Subtle background accent */}
+            <div className="absolute top-0 right-0 w-80 h-80 bg-rose-50 rounded-full filter blur-3xl -translate-y-1/2"></div>
 
-            {/* Trust badges */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-medium text-gray-700">
-              {stats.mcCount > 0 && (
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle className="h-4 w-4 text-gray-900" />
-                  {stats.mcCount}+ Verified MCs
-                </span>
-              )}
-              {stats.avgRating > 0 && (
-                <span className="flex items-center gap-1.5">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  {stats.avgRating.toFixed(1)} Avg Rating
-                </span>
-              )}
-              <span className="flex items-center gap-1.5">
-                <Clock className="h-4 w-4 text-gray-900" />
-                4-Hour Responses
-              </span>
-            </div>
-
-            {/* CTAs */}
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/wedding-mc-sydney"
-                className="rounded-md bg-gray-900 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-              >
-                Browse Wedding MCs
-                <ArrowRight className="ml-2 inline-block h-4 w-4" />
-              </Link>
-              <a
-                href="#pricing"
-                className="rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-              >
-                See Pricing
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================
-            2. PAIN POINTS — Why Couples Choose WedList
-        ================================================================ */}
-        <section className="bg-white px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                We built WedList because finding a wedding MC was harder than it should be
-              </h2>
-            </div>
-
-            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                {
-                  problem: "Slow replies from vendors",
-                  solution: "Every MC responds within 4 hours",
-                },
-                {
-                  problem: "Hidden costs and 'contact for quote'",
-                  solution: "All prices listed upfront, no surprises",
-                },
-                {
-                  problem: "Fake or unverified reviews",
-                  solution: "Only verified Google reviews, linked to source",
-                },
-                {
-                  problem: "No easy way to compare",
-                  solution: "Compare MCs, packages, and prices side-by-side",
-                },
-              ].map((item) => (
-                <div
-                  key={item.solution}
-                  className="rounded-xl border border-gray-200 bg-gray-50 p-6"
-                >
-                  <p className="text-sm text-gray-400 line-through">
-                    {item.problem}
-                  </p>
-                  <p className="mt-2 text-sm font-semibold text-gray-900">
-                    {item.solution}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================
-            3. HOW IT WORKS — 3 Steps
-        ================================================================ */}
-        <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                Book your wedding MC in 3 steps
-              </h2>
-            </div>
-
-            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-              {[
-                {
-                  step: "1",
-                  title: "Browse & Compare",
-                  description:
-                    "Explore MC profiles with real photos, packages, pricing, and verified reviews — all in one place.",
-                },
-                {
-                  step: "2",
-                  title: "Send an Inquiry",
-                  description:
-                    "Found someone you like? Send them a message directly through their profile. No account needed.",
-                },
-                {
-                  step: "3",
-                  title: "Get a Fast Response",
-                  description:
-                    "Every MC on WedList commits to responding within 4 hours. No more chasing vendors.",
-                },
-              ].map((item) => (
-                <div key={item.step} className="text-center">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-900 text-lg font-bold text-white">
-                    {item.step}
+            <div className="mx-auto max-w-7xl relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* Left: Text content */}
+                <div>
+                  {/* Minimal badge */}
+                  <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50/80 px-4 py-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#E31C5F]"></div>
+                    <span className="text-xs font-semibold text-gray-700">
+                      Sydney Wedding MCs
+                    </span>
                   </div>
-                  <h3 className="mt-6 text-lg font-semibold text-gray-900">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-gray-600">
-                    {item.description}
+
+                  {/* Clean headline */}
+                  <h1 className="text-5xl sm:text-6xl font-bold tracking-tight text-gray-900 font-display leading-tight mb-6">
+                    Book your perfect MC in minutes
+                  </h1>
+
+                  {/* Subheading */}
+                  <p className="text-lg text-gray-600 mb-10">
+                    {stats.mcCount}+ verified professionals.{" "}
+                    {stats.avgRating.toFixed(1)} ⭐ average. Responses in 4
+                    hours or less.
                   </p>
-                </div>
-              ))}
-            </div>
 
-            <p className="mt-10 text-center text-sm text-gray-500">
-              No account needed. No commitment until you&apos;re ready.
-            </p>
-          </div>
-        </section>
-
-        {/* ================================================================
-            4. PRICING TRANSPARENCY
-        ================================================================ */}
-        <section id="pricing" className="scroll-mt-20 bg-white px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                Wedding MC Pricing in Sydney
-              </h2>
-              <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-                Every MC on WedList lists their exact packages and prices. No
-                &quot;contact for quote&quot; games.
-              </p>
-              {popularData.minPrice !== null && popularData.maxPrice !== null && (
-                <p className="mt-2 text-sm text-gray-500">
-                  Prices on WedList start from{" "}
-                  <span className="font-semibold text-gray-900">
-                    {formatPrice(popularData.minPrice)}
-                  </span>{" "}
-                  and go up to{" "}
-                  <span className="font-semibold text-gray-900">
-                    {formatPrice(popularData.maxPrice)}
-                  </span>
-                </p>
-              )}
-            </div>
-
-            {popularData.packages.length > 0 ? (
-              <>
-                <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-                  {popularData.packages.map((pkg) => (
-                    <div
-                      key={pkg.id}
-                      className="rounded-xl border border-gray-200 bg-white p-6"
+                  {/* Simple CTA */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Link
+                      href="/wedding-mc-sydney"
+                      className="group px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
                     >
-                      <p className="text-sm font-medium text-gray-500">
-                        {pkg.mc ? (
-                          <Link
-                            href={`/mc/${pkg.mc.slug}`}
-                            className="hover:text-gray-900 transition-colors"
-                          >
-                            {pkg.mc.name}
-                          </Link>
-                        ) : (
-                          "MC"
-                        )}
-                      </p>
-                      <h3 className="mt-1 text-lg font-semibold text-gray-900">
-                        {pkg.name}
-                      </h3>
-                      <p className="mt-2 text-2xl font-bold text-gray-900">
-                        {formatPrice(pkg.price)}
-                      </p>
-                      {pkg.duration && (
-                        <p className="mt-1 text-sm text-gray-500">
-                          {pkg.duration}
+                      Browse MCs
+                      <ArrowRight className="ml-2 inline-block h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                    </Link>
+                    <a
+                      href="#how-it-works"
+                      className="px-8 py-3 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                    >
+                      How it works
+                    </a>
+                  </div>
+                </div>
+
+                {/* Right: Hero + Problem Image */}
+                <div className="hidden lg:block">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#E31C5F]/20 to-pink-200/20 rounded-2xl blur-xl"></div>
+                    <div className="relative bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl aspect-square flex items-center justify-center border border-gray-200 overflow-hidden">
+                      <div className="text-center">
+                        <div className="text-6xl mb-4">📸</div>
+                        <p className="text-gray-500 font-medium">
+                          Happy couple at wedding
                         </p>
-                      )}
-                      {pkg.inclusions.length > 0 && (
-                        <ul className="mt-4 space-y-2">
-                          {pkg.inclusions.map((item, i) => (
-                            <li
-                              key={i}
-                              className="flex items-start gap-2 text-sm text-gray-600"
-                            >
-                              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-400" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      {pkg.mc && (
-                        <Link
-                          href={`/mc/${pkg.mc.slug}`}
-                          className="mt-6 inline-flex items-center text-sm font-medium text-gray-900 hover:text-gray-700 transition-colors"
-                        >
-                          View full profile
-                          <ArrowRight className="ml-1 h-3 w-3" />
-                        </Link>
-                      )}
+                        <p className="text-sm text-gray-400 mt-2">
+                          Joyful moment with MC
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Problem section - integrated below hero */}
+          <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+              {/* Left: Problem Image (mobile shows below on desktop shows right from hero) */}
+              <div className="lg:hidden">
+                <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl aspect-video flex items-center justify-center border border-gray-200 overflow-hidden mb-8">
+                  <div className="text-center">
+                    <div className="text-5xl mb-4">⏱️</div>
+                    <p className="text-gray-500 font-medium">
+                      Frustrated couple waiting
+                    </p>
+                    <p className="text-sm text-gray-400 mt-2">
+                      Searching for the perfect MC
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Left Text / Right on mobile */}
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50/80 px-4 py-2 mb-6">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E31C5F]"></div>
+                  <span className="text-xs font-semibold text-gray-700">
+                    The Challenge
+                  </span>
+                </div>
+                <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 font-display mb-6 leading-tight">
+                  The old way
+                  <br />
+                  <span className="text-[#E31C5F]">doesn't work</span>
+                </h2>
+                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                  Email them. Wait days. "Contact for pricing." Unverified
+                  reviews. No idea if they're actually good. Sound familiar?
+                </p>
+
+                {/* Solution cards - simple and clean */}
+                <div className="space-y-2">
+                  {[
+                    {
+                      problem: "Slow replies",
+                      solution: "4-hour response guaranteed",
+                    },
+                    {
+                      problem: "Hidden costs",
+                      solution: "All prices shown upfront",
+                    },
+                    {
+                      problem: "Fake reviews",
+                      solution: "Verified Google reviews only",
+                    },
+                    {
+                      problem: "Hard to compare",
+                      solution: "Browse & compare instantly",
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="group flex items-start gap-3 p-3 rounded-lg border border-gray-100 hover:border-[#E31C5F]/30 hover:bg-rose-50/50 transition-colors duration-200"
+                    >
+                      <div className="flex-grow">
+                        <p className="text-xs text-gray-500 uppercase font-semibold line-through mb-1">
+                          {item.problem}
+                        </p>
+                        <p className="font-semibold text-gray-900">
+                          {item.solution}
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
+              </div>
 
-                <p className="mt-8 text-center text-sm text-gray-500">
-                  These are real packages from real MCs. Browse all to find your
-                  fit.
-                </p>
-              </>
-            ) : (
-              <p className="mt-8 text-center text-sm text-gray-500">
-                Every MC on WedList shows their full pricing. No hidden fees, no
-                &quot;starting from&quot; tricks — just honest prices you can compare.
-              </p>
-            )}
-
-            <div className="mt-8 text-center">
-              <Link
-                href="/wedding-mc-sydney"
-                className="inline-flex items-center rounded-md bg-gray-900 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-              >
-                Browse All Wedding MCs
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
+              {/* Right: Problem Image (desktop only) */}
+              <div className="hidden lg:block">
+                <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl aspect-video flex items-center justify-center border border-gray-200 overflow-hidden sticky top-32">
+                  <div className="text-center">
+                    <div className="text-5xl mb-4">⏱️</div>
+                    <p className="text-gray-500 font-medium">
+                      Frustrated couple waiting
+                    </p>
+                    <p className="text-sm text-gray-400 mt-2">
+                      Searching for the perfect MC
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ================================================================
-            5. FEATURED MCs (enhanced)
+          {/* ================================================================
+            3. HOW IT WORKS — Superpower-Style 3-Step Process
         ================================================================ */}
-        {featuredMCs.length > 0 && (
-          <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-7xl">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                  Sydney&apos;s Top-Rated Wedding MCs
+          <section
+            id="how-it-works"
+            className="relative bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8 overflow-hidden"
+          >
+            <div className="mx-auto max-w-7xl relative z-10">
+              {/* Section Header */}
+              <div className="text-center mb-20">
+                <h2 className="text-5xl sm:text-6xl font-bold text-gray-900 font-display mb-6">
+                  Simple as 1, 2, 3
                 </h2>
-                <p className="mt-4 text-lg text-gray-600">
-                  Vetted professionals with verified reviews and transparent
-                  pricing.
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  Finding and booking your perfect MC doesn't need to be
+                  complicated. Follow our straightforward three-step process.
                 </p>
               </div>
 
-              <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {featuredMCs.map((mc) => (
-                  <MCCard key={mc.id} mc={mc} />
-                ))}
+              {/* Three-Step Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                {/* Step 1 */}
+                <div
+                  className="flex flex-col animate-fadeInUp"
+                  style={{ animationDelay: "100ms" }}
+                >
+                  {/* Image Placeholder */}
+                  <div className="mb-8 overflow-hidden rounded-2xl">
+                    <div className="bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200 aspect-video flex items-center justify-center hover:shadow-lg transition-shadow duration-500">
+                      <div className="text-center">
+                        <div className="text-5xl mb-3">🔍</div>
+                        <p className="text-gray-500 font-medium">
+                          Browse & Explore
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Step Indicator */}
+                  <div className="mb-4">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#E31C5F]/10 text-[#E31C5F] font-bold text-lg">
+                      1
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">
+                    Search & Compare
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Browse verified MCs with real photos, authentic reviews,
+                    transparent pricing, and complete packages. Compare
+                    side-by-side without any surprises.
+                  </p>
+                </div>
+
+                {/* Step 2 */}
+                <div
+                  className="flex flex-col animate-fadeInUp"
+                  style={{ animationDelay: "200ms" }}
+                >
+                  {/* Image Placeholder */}
+                  <div className="mb-8 overflow-hidden rounded-2xl">
+                    <div className="bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200 aspect-video flex items-center justify-center hover:shadow-lg transition-shadow duration-500">
+                      <div className="text-center">
+                        <div className="text-5xl mb-3">💬</div>
+                        <p className="text-gray-500 font-medium">
+                          Connect Directly
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Step Indicator */}
+                  <div className="mb-4">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#E31C5F]/10 text-[#E31C5F] font-bold text-lg">
+                      2
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">
+                    Message & Discuss
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Found the perfect fit? Send a message with your wedding
+                    date, vision, and special requests. Have a direct
+                    conversation with no middleman.
+                  </p>
+                </div>
+
+                {/* Step 3 */}
+                <div
+                  className="flex flex-col animate-fadeInUp"
+                  style={{ animationDelay: "300ms" }}
+                >
+                  {/* Image Placeholder */}
+                  <div className="mb-8 overflow-hidden rounded-2xl">
+                    <div className="bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200 aspect-video flex items-center justify-center hover:shadow-lg transition-shadow duration-500">
+                      <div className="text-center">
+                        <div className="text-5xl mb-3">✨</div>
+                        <p className="text-gray-500 font-medium">
+                          Confirm & Celebrate
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Step Indicator */}
+                  <div className="mb-4">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#E31C5F]/10 text-[#E31C5F] font-bold text-lg">
+                      3
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">
+                    Book with Confidence
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    We guarantee a response within 4 hours. Finalize all
+                    details, confirm availability, agree on pricing. Your
+                    perfect MC is locked in.
+                  </p>
+                </div>
               </div>
 
-              <div className="mt-12 text-center">
+              {/* Bottom CTA */}
+              <div className="mt-16 text-center">
+                <p className="text-gray-600 mb-6">
+                  Ready to find your MC? Start browsing our verified
+                  professionals today.
+                </p>
                 <Link
                   href="/wedding-mc-sydney"
-                  className="inline-flex items-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+                  className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
                 >
-                  View All MCs
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  Browse MCs
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
               </div>
             </div>
           </section>
-        )}
 
-        {/* ================================================================
-            6. SOCIAL PROOF — Real Reviews
+          {/* ================================================================
+            4. PRICING TRANSPARENCY — Integrated, Clear, No Games
         ================================================================ */}
-        {reviews.length > 0 && (
-          <section className="bg-white px-4 py-16 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-7xl">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                  What Sydney couples are saying
-                </h2>
-              </div>
-
-              <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {reviews.map((review) => (
-                  <div
-                    key={review.id}
-                    className="rounded-xl border border-gray-200 bg-white p-6"
-                  >
-                    {/* Star rating */}
-                    <div className="flex items-center gap-0.5">
-                      {Array.from({ length: review.rating }).map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                    </div>
-
-                    {/* Review text */}
-                    {review.review_text && (
-                      <p className="mt-3 text-sm leading-relaxed text-gray-600 line-clamp-4">
-                        &ldquo;{review.review_text}&rdquo;
+          {popularData.minPrice !== null && popularData.maxPrice !== null && (
+            <section className="bg-white/80 backdrop-blur-sm px-4 py-12 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-7xl">
+                <div className="rounded-xl border border-gray-200 bg-gradient-to-r from-rose-50/50 to-transparent p-8 sm:p-12">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
+                    <div>
+                      <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2">
+                        Transparent Pricing
                       </p>
-                    )}
-
-                    {/* Reviewer + MC link */}
-                    <div className="mt-4 flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">
-                          {review.reviewer_name}
-                        </p>
-                        {review.mc && (
-                          <Link
-                            href={`/mc/${review.mc.slug}`}
-                            className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
-                          >
-                            MC: {review.mc.name}
-                          </Link>
-                        )}
+                      <h3 className="text-3xl sm:text-4xl font-bold text-gray-900 font-display mb-3">
+                        No hidden fees
+                      </h3>
+                      <p className="text-gray-600">
+                        Every MC on WedList shows their real pricing upfront. No
+                        "contact for quote." No surprises at the end.
+                      </p>
+                    </div>
+                    <div className="text-center sm:text-right">
+                      <p className="text-sm text-gray-600 mb-2">
+                        Sydney MC Pricing Range
+                      </p>
+                      <div className="flex items-baseline justify-center sm:justify-end gap-2">
+                        <span className="text-4xl sm:text-5xl font-bold text-[#E31C5F]">
+                          {formatPrice(popularData.minPrice)}
+                        </span>
+                        <span className="text-gray-500">to</span>
+                        <span className="text-4xl sm:text-5xl font-bold text-[#E31C5F]">
+                          {formatPrice(popularData.maxPrice)}
+                        </span>
                       </div>
-                      <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
-                        Verified Google Review
-                      </span>
                     </div>
                   </div>
-                ))}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ================================================================
+            5. FEATURED MCs — Real Talent, Real Couples, Real Reviews
+        ================================================================ */}
+          {featuredMCs.length > 0 && (
+            <section className="bg-white/80 backdrop-blur-sm px-4 py-12 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-7xl">
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold tracking-tight text-gray-900 font-display sm:text-5xl">
+                    Featured Sydney MCs
+                  </h2>
+                  <p className="mt-6 text-lg text-gray-600">
+                    Verified professionals loved by couples. Real prices. Real
+                    reviews.
+                  </p>
+                </div>
+
+                <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                  {featuredMCs.map((mc) => (
+                    <MCCard key={mc.id} mc={mc} />
+                  ))}
+                </div>
+
+                <div className="mt-16 text-center">
+                  <Link
+                    href="/wedding-mc-sydney"
+                    className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
+                  >
+                    View All Sydney MCs
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ================================================================
+            6. REAL COUPLES — Superpower-Style Testimonials
+        ================================================================ */}
+          <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8 overflow-hidden">
+            <div className="mx-auto max-w-7xl relative z-10">
+              <div className="text-center mb-20">
+                <h2 className="text-5xl sm:text-6xl font-bold text-gray-900 font-display mb-6">
+                  Real couples. Real weddings.
+                </h2>
+                <p className="text-xl text-gray-600">
+                  Verified Google reviews from Sydney couples who found their
+                  perfect MC
+                </p>
+              </div>
+
+              {/* Reviews Grid - Superpower Style */}
+              <ReviewCarousel reviews={reviews} />
+            </div>
+          </section>
+
+          {/* ================================================================
+            7. FAQ — Common Questions Answered
+        ================================================================ */}
+          <section className="bg-white/80 backdrop-blur-sm px-4 py-12 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl">
+              <div className="text-center mb-16 max-w-3xl mx-auto">
+                <h2 className="text-4xl font-bold tracking-tight text-gray-900 font-display sm:text-5xl">
+                  Questions about wedding MCs?
+                </h2>
+                <p className="mt-6 text-lg text-gray-600">
+                  We've got answers. Below are the things couples most often ask
+                  us.
+                </p>
+              </div>
+
+              <div className="mt-12 max-w-3xl mx-auto">
+                <FAQAccordion items={faqItems} />
               </div>
             </div>
           </section>
-        )}
 
-        {/* ================================================================
-            7. FAQ — SEO Power Section
+          {/* ================================================================
+            8. FINAL CTA — Simple, Clear, Inviting
         ================================================================ */}
-        <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                Frequently asked questions about wedding MCs
-              </h2>
-            </div>
+          <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8 overflow-hidden">
+            <div className="relative mx-auto max-w-7xl z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                {/* Left: Text content */}
+                <div className="text-center lg:text-left">
+                  {/* Small badge */}
+                  <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50/80 px-4 py-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#E31C5F]"></div>
+                    <span className="text-xs font-semibold text-gray-700">
+                      Ready to find your MC?
+                    </span>
+                  </div>
 
-            <div className="mt-12">
-              <FAQAccordion items={faqItems} />
-            </div>
-          </div>
-        </section>
+                  {/* Heading */}
+                  <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 font-display mb-6">
+                    Browse verified MCs in Sydney
+                  </h2>
 
-        {/* ================================================================
-            8. FINAL CTA
-        ================================================================ */}
-        <section className="bg-gray-900 px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white">
-              Your wedding MC is one click away
-            </h2>
-            <div className="mt-8">
-              <Link
-                href="/wedding-mc-sydney"
-                className="inline-flex items-center rounded-md bg-white px-6 py-3 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900"
-              >
-                Browse Wedding MCs
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
+                  {/* Subheading */}
+                  <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10">
+                    Real photos. Real reviews. Real prices. Real response times.
+                    Everything you need to book with confidence.
+                  </p>
+
+                  {/* CTA button */}
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <Link
+                      href="/wedding-mc-sydney"
+                      className="group px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
+                    >
+                      Start Browsing
+                      <ArrowRight className="ml-2 inline-block h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                    </Link>
+                    <a
+                      href="#how-it-works"
+                      className="px-8 py-3 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                    >
+                      How It Works
+                    </a>
+                  </div>
+
+                  {/* Trust line */}
+                  <p className="mt-8 text-sm text-gray-500">
+                    <span className="font-medium text-gray-700">
+                      100% free to browse
+                    </span>{" "}
+                    • No account needed • Book only when ready
+                  </p>
+                </div>
+
+                {/* Right: Celebration image placeholder */}
+                <div className="hidden lg:block">
+                  <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl aspect-video flex items-center justify-center border border-gray-200 overflow-hidden">
+                    <div className="text-center">
+                      <div className="text-6xl mb-4">🎉</div>
+                      <p className="text-gray-500 font-medium">
+                        Newlyweds celebrating
+                      </p>
+                      <p className="text-sm text-gray-400 mt-2">
+                        Perfect MC helped make it special
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="mt-4 text-sm text-gray-400">
-              Free to use. No account needed. No obligation.
-            </p>
-          </div>
-        </section>
-      </main>
+          </section>
+        </main>
+      </div>
 
       <Footer />
     </>

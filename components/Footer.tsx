@@ -89,59 +89,52 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-200 text-gray-300">
-      <div className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:px-8">
+    <footer className="border-t border-gray-200 bg-white">
+      <div className="mx-auto max-w-[1400px] px-4 py-20 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <Link
               href="/"
-              className="inline-block text-2xl font-bold tracking-tight text-black hover:text-gray-800 transition-colors"
+              className="inline-block text-2xl font-bold tracking-tight text-gray-900 hover:text-gray-700 transition-colors font-display"
             >
               WedList
             </Link>
             <p className="mt-4 max-w-md text-sm text-gray-600">
-              Find the perfect wedding MC in Sydney. Professional masters of
-              ceremony for your special day.
+              Discover verified wedding MCs in Sydney with real prices, genuine reviews, and 4-hour response guarantees.
             </p>
 
             {/* Social Links */}
-            <div className="mt-6 flex gap-4">
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-300 transition-colors hover:bg-gray-700 hover:text-white"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-300 transition-colors hover:bg-gray-700 hover:text-white"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                aria-label="LinkedIn"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-300 transition-colors hover:bg-gray-700 hover:text-white"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
+            <div className="mt-8 flex gap-3">
+              {socialLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.name}
+                    href={link.url}
+                    aria-label={link.name}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-[background-color,color] hover:bg-[#E31C5F] hover:text-white"
+                  >
+                    <Icon className="h-5 w-5" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
           {/* Browse */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-black">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-900">
               Browse
             </h3>
             <ul className="mt-5 space-y-3">
               <li>
                 <Link
                   href="/wedding-mc-sydney"
-                  className="text-sm text-gray-600 transition-colors hover:text-gray-900"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F]"
                 >
                   Wedding MCs Sydney
                 </Link>
@@ -149,7 +142,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="text-sm text-gray-600 transition-colors hover:text-gray-900"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F]"
                 >
                   Blog & Resources
                 </Link>
@@ -157,7 +150,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-sm text-gray-500 transition-colors hover:text-black"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F]"
                 >
                   FAQ
                 </Link>
@@ -167,14 +160,14 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-black">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-900">
               Company
             </h3>
             <ul className="mt-5 space-y-3">
               <li>
                 <Link
                   href="/about"
-                  className="text-sm text-gray-500 transition-colors hover:text-black"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F]"
                 >
                   About Us
                 </Link>
@@ -182,7 +175,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-sm text-gray-600 transition-colors hover:text-gray-900"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F]"
                 >
                   Contact
                 </Link>
@@ -190,7 +183,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/terms"
-                  className="text-sm text-gray-500 transition-colors hover:text-black"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F]"
                 >
                   Terms of Service
                 </Link>
@@ -200,14 +193,14 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-black">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-900">
               Legal
             </h3>
             <ul className="mt-5 space-y-3">
               <li>
                 <Link
                   href="/privacy"
-                  className="text-sm text-gray-600 transition-colors hover:text-gray-900"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F]"
                 >
                   Privacy Policy
                 </Link>
@@ -215,7 +208,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/cookies"
-                  className="text-sm text-gray-500 transition-colors hover:text-black"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F]"
                 >
                   Cookie Policy
                 </Link>
@@ -223,7 +216,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/disclaimer"
-                  className="text-sm text-gray-500 transition-colors hover:text-black"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F]"
                 >
                   Disclaimer
                 </Link>
@@ -233,22 +226,22 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-black">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-900">
               Contact
             </h3>
             <ul className="mt-5 space-y-4">
               <li className="flex items-start gap-3">
-                <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-500" />
+                <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#E31C5F]" />
                 <a
                   href="mailto:hello@wedlist.com.au"
-                  className="text-sm text-gray-500 transition-colors hover:text-black break-all"
+                  className="text-sm text-gray-600 transition-colors hover:text-[#E31C5F] break-all"
                 >
                   hello@wedlist.com.au
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-500" />
-                <span className="text-sm text-gray-500">
+                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#E31C5F]" />
+                <span className="text-sm text-gray-600">
                   Sydney, NSW Australia
                 </span>
               </li>
@@ -256,9 +249,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-gray-200 pt-8">
+        <div className="mt-16 border-t border-gray-200 pt-8">
           <div className="flex flex-col items-center gap-4 md:flex-row md:items-center md:justify-between">
-            <p className="text-center text-sm text-gray-600 md:text-left">
+            <p className="text-center text-sm text-gray-500 md:text-left">
               © {new Date().getFullYear()} WedList. All rights reserved.
             </p>
           </div>
