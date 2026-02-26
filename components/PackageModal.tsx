@@ -14,17 +14,17 @@ interface Package {
 }
 
 interface PackageModalProps {
-  package: Package | null;
+  packages: Package[];
   isOpen: boolean;
   onClose: () => void;
 }
 
 export default function PackageModal({
-  package: pkg,
+  packages,
   isOpen,
   onClose,
 }: PackageModalProps) {
-  if (!isOpen || !pkg) return null;
+  if (!isOpen || packages.length === 0) return null;
 
   return (
     <div
@@ -44,41 +44,56 @@ export default function PackageModal({
           <X className="h-5 w-5" />
         </button>
 
-        <div className="p-8 sm:p-10 pt-0">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">{pkg.name}</h2>
-            {pkg.ideal_for && (
-              <p className="mt-2 text-gray-600">{pkg.ideal_for}</p>
-            )}
-          </div>
+        <div className="p-8 sm:p-10 pt-0 space-y-10">
+          {packages.map((pkg) => (
+            <div key={pkg.id}>
+              <div className="mb-6">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-2xl font-bold text-gray-900">{pkg.name}</h2>
+                  {pkg.popular && (
+                    <span className="rounded-full bg-rose-50 border border-[#E31C5F]/10 px-2.5 py-0.5 text-xs font-semibold text-[#E31C5F]">
+                      Popular
+                    </span>
+                  )}
+                </div>
+                {pkg.ideal_for && (
+                  <p className="mt-2 text-gray-600">{pkg.ideal_for}</p>
+                )}
+              </div>
 
-          <div className="mb-8 flex items-baseline gap-3">
-            <div className="text-4xl font-bold text-gray-900">
-              {formatPrice(pkg.price)}
-            </div>
-            {pkg.duration && (
-              <div className="text-gray-600">{pkg.duration}</div>
-            )}
-          </div>
+              <div className="mb-6 flex items-baseline gap-3">
+                <div className="text-3xl font-bold text-gray-900">
+                  {formatPrice(pkg.price)}
+                </div>
+                {pkg.duration && (
+                  <div className="text-gray-600">{pkg.duration}</div>
+                )}
+              </div>
 
-          {pkg.inclusions && pkg.inclusions.length > 0 && (
-            <div>
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">
-                What's Included
-              </h3>
-              <ul className="space-y-3">
-                {pkg.inclusions.map((inclusion, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-3 text-gray-700"
-                  >
-                    <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-gray-900 font-bold" />
-                    <span>{inclusion}</span>
-                  </li>
-                ))}
-              </ul>
+              {pkg.inclusions && pkg.inclusions.length > 0 && (
+                <div>
+                  <h3 className="mb-4 text-lg font-semibold text-gray-900">
+                    What&apos;s Included
+                  </h3>
+                  <ul className="space-y-3">
+                    {pkg.inclusions.map((inclusion, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start gap-3 text-gray-700"
+                      >
+                        <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-gray-900 font-bold" />
+                        <span>{inclusion}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {pkg !== packages[packages.length - 1] && (
+                <div className="mt-8 border-t border-gray-100" />
+              )}
             </div>
-          )}
+          ))}
         </div>
       </div>
     </div>

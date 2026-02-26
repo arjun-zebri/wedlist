@@ -3,6 +3,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  Loader2,
+  CheckCircle,
+  AlertCircle,
+  FileText,
+  Search as SearchIcon,
+} from "lucide-react";
+
+const labelClassName = "block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5";
+const inputClassName = "block w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20 placeholder:text-gray-400";
 
 export default function NewBlogPostPage() {
   const router = useRouter();
@@ -24,7 +36,6 @@ export default function NewBlogPostPage() {
     setError("");
 
     try {
-      // Create slug from title if not provided
       const slug =
         formData.slug ||
         formData.title
@@ -60,183 +71,175 @@ export default function NewBlogPostPage() {
 
   return (
     <div className="max-w-4xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
-          Create New Blog Post
-        </h1>
-        <p className="mt-2 text-sm text-gray-600">
+      {/* Back Link */}
+      <Link
+        href="/admin/blog"
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#E31C5F] transition-colors mb-6"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Blog
+      </Link>
+
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-display">Create New Post</h1>
+        <p className="mt-1.5 text-sm text-gray-500">
           Write a new blog post for SEO and engagement
         </p>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6 rounded-lg border border-gray-200 bg-white p-6"
-      >
-        <div>
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Title *
-          </label>
-          <input
-            type="text"
-            id="title"
-            required
-            value={formData.title}
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-            placeholder="How to Choose the Perfect Wedding MC in Sydney"
-          />
-        </div>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Content Section */}
+        <div className="rounded-2xl bg-white border border-gray-200 shadow-[0_2px_8px_rgba(227,28,95,0.04)] p-6 sm:p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center">
+              <FileText className="h-4 w-4 text-[#E31C5F]" />
+            </div>
+            <h2 className="text-base font-semibold text-gray-900">Post Content</h2>
+          </div>
 
-        <div>
-          <label
-            htmlFor="slug"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Slug (auto-generated if left empty)
-          </label>
-          <input
-            type="text"
-            id="slug"
-            value={formData.slug}
-            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-            placeholder="how-to-choose-wedding-mc-sydney"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="excerpt"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Excerpt (short summary)
-          </label>
-          <textarea
-            id="excerpt"
-            rows={2}
-            value={formData.excerpt}
-            onChange={(e) =>
-              setFormData({ ...formData, excerpt: e.target.value })
-            }
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-            placeholder="A brief summary of the post..."
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="content"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Content * (Markdown supported)
-          </label>
-          <textarea
-            id="content"
-            rows={15}
-            required
-            value={formData.content}
-            onChange={(e) =>
-              setFormData({ ...formData, content: e.target.value })
-            }
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 font-mono text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-            placeholder="Write your blog post content here..."
-          />
-          <p className="mt-1 text-xs text-gray-500">
-            You can use Markdown formatting. For now, plain text or basic HTML
-            works too.
-          </p>
-        </div>
-
-        <div className="border-t border-gray-200 pt-6">
-          <h3 className="text-sm font-medium text-gray-900">SEO Settings</h3>
-
-          <div className="mt-4 space-y-4">
+          <div className="space-y-5">
             <div>
-              <label
-                htmlFor="meta_title"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Meta Title (for SEO)
-              </label>
+              <label htmlFor="title" className={labelClassName}>Title *</label>
+              <input
+                type="text"
+                id="title"
+                required
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className={inputClassName}
+                placeholder="How to Choose the Perfect Wedding MC in Sydney"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="slug" className={labelClassName}>Slug (auto-generated if empty)</label>
+              <input
+                type="text"
+                id="slug"
+                value={formData.slug}
+                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                className={inputClassName}
+                placeholder="how-to-choose-wedding-mc-sydney"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="excerpt" className={labelClassName}>Excerpt (short summary)</label>
+              <textarea
+                id="excerpt"
+                rows={2}
+                value={formData.excerpt}
+                onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                className={inputClassName}
+                placeholder="A brief summary of the post..."
+              />
+            </div>
+
+            <div>
+              <label htmlFor="content" className={labelClassName}>Content * (Markdown supported)</label>
+              <textarea
+                id="content"
+                rows={15}
+                required
+                value={formData.content}
+                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                className={`${inputClassName} font-mono`}
+                placeholder="Write your blog post content here..."
+              />
+              <p className="mt-1.5 text-xs text-gray-400">
+                You can use Markdown formatting. Plain text or basic HTML works too.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* SEO Section */}
+        <div className="rounded-2xl bg-white border border-gray-200 shadow-[0_2px_8px_rgba(227,28,95,0.04)] p-6 sm:p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center">
+              <SearchIcon className="h-4 w-4 text-[#E31C5F]" />
+            </div>
+            <h2 className="text-base font-semibold text-gray-900">SEO Settings</h2>
+          </div>
+
+          <div className="space-y-5">
+            <div>
+              <label htmlFor="meta_title" className={labelClassName}>Meta Title</label>
               <input
                 type="text"
                 id="meta_title"
                 value={formData.meta_title}
-                onChange={(e) =>
-                  setFormData({ ...formData, meta_title: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
+                className={inputClassName}
                 placeholder="Defaults to post title if empty"
               />
             </div>
 
             <div>
-              <label
-                htmlFor="meta_description"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Meta Description (for SEO)
-              </label>
+              <label htmlFor="meta_description" className={labelClassName}>Meta Description</label>
               <textarea
                 id="meta_description"
                 rows={2}
                 value={formData.meta_description}
-                onChange={(e) =>
-                  setFormData({ ...formData, meta_description: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
+                className={inputClassName}
                 placeholder="Defaults to excerpt if empty"
               />
             </div>
           </div>
         </div>
 
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="published"
-            checked={formData.published}
-            onChange={(e) =>
-              setFormData({ ...formData, published: e.target.checked })
-            }
-            className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-          />
-          <label
-            htmlFor="published"
-            className="ml-2 block text-sm text-gray-700"
-          >
-            Publish immediately (otherwise save as draft)
+        {/* Publish Toggle */}
+        <div className="rounded-2xl bg-white border border-gray-200 shadow-[0_2px_8px_rgba(227,28,95,0.04)] p-6 sm:p-8">
+          <label htmlFor="published" className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              id="published"
+              checked={formData.published}
+              onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
+              className="h-4 w-4 rounded border-gray-300 text-[#E31C5F] focus:ring-[#E31C5F]"
+            />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Publish immediately</p>
+              <p className="text-xs text-gray-500">Otherwise saved as draft</p>
+            </div>
           </label>
         </div>
 
+        {/* Error */}
         {error && (
-          <div className="rounded-md bg-red-50 p-4">
+          <div className="flex items-center gap-3 rounded-xl bg-red-50 border border-red-200 p-4">
+            <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
             <p className="text-sm text-red-800">{error}</p>
           </div>
         )}
 
-        <div className="flex gap-4">
+        {/* Actions */}
+        <div className="flex items-center gap-4">
           <button
             type="submit"
             disabled={loading}
-            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#E31C5F] px-6 py-3 text-sm font-semibold text-white hover:bg-[#C4184F] transition-colors disabled:opacity-50"
           >
-            {loading
-              ? "Creating..."
-              : formData.published
-              ? "Publish Post"
-              : "Save as Draft"}
+            {loading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Creating...
+              </>
+            ) : formData.published ? (
+              <>
+                <CheckCircle className="h-4 w-4" />
+                Publish Post
+              </>
+            ) : (
+              "Save as Draft"
+            )}
           </button>
           <button
             type="button"
             onClick={() => router.push("/admin/blog")}
-            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-xl border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Cancel
           </button>

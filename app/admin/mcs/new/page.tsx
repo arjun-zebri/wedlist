@@ -3,6 +3,17 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  Upload,
+  Plus,
+  Trash2,
+  Star,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 
 interface Package {
   name: string;
@@ -25,6 +36,11 @@ interface Review {
   review_text: string;
   review_date: string;
 }
+
+const inputClassName =
+  "block w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20 placeholder:text-gray-400";
+
+const labelClassName = "block text-sm font-medium text-gray-700 mb-1.5";
 
 export default function NewMCPage() {
   const router = useRouter();
@@ -52,14 +68,7 @@ export default function NewMCPage() {
   const [galleryImages, setGalleryImages] = useState<File[]>([]);
   const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
   const [packages, setPackages] = useState<Package[]>([
-    {
-      name: "",
-      price: "",
-      duration: "",
-      ideal_for: "",
-      inclusions: "",
-      popular: false,
-    },
+    { name: "", price: "", duration: "", ideal_for: "", inclusions: "", popular: false },
   ]);
   const [videos, setVideos] = useState<Video[]>([
     { platform: "youtube", video_id: "", title: "" },
@@ -76,9 +85,7 @@ export default function NewMCPage() {
     }
   };
 
-  const handleGalleryImagesChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleGalleryImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setGalleryImages(files);
     setGalleryPreviews(files.map((file) => URL.createObjectURL(file)));
@@ -89,7 +96,6 @@ export default function NewMCPage() {
     const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
     const filePath = `${path}/${fileName}`;
 
-    // Use admin client for storage operations
     const { error: uploadError } = await supabaseAdmin.storage
       .from("mc-images")
       .upload(filePath, file);
@@ -177,11 +183,7 @@ export default function NewMCPage() {
         );
       }
 
-      if (
-        formData.response_time ||
-        formData.booking_deposit ||
-        formData.cancellation_policy
-      ) {
+      if (formData.response_time || formData.booking_deposit || formData.cancellation_policy) {
         await supabaseAdmin.from("mc_additional_info").insert({
           mc_id: mcId,
           response_time: formData.response_time || null,
@@ -203,9 +205,7 @@ export default function NewMCPage() {
         );
       }
 
-      const validReviews = reviews.filter(
-        (r) => r.reviewer_name && r.review_text
-      );
+      const validReviews = reviews.filter((r) => r.reviewer_name && r.review_text);
       if (validReviews.length > 0) {
         await supabaseAdmin.from("google_reviews").insert(
           validReviews.map((review, index) => ({
@@ -230,155 +230,151 @@ export default function NewMCPage() {
   };
 
   return (
-    <div className="max-w-5xl pb-12">
-      <h1 className="text-2xl font-bold text-gray-900">Add New MC</h1>
-      <p className="text-sm text-gray-600">
-        Create complete MC profile with images, packages, videos & reviews
-      </p>
+    <div className="max-w-4xl pb-12">
+      {/* Back + Header */}
+      <div className="mb-8">
+        <Link
+          href="/admin/mcs"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-4"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to MCs
+        </Link>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-display">Add New MC</h1>
+        <p className="mt-1.5 text-sm text-gray-500">
+          Create a complete MC profile with images, packages, videos & reviews
+        </p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="text-lg font-semibold text-gray-900">
-            Basic Information
-          </h2>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-900">
-                Name *
-              </label>
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-[0_2px_8px_rgba(227,28,95,0.04)]">
+          <h2 className="text-lg font-bold text-gray-900 font-display mb-6">Basic Information</h2>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label className={labelClassName}>Name *</label>
               <input
                 required
                 type="text"
                 value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className={inputClassName}
+                placeholder="John Smith"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Email *
-              </label>
+              <label className={labelClassName}>Email *</label>
               <input
                 required
                 type="email"
                 value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className={inputClassName}
+                placeholder="john@example.com"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Phone
-              </label>
+              <label className={labelClassName}>Phone</label>
               <input
                 type="tel"
                 value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className={inputClassName}
+                placeholder="0412 345 678"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Website
-              </label>
+              <label className={labelClassName}>Website</label>
               <input
                 type="url"
                 value={formData.website}
-                onChange={(e) =>
-                  setFormData({ ...formData, website: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                className={inputClassName}
+                placeholder="https://example.com"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Languages
-              </label>
+              <label className={labelClassName}>Languages</label>
               <input
                 type="text"
                 value={formData.languages}
-                onChange={(e) =>
-                  setFormData({ ...formData, languages: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, languages: e.target.value })}
+                className={inputClassName}
                 placeholder="English, Mandarin"
               />
             </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-900">
-                Bio
-              </label>
+            <div className="sm:col-span-2">
+              <label className={labelClassName}>Bio</label>
               <textarea
                 rows={4}
                 value={formData.bio}
-                onChange={(e) =>
-                  setFormData({ ...formData, bio: e.target.value })
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                className={inputClassName}
+                placeholder="Tell couples about this MC's style and experience..."
               />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-3">
               <input
                 type="checkbox"
                 checked={formData.featured}
-                onChange={(e) =>
-                  setFormData({ ...formData, featured: e.target.checked })
-                }
-                className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                className="h-4 w-4 rounded border-gray-300 text-[#E31C5F] focus:ring-[#E31C5F]"
               />
-              <label className="ml-2 text-sm text-gray-900">Featured MC</label>
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-1.5">
+                <Star className="h-3.5 w-3.5 text-[#E31C5F]" />
+                Featured MC
+              </label>
             </div>
           </div>
         </div>
 
         {/* Images */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="text-lg font-semibold text-gray-900">Images</h2>
-          <div className="mt-4 space-y-4">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-[0_2px_8px_rgba(227,28,95,0.04)]">
+          <h2 className="text-lg font-bold text-gray-900 font-display mb-6">Images</h2>
+          <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Profile Image
+              <label className={labelClassName}>Profile Image</label>
+              <label className="mt-2 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 px-6 py-8 hover:border-[#E31C5F]/30 hover:bg-rose-50/20 transition-colors">
+                <Upload className="h-8 w-8 text-gray-400 mb-2" />
+                <span className="text-sm text-gray-600">Click to upload</span>
+                <span className="text-xs text-gray-400 mt-1">JPG, PNG, WebP</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleProfileImageChange}
+                  className="hidden"
+                />
               </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleProfileImageChange}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded file:border-0 file:bg-gray-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-gray-800"
-              />
               {profileImagePreview && (
                 <img
                   src={profileImagePreview}
                   alt="Profile preview"
-                  className="mt-4 h-32 w-32 rounded object-cover border border-gray-200"
+                  className="mt-4 h-28 w-28 rounded-xl object-cover border border-gray-200"
                 />
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Gallery Images
+              <label className={labelClassName}>Gallery Images</label>
+              <label className="mt-2 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 px-6 py-8 hover:border-[#E31C5F]/30 hover:bg-rose-50/20 transition-colors">
+                <Upload className="h-8 w-8 text-gray-400 mb-2" />
+                <span className="text-sm text-gray-600">Click to upload multiple</span>
+                <span className="text-xs text-gray-400 mt-1">Select multiple images at once</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleGalleryImagesChange}
+                  className="hidden"
+                />
               </label>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleGalleryImagesChange}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded file:border-0 file:bg-gray-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-gray-800"
-              />
               {galleryPreviews.length > 0 && (
-                <div className="mt-4 grid grid-cols-4 gap-4">
+                <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
                   {galleryPreviews.map((preview, i) => (
                     <img
                       key={i}
                       src={preview}
                       alt={`Gallery ${i + 1}`}
-                      className="h-24 w-24 rounded object-cover border border-gray-200"
+                      className="h-20 w-20 rounded-xl object-cover border border-gray-200 flex-shrink-0"
                     />
                   ))}
                 </div>
@@ -388,118 +384,78 @@ export default function NewMCPage() {
         </div>
 
         {/* Packages */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Packages</h2>
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-[0_2px_8px_rgba(227,28,95,0.04)]">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-bold text-gray-900 font-display">Packages</h2>
             <button
               type="button"
               onClick={() =>
-                setPackages([
-                  ...packages,
-                  {
-                    name: "",
-                    price: "",
-                    duration: "",
-                    ideal_for: "",
-                    inclusions: "",
-                    popular: false,
-                  },
-                ])
+                setPackages([...packages, { name: "", price: "", duration: "", ideal_for: "", inclusions: "", popular: false }])
               }
-              className="rounded bg-gray-900 px-3 py-1 text-sm font-medium text-white hover:bg-gray-800"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-200 transition-colors"
             >
-              Add Package
+              <Plus className="h-3.5 w-3.5" />
+              Add
             </button>
           </div>
-          <div className="mt-4 space-y-4">
+          <div className="space-y-4">
             {packages.map((pkg, i) => (
-              <div
-                key={i}
-                className="rounded border border-gray-200 bg-gray-50 p-4"
-              >
-                <div className="flex justify-between mb-3">
-                  <h3 className="font-medium text-gray-900">Package {i + 1}</h3>
+              <div key={i} className="rounded-xl border border-gray-200 bg-gray-50/50 p-5">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-sm font-semibold text-gray-700">Package {i + 1}</span>
                   {packages.length > 1 && (
                     <button
                       type="button"
-                      onClick={() =>
-                        setPackages(packages.filter((_, idx) => idx !== i))
-                      }
-                      className="text-sm font-medium text-red-600 hover:text-red-800"
+                      onClick={() => setPackages(packages.filter((_, idx) => idx !== i))}
+                      className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                     >
-                      Remove
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   )}
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 sm:grid-cols-2">
                   <input
                     placeholder="Package Name"
                     value={pkg.name}
-                    onChange={(e) => {
-                      const p = [...packages];
-                      p[i].name = e.target.value;
-                      setPackages(p);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const p = [...packages]; p[i].name = e.target.value; setPackages(p); }}
+                    className={inputClassName}
                   />
                   <input
                     placeholder="Price (AUD)"
                     type="number"
                     value={pkg.price}
-                    onChange={(e) => {
-                      const p = [...packages];
-                      p[i].price = e.target.value;
-                      setPackages(p);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const p = [...packages]; p[i].price = e.target.value; setPackages(p); }}
+                    className={inputClassName}
                   />
                   <input
                     placeholder="Duration (e.g. 4 hours)"
                     value={pkg.duration}
-                    onChange={(e) => {
-                      const p = [...packages];
-                      p[i].duration = e.target.value;
-                      setPackages(p);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const p = [...packages]; p[i].duration = e.target.value; setPackages(p); }}
+                    className={inputClassName}
                   />
                   <input
-                    placeholder="Ideal For (e.g. Small weddings)"
+                    placeholder="Ideal For"
                     value={pkg.ideal_for}
-                    onChange={(e) => {
-                      const p = [...packages];
-                      p[i].ideal_for = e.target.value;
-                      setPackages(p);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const p = [...packages]; p[i].ideal_for = e.target.value; setPackages(p); }}
+                    className={inputClassName}
                   />
-                  <div className="md:col-span-2">
+                  <div className="sm:col-span-2">
                     <textarea
-                      placeholder="Inclusions (one per line)&#10;Reception hosting&#10;Timeline management&#10;Microphone coordination"
+                      placeholder={"Inclusions (one per line)\nReception hosting\nTimeline management"}
                       rows={3}
                       value={pkg.inclusions}
-                      onChange={(e) => {
-                        const p = [...packages];
-                        p[i].inclusions = e.target.value;
-                        setPackages(p);
-                      }}
-                      className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                      onChange={(e) => { const p = [...packages]; p[i].inclusions = e.target.value; setPackages(p); }}
+                      className={inputClassName}
                     />
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-3">
                     <input
                       type="checkbox"
                       checked={pkg.popular}
-                      onChange={(e) => {
-                        const p = [...packages];
-                        p[i].popular = e.target.checked;
-                        setPackages(p);
-                      }}
-                      className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                      onChange={(e) => { const p = [...packages]; p[i].popular = e.target.checked; setPackages(p); }}
+                      className="h-4 w-4 rounded border-gray-300 text-[#E31C5F] focus:ring-[#E31C5F]"
                     />
-                    <label className="ml-2 text-sm text-gray-900">
-                      Most Popular
-                    </label>
+                    <label className="text-sm text-gray-700">Most Popular</label>
                   </div>
                 </div>
               </div>
@@ -508,74 +464,53 @@ export default function NewMCPage() {
         </div>
 
         {/* Videos */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Videos</h2>
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-[0_2px_8px_rgba(227,28,95,0.04)]">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-bold text-gray-900 font-display">Videos</h2>
             <button
               type="button"
-              onClick={() =>
-                setVideos([
-                  ...videos,
-                  { platform: "youtube", video_id: "", title: "" },
-                ])
-              }
-              className="rounded bg-gray-900 px-3 py-1 text-sm font-medium text-white hover:bg-gray-800"
+              onClick={() => setVideos([...videos, { platform: "youtube", video_id: "", title: "" }])}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-200 transition-colors"
             >
-              Add Video
+              <Plus className="h-3.5 w-3.5" />
+              Add
             </button>
           </div>
-          <div className="mt-4 space-y-4">
+          <div className="space-y-4">
             {videos.map((vid, i) => (
-              <div
-                key={i}
-                className="rounded border border-gray-200 bg-gray-50 p-4"
-              >
-                <div className="flex justify-between mb-3">
-                  <h3 className="font-medium text-gray-900">Video {i + 1}</h3>
+              <div key={i} className="rounded-xl border border-gray-200 bg-gray-50/50 p-5">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-sm font-semibold text-gray-700">Video {i + 1}</span>
                   {videos.length > 1 && (
                     <button
                       type="button"
-                      onClick={() =>
-                        setVideos(videos.filter((_, idx) => idx !== i))
-                      }
-                      className="text-sm font-medium text-red-600 hover:text-red-800"
+                      onClick={() => setVideos(videos.filter((_, idx) => idx !== i))}
+                      className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                     >
-                      Remove
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   )}
                 </div>
-                <div className="grid gap-4 md:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-3">
                   <select
                     value={vid.platform}
-                    onChange={(e) => {
-                      const v = [...videos];
-                      v[i].platform = e.target.value as "youtube" | "vimeo";
-                      setVideos(v);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const v = [...videos]; v[i].platform = e.target.value as "youtube" | "vimeo"; setVideos(v); }}
+                    className={inputClassName}
                   >
                     <option value="youtube">YouTube</option>
                     <option value="vimeo">Vimeo</option>
                   </select>
                   <input
-                    placeholder="Video ID (e.g. dQw4w9WgXcQ)"
+                    placeholder="Video ID"
                     value={vid.video_id}
-                    onChange={(e) => {
-                      const v = [...videos];
-                      v[i].video_id = e.target.value;
-                      setVideos(v);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const v = [...videos]; v[i].video_id = e.target.value; setVideos(v); }}
+                    className={inputClassName}
                   />
                   <input
-                    placeholder="Video Title"
+                    placeholder="Title"
                     value={vid.title}
-                    onChange={(e) => {
-                      const v = [...videos];
-                      v[i].title = e.target.value;
-                      setVideos(v);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const v = [...videos]; v[i].title = e.target.value; setVideos(v); }}
+                    className={inputClassName}
                   />
                 </div>
               </div>
@@ -584,113 +519,74 @@ export default function NewMCPage() {
         </div>
 
         {/* Reviews */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Reviews (Top 5)
-            </h2>
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-[0_2px_8px_rgba(227,28,95,0.04)]">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-bold text-gray-900 font-display">Reviews</h2>
             <button
               type="button"
-              onClick={() =>
-                setReviews([
-                  ...reviews,
-                  {
-                    reviewer_name: "",
-                    rating: 5,
-                    review_text: "",
-                    review_date: "",
-                  },
-                ])
-              }
-              className="rounded bg-gray-900 px-3 py-1 text-sm font-medium text-white hover:bg-gray-800"
+              onClick={() => setReviews([...reviews, { reviewer_name: "", rating: 5, review_text: "", review_date: "" }])}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-200 transition-colors"
             >
-              Add Review
+              <Plus className="h-3.5 w-3.5" />
+              Add
             </button>
           </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-900">
-              Google Reviews Link (for "See all reviews" button)
-            </label>
+          <div className="mb-5">
+            <label className={labelClassName}>Google Reviews Link</label>
             <input
               type="url"
               value={formData.google_reviews_link}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  google_reviews_link: e.target.value,
-                })
-              }
-              className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+              onChange={(e) => setFormData({ ...formData, google_reviews_link: e.target.value })}
+              className={inputClassName}
               placeholder="https://g.page/..."
             />
           </div>
-          <div className="mt-4 space-y-4">
+          <div className="space-y-4">
             {reviews.map((rev, i) => (
-              <div
-                key={i}
-                className="rounded border border-gray-200 bg-gray-50 p-4"
-              >
-                <div className="flex justify-between mb-3">
-                  <h3 className="font-medium text-gray-900">Review {i + 1}</h3>
+              <div key={i} className="rounded-xl border border-gray-200 bg-gray-50/50 p-5">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-sm font-semibold text-gray-700">Review {i + 1}</span>
                   {reviews.length > 1 && (
                     <button
                       type="button"
-                      onClick={() =>
-                        setReviews(reviews.filter((_, idx) => idx !== i))
-                      }
-                      className="text-sm font-medium text-red-600 hover:text-red-800"
+                      onClick={() => setReviews(reviews.filter((_, idx) => idx !== i))}
+                      className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                     >
-                      Remove
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   )}
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 sm:grid-cols-2">
                   <input
-                    placeholder="Reviewer Name (e.g. Sarah & Tom)"
+                    placeholder="Reviewer Name"
                     value={rev.reviewer_name}
-                    onChange={(e) => {
-                      const r = [...reviews];
-                      r[i].reviewer_name = e.target.value;
-                      setReviews(r);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const r = [...reviews]; r[i].reviewer_name = e.target.value; setReviews(r); }}
+                    className={inputClassName}
                   />
                   <select
                     value={rev.rating}
-                    onChange={(e) => {
-                      const r = [...reviews];
-                      r[i].rating = parseInt(e.target.value);
-                      setReviews(r);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const r = [...reviews]; r[i].rating = parseInt(e.target.value); setReviews(r); }}
+                    className={inputClassName}
                   >
-                    <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
-                    <option value="4">⭐⭐⭐⭐ 4 Stars</option>
-                    <option value="3">⭐⭐⭐ 3 Stars</option>
-                    <option value="2">⭐⭐ 2 Stars</option>
-                    <option value="1">⭐ 1 Star</option>
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="2">2 Stars</option>
+                    <option value="1">1 Star</option>
                   </select>
                   <input
                     type="date"
                     value={rev.review_date}
-                    onChange={(e) => {
-                      const r = [...reviews];
-                      r[i].review_date = e.target.value;
-                      setReviews(r);
-                    }}
-                    className="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    onChange={(e) => { const r = [...reviews]; r[i].review_date = e.target.value; setReviews(r); }}
+                    className={inputClassName}
                   />
-                  <div className="md:col-span-2">
+                  <div className="sm:col-span-2">
                     <textarea
                       placeholder="Review text..."
                       rows={3}
                       value={rev.review_text}
-                      onChange={(e) => {
-                        const r = [...reviews];
-                        r[i].review_text = e.target.value;
-                        setReviews(r);
-                      }}
-                      className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                      onChange={(e) => { const r = [...reviews]; r[i].review_text = e.target.value; setReviews(r); }}
+                      className={inputClassName}
                     />
                   </div>
                 </div>
@@ -700,82 +596,72 @@ export default function NewMCPage() {
         </div>
 
         {/* Additional Info */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="text-lg font-semibold text-gray-900">
-            Additional Information
-          </h2>
-          <div className="mt-4 grid gap-4 md:grid-cols-3">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-[0_2px_8px_rgba(227,28,95,0.04)]">
+          <h2 className="text-lg font-bold text-gray-900 font-display mb-6">Additional Information</h2>
+          <div className="grid gap-5 sm:grid-cols-3">
             <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Response Time
-              </label>
+              <label className={labelClassName}>Response Time</label>
               <input
                 value={formData.response_time}
-                onChange={(e) =>
-                  setFormData({ ...formData, response_time: e.target.value })
-                }
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, response_time: e.target.value })}
+                className={inputClassName}
                 placeholder="Within 24 hours"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Booking Deposit
-              </label>
+              <label className={labelClassName}>Booking Deposit</label>
               <input
                 value={formData.booking_deposit}
-                onChange={(e) =>
-                  setFormData({ ...formData, booking_deposit: e.target.value })
-                }
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                onChange={(e) => setFormData({ ...formData, booking_deposit: e.target.value })}
+                className={inputClassName}
                 placeholder="20% deposit required"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900">
-                Cancellation Policy
-              </label>
+              <label className={labelClassName}>Cancellation Policy</label>
               <input
                 value={formData.cancellation_policy}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    cancellation_policy: e.target.value,
-                  })
-                }
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-                placeholder="Full refund 30+ days before"
+                onChange={(e) => setFormData({ ...formData, cancellation_policy: e.target.value })}
+                className={inputClassName}
+                placeholder="Full refund 30+ days"
               />
             </div>
           </div>
         </div>
 
+        {/* Status Messages */}
         {uploadProgress && (
-          <div className="rounded bg-blue-50 p-4">
-            <p className="text-sm font-medium text-blue-800">
-              {uploadProgress}
-            </p>
+          <div className="flex items-center gap-3 rounded-xl bg-blue-50 border border-blue-100 px-5 py-4">
+            {uploadProgress === "Success!" ? (
+              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+            ) : (
+              <Loader2 className="h-5 w-5 text-blue-600 animate-spin flex-shrink-0" />
+            )}
+            <p className="text-sm font-medium text-blue-800">{uploadProgress}</p>
           </div>
         )}
         {error && (
-          <div className="rounded bg-red-50 p-4">
+          <div className="flex items-center gap-3 rounded-xl bg-red-50 border border-red-100 px-5 py-4">
+            <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0" />
             <p className="text-sm font-medium text-red-800">{error}</p>
           </div>
         )}
 
-        <div className="flex gap-4">
+        {/* Actions */}
+        <div className="flex items-center gap-3 pt-2">
           <button
             type="submit"
             disabled={loading}
-            className="rounded bg-gray-900 px-6 py-3 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#E31C5F] px-6 py-3 text-sm font-semibold text-white hover:bg-[#C4184F] transition-colors disabled:opacity-50"
           >
-            {loading ? "Creating MC Profile..." : "Create MC Profile"}
+            {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+            {loading ? "Creating..." : "Create MC Profile"}
           </button>
           <button
             type="button"
             onClick={() => router.push("/admin/mcs")}
             disabled={loading}
-            className="rounded border border-gray-300 bg-white px-6 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:opacity-50"
+            className="rounded-xl border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
             Cancel
           </button>

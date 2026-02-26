@@ -7,7 +7,7 @@ import Pagination from "@/components/Pagination";
 import { MCProfileWithRelations } from "@/types/database";
 import { DirectoryStats } from "@/types/filters";
 import { createClient } from "@/lib/supabase/server";
-import { ArrowRight, CheckCircle, Star, Clock, Search } from "lucide-react";
+import { Search, Users, Star, Shield } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -80,7 +80,6 @@ async function getMCs(searchParams: {
   } else if (sortBy === "newest") {
     query = query.order("created_at", { ascending: false });
   } else {
-    // Default to featured for other sorts (will be done client-side)
     query = query.order("featured", { ascending: false }).order("name");
   }
 
@@ -244,53 +243,116 @@ export default async function WeddingMCSydney({
         />
       )}
 
-      <main className="min-h-screen bg-gray-50">
-        {/* Filter Bar & Results Section */}
-        <MCFilterBar />
+      <div
+        className="relative min-h-screen bg-gradient-to-br from-white via-white to-rose-50/30"
+        style={{ overflow: "clip" }}
+      >
+        {/* Animated background orbs */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-[#E31C5F]/10 to-pink-200/8 rounded-full filter blur-3xl opacity-60 animate-drift-slow"></div>
+        <div className="absolute top-1/2 -left-40 w-80 h-80 bg-gradient-to-tr from-purple-100/10 to-blue-100/6 rounded-full filter blur-3xl opacity-40 animate-float animation-delay-2000"></div>
+        <div
+          className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-gradient-to-t from-rose-100/12 via-amber-100/4 to-transparent rounded-full filter blur-3xl opacity-50 animate-drift-slow"
+          style={{ animationDuration: "24s" }}
+        ></div>
 
-        <div className="mx-auto max-w-[1400px] px-4 py-4 sm:px-6 lg:px-8">
-          <div className="mb-6 flex items-center justify-between">
-            <p className="text-sm text-gray-600">
-              {totalCount} {totalCount === 1 ? "MC" : "MCs"} found
-            </p>
-          </div>
+        <main>
+          {/* Filter Bar */}
+          <MCFilterBar />
 
-          {mcs.length === 0 ? (
-            <div className="rounded-xl bg-white p-12 text-center max-w-2xl mx-auto shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                <Search className="h-6 w-6 text-gray-600" />
+          {/* Directory Header + Trust Badges */}
+          <section className="relative bg-white/80 backdrop-blur-sm border-b border-gray-100">
+            <div className="mx-auto max-w-[1400px] px-4 py-8 sm:py-10 sm:px-6 lg:px-8">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-display tracking-tight">
+                    Sydney Wedding MCs
+                  </h1>
+                  <p className="mt-2 text-sm text-gray-600">
+                    {totalCount} {totalCount === 1 ? "MC" : "MCs"} available &bull; Verified profiles &bull; Transparent pricing
+                  </p>
+                </div>
+
+                {/* Trust stats */}
+                <div className="flex items-center gap-6">
+                  {stats.totalMCs > 0 && (
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-rose-50">
+                        <Users className="h-4 w-4 text-[#E31C5F]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">{stats.totalMCs}+</p>
+                        <p className="text-xs text-gray-500">Verified MCs</p>
+                      </div>
+                    </div>
+                  )}
+                  {stats.avgRating > 0 && (
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-rose-50">
+                        <Star className="h-4 w-4 text-[#E31C5F]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">{stats.avgRating.toFixed(1)}</p>
+                        <p className="text-xs text-gray-500">Avg rating</p>
+                      </div>
+                    </div>
+                  )}
+                  {stats.reviewCount > 0 && (
+                    <div className="hidden sm:flex items-center gap-2">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-rose-50">
+                        <Shield className="h-4 w-4 text-[#E31C5F]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">{stats.reviewCount}</p>
+                        <p className="text-xs text-gray-500">Reviews</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-              <p className="text-lg font-medium text-gray-900">No MCs found</p>
-              <p className="mt-2 text-sm text-gray-600 mb-6">
-                Try adjusting your filters or search criteria
-              </p>
-              <Link
-                href="/wedding-mc-sydney"
-                className="inline-block rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-              >
-                Clear all filters
-              </Link>
             </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:gap-8">
-                {mcs.map((mc) => (
-                  <MCCard key={mc.id} mc={mc} />
-                ))}
-              </div>
+          </section>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  totalResults={totalCount}
-                />
+          {/* MC Grid */}
+          <section className="relative bg-white/60 backdrop-blur-sm">
+            <div className="mx-auto max-w-[1400px] px-4 py-8 sm:px-6 lg:px-8">
+              {mcs.length === 0 ? (
+                <div className="mx-auto max-w-lg text-center py-16">
+                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-50 shadow-[0_2px_8px_rgba(227,28,95,0.08)]">
+                    <Search className="h-7 w-7 text-[#E31C5F]" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900 font-display">No MCs found</h2>
+                  <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                    We couldn&apos;t find any MCs matching your criteria. Try adjusting your filters or search terms.
+                  </p>
+                  <Link
+                    href="/wedding-mc-sydney"
+                    className="mt-6 inline-flex items-center rounded-lg bg-[#E31C5F] px-6 py-2.5 text-sm font-medium text-white hover:bg-[#C4184F] transition-colors"
+                  >
+                    Clear all filters
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:gap-8">
+                    {mcs.map((mc) => (
+                      <MCCard key={mc.id} mc={mc} />
+                    ))}
+                  </div>
+
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      totalResults={totalCount}
+                    />
+                  )}
+                </>
               )}
-            </>
-          )}
-        </div>
-      </main>
+            </div>
+          </section>
+        </main>
+      </div>
 
       <Footer />
     </>

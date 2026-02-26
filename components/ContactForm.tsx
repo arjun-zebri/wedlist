@@ -72,7 +72,7 @@ export default function ContactForm({ mcId, mcName }: ContactFormProps) {
         {mcName ? `Message ${mcName}` : "Send Inquiry"}
       </h3>
       <p className="mt-2 text-sm text-gray-500">
-        Fill out the form below and they'll get back to you shortly.
+        Fill out the form below and they&apos;ll get back to you shortly.
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
@@ -184,7 +184,7 @@ export default function ContactForm({ mcId, mcName }: ContactFormProps) {
         {submitStatus === "success" && (
           <div className="rounded-lg bg-green-50 p-4">
             <p className="text-sm font-medium text-green-900">
-              ✓ Message sent! They'll be in touch soon.
+              ✓ Message sent! They&apos;ll be in touch soon.
             </p>
           </div>
         )}

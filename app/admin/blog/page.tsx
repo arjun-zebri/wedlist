@@ -3,6 +3,17 @@
 import { useEffect, useState } from "react";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import Link from "next/link";
+import {
+  Plus,
+  ExternalLink,
+  Pencil,
+  Trash2,
+  FileText,
+  Search,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+} from "lucide-react";
 
 interface BlogPost {
   id: string;
@@ -17,6 +28,7 @@ export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchPosts();
@@ -55,7 +67,6 @@ export default function BlogPage() {
 
       if (error) throw error;
 
-      // Refresh the list
       setPosts(posts.filter((post) => post.id !== id));
     } catch (error: any) {
       console.error("Error deleting post:", error);
@@ -65,115 +76,144 @@ export default function BlogPage() {
     }
   }
 
+  const filteredPosts = searchQuery
+    ? posts.filter((post) =>
+        post.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : posts;
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-gray-600">Loading...</div>
+      <div className="space-y-6 animate-pulse">
+        <div className="h-8 w-40 bg-gray-200 rounded-lg"></div>
+        <div className="h-12 bg-gray-200 rounded-xl"></div>
+        <div className="space-y-3">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-16 bg-white rounded-xl border border-gray-200"></div>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Blog Posts</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            Manage blog content for SEO and engagement
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-display">Blog Posts</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            {posts.length} {posts.length === 1 ? "post" : "posts"} total
           </p>
         </div>
         <Link
           href="/admin/blog/new"
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#E31C5F] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#C4184F] transition-colors"
         >
-          Create New Post
+          <Plus className="h-4 w-4" />
+          New Post
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Title
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Slug
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Date
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {posts.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={5}
-                  className="px-6 py-8 text-center text-sm text-gray-500"
-                >
-                  No blog posts yet. Create your first post to get started.
-                </td>
-              </tr>
-            ) : (
-              posts.map((post) => (
-                <tr key={post.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                    {post.title}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {post.slug}
-                  </td>
-                  <td className="px-6 py-4 text-sm">
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-400" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by title..."
+          className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20 transition-all"
+        />
+      </div>
+
+      {/* Post Cards List */}
+      {filteredPosts.length === 0 ? (
+        <div className="text-center py-16">
+          <div className="mx-auto w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center mb-4">
+            <FileText className="h-6 w-6 text-gray-400" />
+          </div>
+          <p className="text-base font-medium text-gray-900">
+            {searchQuery ? "No posts match your search" : "No blog posts yet"}
+          </p>
+          <p className="mt-1.5 text-sm text-gray-500">
+            {searchQuery ? "Try a different search term" : "Create your first post to get started"}
+          </p>
+          {!searchQuery && (
+            <Link
+              href="/admin/blog/new"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#E31C5F] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#C4184F] transition-colors"
+            >
+              <Plus className="h-4 w-4" />
+              New Post
+            </Link>
+          )}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {filteredPosts.map((post) => (
+            <div
+              key={post.id}
+              className="group flex items-center justify-between gap-4 rounded-2xl bg-white p-4 sm:p-5 border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(227,28,95,0.06)] transition-shadow duration-200"
+            >
+              <div className="flex items-center gap-4 min-w-0">
+                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-rose-100 to-rose-50 flex items-center justify-center">
+                  <FileText className="h-4 w-4 text-[#E31C5F]" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p className="font-semibold text-gray-900 text-sm truncate">{post.title}</p>
                     {post.published ? (
-                      <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200/60 px-2 py-0.5 text-[10px] font-semibold text-green-700">
+                        <CheckCircle className="h-2.5 w-2.5" />
                         Published
                       </span>
                     ) : (
-                      <span className="inline-flex rounded-full bg-yellow-100 px-2 text-xs font-semibold leading-5 text-yellow-800">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200/60 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+                        <AlertCircle className="h-2.5 w-2.5" />
                         Draft
                       </span>
                     )}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
-                    {new Date(post.created_at).toLocaleDateString("en-AU")}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm">
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="text-blue-600 hover:text-blue-900"
-                      target="_blank"
-                    >
-                      View
-                    </Link>
-                    <span className="mx-2 text-gray-300">|</span>
-                    <Link
-                      href={`/admin/blog/${post.slug}/edit`}
-                      className="text-gray-600 hover:text-gray-900"
-                    >
-                      Edit
-                    </Link>
-                    <span className="mx-2 text-gray-300">|</span>
-                    <button
-                      onClick={() => deletePost(post.id, post.title)}
-                      disabled={deleting === post.id}
-                      className="text-red-600 hover:text-red-900 disabled:opacity-50"
-                    >
-                      {deleting === post.id ? "Deleting..." : "Delete"}
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+                  </div>
+                  <div className="flex items-center gap-3 mt-0.5">
+                    <p className="text-xs text-gray-500 truncate">/blog/{post.slug}</p>
+                    <div className="flex items-center gap-1 text-xs text-gray-400">
+                      <Clock className="h-3 w-3" />
+                      {new Date(post.created_at).toLocaleDateString("en-AU", { month: "short", day: "numeric", year: "numeric" })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5 flex-shrink-0">
+                <Link
+                  href={`/blog/${post.slug}`}
+                  target="_blank"
+                  className="p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                  title="View post"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </Link>
+                <Link
+                  href={`/admin/blog/${post.slug}/edit`}
+                  className="p-2 rounded-lg text-gray-400 hover:text-[#E31C5F] hover:bg-rose-50 transition-colors"
+                  title="Edit"
+                >
+                  <Pencil className="h-4 w-4" />
+                </Link>
+                <button
+                  onClick={() => deletePost(post.id, post.title)}
+                  disabled={deleting === post.id}
+                  className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                  title="Delete"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -195,7 +195,7 @@ function formatContent(content: string): string {
     .replace(/^- (.*$)/gim, "<li>$1</li>");
 
   // Wrap lists
-  formatted = formatted.replace(/(<li>.*<\/li>)/gs, "<ul>$1</ul>");
+  formatted = formatted.replace(/(<li>[\s\S]*?<\/li>)/g, "<ul>$1</ul>");
 
   // Wrap in paragraphs
   formatted = "<p>" + formatted + "</p>";

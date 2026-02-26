@@ -46,7 +46,7 @@ export default function PackagesSection({ packages }: PackagesSectionProps) {
       </div>
 
       <PackageModal
-        package={selectedPackage}
+        packages={selectedPackage ? [selectedPackage] : []}
         isOpen={!!selectedPackage}
         onClose={() => setSelectedPackage(null)}
       />
