@@ -7,6 +7,7 @@ import MCCard from "@/components/MCCard";
 import FAQAccordion from "@/components/FAQAccordion";
 import HowItWorks from "@/components/HowItWorks";
 import ReviewCarousel from "@/components/ReviewCarousel";
+import BeforeAfterComparison from "@/components/BeforeAfterComparison";
 import { MCProfileWithRelations } from "@/types/database";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice } from "@/lib/utils";
@@ -324,94 +325,9 @@ export default async function Home() {
             </div>
           </section>
 
-          {/* Problem section - integrated below hero */}
+          {/* Problem section - Before/After comparison */}
           <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-7xl relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-              {/* Left: Problem Image (mobile shows below on desktop shows right from hero) */}
-              <div className="lg:hidden">
-                <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl aspect-video flex items-center justify-center border border-gray-200 overflow-hidden mb-8">
-                  <div className="text-center">
-                    <div className="text-5xl mb-4">⏱️</div>
-                    <p className="text-gray-500 font-medium">
-                      Frustrated couple waiting
-                    </p>
-                    <p className="text-sm text-gray-400 mt-2">
-                      Searching for the perfect MC
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Left Text / Right on mobile */}
-              <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50/80 px-4 py-2 mb-6">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#E31C5F]"></div>
-                  <span className="text-xs font-semibold text-gray-700">
-                    The Challenge
-                  </span>
-                </div>
-                <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 font-display mb-6 leading-tight">
-                  The old way
-                  <br />
-                  <span className="text-[#E31C5F]">doesn't work</span>
-                </h2>
-                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  Email them. Wait days. "Contact for pricing." Unverified
-                  reviews. No idea if they're actually good. Sound familiar?
-                </p>
-
-                {/* Solution cards - simple and clean */}
-                <div className="space-y-2">
-                  {[
-                    {
-                      problem: "Slow replies",
-                      solution: "4-hour response guaranteed",
-                    },
-                    {
-                      problem: "Hidden costs",
-                      solution: "All prices shown upfront",
-                    },
-                    {
-                      problem: "Fake reviews",
-                      solution: "Verified Google reviews only",
-                    },
-                    {
-                      problem: "Hard to compare",
-                      solution: "Browse & compare instantly",
-                    },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      className="group flex items-start gap-3 p-3 rounded-lg border border-gray-100 hover:border-[#E31C5F]/30 hover:bg-rose-50/50 transition-colors duration-200"
-                    >
-                      <div className="flex-grow">
-                        <p className="text-xs text-gray-500 uppercase font-semibold line-through mb-1">
-                          {item.problem}
-                        </p>
-                        <p className="font-semibold text-gray-900">
-                          {item.solution}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right: Problem Image (desktop only) */}
-              <div className="hidden lg:block">
-                <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl aspect-video flex items-center justify-center border border-gray-200 overflow-hidden sticky top-32">
-                  <div className="text-center">
-                    <div className="text-5xl mb-4">⏱️</div>
-                    <p className="text-gray-500 font-medium">
-                      Frustrated couple waiting
-                    </p>
-                    <p className="text-sm text-gray-400 mt-2">
-                      Searching for the perfect MC
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <BeforeAfterComparison />
           </section>
 
           {/* ================================================================
