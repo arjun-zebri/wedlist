@@ -258,7 +258,7 @@ export default async function Home() {
           {/* ================================================================
             1. HERO + PROBLEM — Unified, Compelling, Minimal
         ================================================================ */}
-          <section className="relative bg-white/80 backdrop-blur-sm overflow-hidden px-4 py-20 sm:px-6 lg:px-8">
+          <section className="relative bg-white/80 backdrop-blur-sm overflow-hidden px-4 pt-28 pb-20 sm:pt-32 lg:pt-40 lg:pb-24 sm:px-6 lg:px-8">
             {/* Subtle background accent */}
             <div className="absolute top-0 right-0 w-80 h-80 bg-rose-50 rounded-full filter blur-3xl -translate-y-1/2"></div>
 
@@ -311,7 +311,7 @@ export default async function Home() {
           </section>
 
           {/* Problem section - Before/After comparison */}
-          <section className="relative bg-white/80 backdrop-blur-sm px-4 pt-20 pb-10 sm:px-6 lg:px-8">
+          <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 lg:py-24 sm:px-6 lg:px-8">
             <BeforeAfterComparison />
           </section>
 
@@ -320,7 +320,7 @@ export default async function Home() {
         ================================================================ */}
           <section
             id="how-it-works"
-            className="relative bg-white/80 backdrop-blur-sm"
+            className="relative bg-white/80 backdrop-blur-sm overflow-hidden"
           >
             <HowItWorks />
           </section>
@@ -329,7 +329,7 @@ export default async function Home() {
             4. PRICING TRANSPARENCY — Integrated, Clear, No Games
         ================================================================ */}
           {popularData.minPrice !== null && popularData.maxPrice !== null && (
-            <section className="bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8">
+            <section className="bg-white/80 backdrop-blur-sm px-4 py-20 lg:py-24 sm:px-6 lg:px-8">
               <div className="mx-auto max-w-7xl text-center">
                 {/* Badge */}
                 <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50/80 px-4 py-2">
@@ -365,9 +365,9 @@ export default async function Home() {
             5. FEATURED MCs — Real Talent, Real Couples, Real Reviews
         ================================================================ */}
           {featuredMCs.length > 0 && (
-            <section className="bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8">
+            <section className="bg-white/80 backdrop-blur-sm px-4 py-20 lg:py-24 sm:px-6 lg:px-8">
               <div className="mx-auto max-w-7xl">
-                <div className="text-center mb-12">
+                <div className="text-center mb-14">
                   <h2 className="text-4xl font-bold tracking-tight text-gray-900 font-display sm:text-5xl">
                     Meet Sydney&apos;s top MCs
                   </h2>
@@ -398,13 +398,13 @@ export default async function Home() {
           {/* ================================================================
             6. REAL COUPLES — Superpower-Style Testimonials
         ================================================================ */}
-          <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8 overflow-hidden">
+          <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 lg:py-24 sm:px-6 lg:px-8 overflow-hidden">
             <div className="mx-auto max-w-7xl relative z-10">
-              <div className="text-center mb-20">
-                <h2 className="text-5xl sm:text-6xl font-bold text-gray-900 font-display mb-6">
+              <div className="text-center mb-14">
+                <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 font-display mb-4 leading-tight">
                   Real couples. Real weddings.
                 </h2>
-                <p className="text-xl text-gray-600">
+                <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
                   Verified Google reviews from Sydney couples who found their
                   perfect MC
                 </p>
@@ -418,19 +418,19 @@ export default async function Home() {
           {/* ================================================================
             7. FAQ — Common Questions Answered
         ================================================================ */}
-          <section className="bg-white/80 backdrop-blur-sm px-4 py-16 lg:py-20 sm:px-6 lg:px-8">
+          <section className="bg-white/80 backdrop-blur-sm px-4 py-20 lg:py-24 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
-              <div className="text-center mb-12 max-w-3xl mx-auto">
-                <h2 className="text-4xl font-bold tracking-tight text-gray-900 font-display sm:text-5xl">
+              <div className="text-center mb-14 max-w-3xl mx-auto">
+                <h2 className="text-4xl font-bold tracking-tight text-gray-900 font-display sm:text-5xl mb-4 leading-tight">
                   Questions about wedding MCs?
                 </h2>
-                <p className="mt-6 text-lg text-gray-600">
-                  We've got answers. Below are the things couples most often ask
+                <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
+                  We&apos;ve got answers. Below are the things couples most often ask
                   us.
                 </p>
               </div>
 
-              <div className="mt-12 max-w-3xl mx-auto">
+              <div className="max-w-3xl mx-auto">
                 <FAQAccordion items={faqItems} />
               </div>
             </div>
@@ -439,9 +439,9 @@ export default async function Home() {
           {/* ================================================================
             8. FINAL CTA — Simple, Clear, Inviting
         ================================================================ */}
-          <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 sm:px-6 lg:px-8 overflow-hidden">
+          <section className="relative bg-white/80 backdrop-blur-sm px-4 py-20 lg:py-24 sm:px-6 lg:px-8 overflow-hidden">
             <div className="relative mx-auto max-w-3xl z-10 text-center">
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 font-display mb-6">
+              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 font-display mb-4 leading-tight">
                 Ready to find your MC?
               </h2>
 

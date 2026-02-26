@@ -146,7 +146,7 @@ export default function BeforeAfterComparison() {
 
         {/* ── RIGHT: The WedList Way ── */}
         <div
-          className="rounded-2xl bg-white border border-gray-100 shadow-[0_4px_24px_rgba(227,28,95,0.08)] overflow-hidden pointer-events-none select-none transition-transform duration-300 hover:pointer-events-auto hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(227,28,95,0.15)]"
+          className="rounded-2xl bg-white border border-gray-300 shadow-[0_4px_24px_rgba(227,28,95,0.08)] overflow-hidden pointer-events-none select-none transition-transform duration-300 hover:pointer-events-auto hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(227,28,95,0.15)]"
           style={reveal(400)}
         >
           {/* Browser chrome */}
@@ -177,7 +177,7 @@ export default function BeforeAfterComparison() {
             <div className="h-px bg-gray-100" />
 
             {/* MC profile card */}
-            <div className="rounded-xl bg-white p-4 space-y-3 border border-gray-100 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
+            <div className="rounded-xl bg-white p-4 space-y-3 border border-gray-300 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
               <div className="flex items-center gap-3">
                 {/* Avatar placeholder */}
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#E31C5F]/20 to-[#E31C5F]/5" />

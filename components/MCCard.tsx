@@ -33,7 +33,7 @@ export default function MCCard({ mc }: MCCardProps) {
   return (
     <Link
       href={`/mc/${mc.slug}`}
-      className="group block overflow-hidden rounded-xl bg-white shadow-[0_1px_2px_rgba(227,28,95,0.06)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.12)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300 ease-out focus-visible:outline-2 focus-visible:outline-[#E31C5F] focus-visible:outline-offset-2"
+      className="group block overflow-hidden rounded-xl bg-white border border-gray-300 shadow-[0_1px_2px_rgba(227,28,95,0.06)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.12)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300 ease-out focus-visible:outline-2 focus-visible:outline-[#E31C5F] focus-visible:outline-offset-2"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
         {mc.profile_image ? (
