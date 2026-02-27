@@ -12,13 +12,15 @@ The super admin (site owner) interface at `/super-admin/` manages the entire Wed
 | Route | Description |
 |-------|-------------|
 | `/super-admin` | Dashboard: KPI cards (inquiries, MC pipeline, blog stats) |
-| `/super-admin/blog` | Blog post list + create/edit interface |
-| `/super-admin/blog/[postId]` | Edit blog post (draft/published, preview) |
-| `/super-admin/inquiries` | Inquiry list (filters by type: couple, vendor) |
-| `/super-admin/inquiries/[inquiryId]` | Inquiry detail: message, contact info, followup |
+| `/super-admin/blog` | Blog post list + create/edit/delete interface |
+| `/super-admin/blog/new` | Create new blog post (markdown editor) |
+| `/super-admin/blog/[postId]` | Edit blog post (draft/published, preview, delete) |
+| `/super-admin/inquiries` | Inquiry list with type & status filters (separated) |
+| `/super-admin/inquiries/[inquiryId]` | Inquiry detail: message, contact info, followup, notes |
 | `/super-admin/crm` | MC CRM dashboard (overview + quick stats) |
 | `/super-admin/crm/mcs` | MC pipeline kanban + list view |
-| `/super-admin/crm/mcs/[mcId]` | MC detail: listing info, revenue, outreach log |
+| `/super-admin/crm/mcs/new` | Add new MC (manual entry or link existing account) |
+| `/super-admin/crm/mcs/[mcId]` | MC detail: edit info, revenue, outreach log, delete |
 
 ---
 
@@ -74,35 +76,45 @@ CREATE POLICY "Anyone can view published posts"
 ### UI Requirements
 
 **Blog List (`/super-admin/blog`):**
-- Table: Title | Status | Author | Published Date | Actions
+- Table: Title | Status | Author | Published Date | Last Updated | Actions
 - Filters: by status (Draft, Published, Archived)
 - Search by title/slug
-- Sort by date, status
-- Actions: Edit, View, Delete (soft archive), Publish/Unpublish
-- "New Post" button (top-right)
+- Sort by date, status, updated_at
+- Actions: Edit, View, Delete (soft delete with confirm)
+- "New Post" button (top-right) → `/super-admin/blog/new`
+- Bulk actions: Archive multiple, Delete multiple
 
-**Blog Editor (`/super-admin/blog/[postId]`):**
-- **Header**: Post title input + slug (auto-generates from title)
+**Blog Editor (`/super-admin/blog/new` + `/super-admin/blog/[postId]`):**
+- **Header**: Post title input + slug (auto-generates from title, editable)
 - **Featured Image**: Upload field + preview (1200x600px recommended)
 - **Content Panel**:
-  - Markdown textarea with toolbar (bold, italic, headers, lists, code)
+  - Markdown textarea with toolbar (bold, italic, headers, lists, code, links)
   - Live preview on right (desktop) or below (mobile)
   - Supports code blocks with syntax highlighting
+  - Character count
 - **SEO Panel** (collapsible):
-  - SEO Title input (60 chars max)
-  - SEO Description textarea (160 chars max)
-  - Excerpt textarea
+  - SEO Title input (60 chars max, warning if too long)
+  - SEO Description textarea (160 chars max, warning if too long)
+  - Excerpt textarea (auto-fills from first 200 chars of content)
 - **Publishing**:
   - Status dropdown (Draft, Published, Archived)
   - Publish/schedule button (set publish_at timestamp)
   - Preview link (if published)
-- **Save** button (auto-saves draft every 30 seconds)
+  - Preview button (shows as it would appear on public site)
+- **Author**: Dropdown to assign (auto-fills with current admin)
+- **Buttons**:
+  - Save as Draft
+  - Publish / Unpublish
+  - Delete (with confirmation modal showing post title)
+  - Cancel (discard unsaved changes)
+- **Auto-save**: Draft saved every 30 seconds
 
 **Design System Application:**
 - Markdown editor: `rounded-lg`, `border border-gray-200`, syntax highlighting
 - Preview: `prose` classes for typography
 - Status badges: Draft=gray-50, Published=green-50, Archived=red-50
 - Buttons: Rose accent for primary CTAs
+- Delete button: Red destructive styling
 
 ---
 
@@ -180,47 +192,54 @@ CREATE POLICY "Admin can manage all inquiry activities"
 ### UI Requirements
 
 **Inquiry List (`/super-admin/inquiries`):**
-- Tabs: All | Couples | Vendors
-- Table: Name | Type | Email | Status | Created | Last Update | Actions
-- Filters: by status (New, Contacted, Qualified, Lost, Closed), by source
-- Search by name/email/company
-- Sort by date, status
-- Actions: View, Edit notes, Assign, Delete
-- "Filter" button (side panel with advanced filters)
+- **Type Filter** (horizontal pills, separate): All | Couples | Vendors
+- **Status Filter** (horizontal pills, separate): All | New | Contacted | Qualified | Lost | Closed
+- **Source Filter** (dropdown): All sources, Website, Google, Referral, Social, Other
+- Table: Name | Type | Email | Status | Source | Created | Last Update | Actions
+- Search by name/email/company/venue
+- Sort by date, status, source
+- Actions: View/Edit, Assign, Delete (soft delete with confirm)
+- Bulk actions: Mark as contacted, Mark as closed, Delete multiple
 
 **Inquiry Detail (`/super-admin/inquiries/[inquiryId]`):**
-- **Header**: Name + type badge (Couple/Vendor) + status badge
-- **Contact Info**:
-  - Email (clickable link)
-  - Phone (clickable link)
-  - Company name (vendor only)
-- **Event Details** (couple only):
-  - Event type, date, venue, guest count
-- **Business Details** (vendor only):
-  - Vendor type, company, services offered
-- **Inquiry Message**: Full message text in quote box
-- **Metadata**:
-  - Source (website, google, referral, etc.)
-  - Created date
-  - Assigned to (dropdown)
-  - Follow-up date (date picker, red badge if overdue)
+- **Header**: Name + type badge (Couple/Vendor) + status badge + created date
+- **Contact Info Panel** (editable):
+  - Email (clickable link, editable)
+  - Phone (clickable link, editable)
+  - Company name (vendor only, editable)
+- **Event Details Panel** (couple only, editable):
+  - Event type dropdown, date picker, venue input, guest count
+- **Business Details Panel** (vendor only, editable):
+  - Vendor type dropdown, company input, services textarea
+- **Inquiry Message**: Full message text in quote box (read-only with copy button)
+- **Metadata Panel** (editable):
+  - Source dropdown (website, google, referral, social, other)
+  - Assigned to dropdown (select admin user)
+  - Follow-up date picker (red badge if overdue)
 - **Status Selector**: Dropdown (New, Contacted, Qualified, Lost, Closed)
-- **Admin Notes**: Textarea
+- **Admin Notes**: Textarea (editable, auto-saves)
 - **Activity Timeline**:
   - Reverse-chronological entries
   - Type (note, call, email, status_change) with icon
   - Content + timestamp
   - "Add Activity" button
-- **Actions**:
+- **Action Buttons**:
+  - "Save Changes" (if edited)
   - "Send Email" (opens draft email modal)
-  - "Log Call" (quick note entry)
-  - "Close Inquiry" (move to Closed)
-  - "Delete" (with confirmation)
+  - "Log Activity" (quick note/call entry)
+  - "Delete" (with confirmation modal)
+  - "Cancel" (discard changes)
 
 **Activity Entry Modal:**
-- Type dropdown: Note | Call | Email | Status Change
+- Type dropdown: Note | Call | Email
 - Content textarea: What was said/done
 - "Save Activity" button
+
+**Email Draft Modal:**
+- To: (pre-filled with inquiry email, editable)
+- Subject: (editable)
+- Body: (textarea, editable)
+- "Send Email" / "Cancel" buttons
 
 **Design System Application:**
 - Status badges: New=gray-50, Contacted=blue-50, Qualified=green-50, Lost=red-50, Closed=gray-100
@@ -314,43 +333,80 @@ CREATE POLICY "Admin can manage all outreach logs"
   - Monthly Recurring Revenue (MRR) sum
   - Churned this month
   - Upcoming renewals (next 7 days)
-- Quick links: "Browse Pipeline" → `/super-admin/crm/mcs`
+- Quick links:
+  - "Browse Pipeline" → `/super-admin/crm/mcs`
+  - "Add New MC" → `/super-admin/crm/mcs/new` (button with + icon)
+
+**Add/Edit MC Form (`/super-admin/crm/mcs/new` + `/super-admin/crm/mcs/[mcId]/edit`):**
+- **Basic Info**:
+  - Name (required, text input)
+  - Email (required, email input, check for duplicates)
+  - Phone (optional, tel input)
+- **Account Linking**:
+  - "Link to existing account" checkbox
+  - If checked: Dropdown to select existing MC profile from mc_profiles table
+  - If unchecked: Show message "Account can be created later"
+- **Status & Plan**:
+  - Stage dropdown (prospect/trial/listed/active/churned)
+  - Listing status dropdown (free/trial/paid/expired/rejected)
+  - Plan type dropdown (trial/free/standard/premium/custom)
+- **Financials**:
+  - Monthly Revenue (MRR) numeric input
+  - Renewal date picker
+- **Notes**: Textarea
+- **Buttons**:
+  - "Save MC" / "Update MC"
+  - "Cancel" (discard changes)
+  - "Create Account & Email" (if account not linked yet)
 
 **MC Pipeline (`/super-admin/crm/mcs`):**
+- **Add MC Button** (top-right): "Add New MC" → `/super-admin/crm/mcs/new`
 - Kanban view (default):
   - 5 horizontal swimlanes: Prospect → Trial → Listed → Active → Churned
   - MC cards: name, email, listing status badge, MRR (green), last contact date
-  - Drag-and-drop between stages
+  - Drag-and-drop between stages (updates stage in DB)
   - Empty state per column: icon + "No {stage} MCs"
 - List view toggle:
   - Table: Name | Email | Stage | Listing Status | MRR | Renewal Date | Last Contact | Actions
   - Searchable by name/email
   - Filterable by stage + listing_status
   - Sort by MRR, renewal date, last contact
+  - Actions: Edit, View, Delete (with confirm)
+  - Bulk actions: Delete multiple, Change stage
 
 **MC Detail (`/super-admin/crm/mcs/[mcId]`):**
 - **Header**: MC name + link to public profile + status badges
-- **Listing Info**:
+- **Listing Info** (editable):
   - Listing status dropdown (free/trial/paid/expired/rejected)
   - Plan type dropdown (trial/free/standard/premium/custom)
   - "View Profile" button (links to `/mcs/{slug}`)
-- **Revenue Section**:
+- **Revenue Section** (editable):
   - Current MRR: numeric input (inline editable)
   - Plan type: dropdown
   - Renewal date: date picker
   - Annual revenue calc (MRR × 12)
-- **Stage Section**: Dropdown selector (prospect/trial/listed/active/churned)
-- **Internal Notes**: Textarea
+- **Stage Section** (editable): Dropdown selector (prospect/trial/listed/active/churned)
+- **Internal Notes** (editable): Textarea (auto-saves)
 - **Outreach Log Timeline**:
   - Reverse-chronological entries
   - Type (call, email, meeting, demo, other) with icon
   - Summary + timestamp
   - "Follow-up due: {date}" if set
   - "Log Outreach" button
-- **Actions**:
+  - Delete activity option (on hover)
+- **Action Buttons**:
+  - "Edit MC Info" → `/super-admin/crm/mcs/[mcId]/edit`
   - "Create Login" (create account + send email if no mc_profile_id)
+  - "Send Email" (compose email modal)
   - "Export" (download MC info as PDF)
-  - "Archive" (soft delete)
+  - "Delete" (with confirmation modal showing MC name)
+  - "Cancel" (discard changes)
+
+**Outreach Log Entry Modal:**
+- Type dropdown: Call | Email | Meeting | Demo | Other
+- Summary textarea: What was discussed
+- Follow-up date picker: When to follow up
+- "Save Activity" button
 
 **Outreach Log Entry Modal:**
 - Type dropdown: Call | Email | Meeting | Demo | Other
@@ -419,25 +475,48 @@ All pages follow the directives in `CLAUDE.md`:
 
 ### Blog Management
 - [ ] Create `blog_posts` table with markdown + SEO fields
-- [ ] Build blog list page (`/super-admin/blog`) with filters
-- [ ] Build blog editor (`/super-admin/blog/[postId]`) with markdown + preview
+- [ ] Build blog list page (`/super-admin/blog`) with status filters
+- [ ] Build blog create page (`/super-admin/blog/new`) with markdown editor
+- [ ] Build blog editor (`/super-admin/blog/[postId]`) with full CRUD
 - [ ] Implement publish/draft/archive status workflow
 - [ ] Featured image upload integration (Supabase storage)
+- [ ] Markdown editor with toolbar (bold, italic, headers, lists, code, links)
+- [ ] Live preview of rendered markdown
+- [ ] Delete blog post with confirmation (soft delete to archived)
+- [ ] Auto-save drafts every 30 seconds
+- [ ] SEO metadata validation (character limits, warnings)
 
 ### Inquiries Management
 - [ ] Create `inquiries` + `inquiry_activities` tables
-- [ ] Build inquiry list page with type/status filters
-- [ ] Build inquiry detail page with activity timeline
-- [ ] Implement status workflow (New → Contacted → Qualified → Closed)
+- [ ] Build inquiry list page with separated type & status filters
+- [ ] Build inquiry detail page with editable fields
+- [ ] Implement status workflow (New → Contacted → Qualified → Lost → Closed)
 - [ ] Add assignment + follow-up date tracking
+- [ ] Activity timeline with note/call/email/status_change types
+- [ ] Edit inquiry details (email, phone, event info, vendor info, notes)
+- [ ] Delete inquiry with confirmation
+- [ ] Send email modal (draft email before sending)
+- [ ] Bulk actions: mark as contacted, mark as closed, delete multiple
 
 ### MC CRM
-- [ ] Create `mc_crm_records` + `mc_outreach_log` tables (if not already)
+- [ ] Create `mc_crm_records` + `mc_outreach_log` tables
 - [ ] Build MC CRM dashboard with KPI cards
+- [ ] Build MC create form (`/super-admin/crm/mcs/new`)
+  - Manual entry of MC details
+  - Option to link to existing MC profile
+  - Can create account and send email from form
+- [ ] Build MC edit form (`/super-admin/crm/mcs/[mcId]/edit`)
+  - All fields editable (name, email, phone, stage, listing status, MRR, renewal date, notes)
+  - Save changes inline or via button
 - [ ] Build MC pipeline kanban view (5 stages)
-- [ ] Build MC detail page with revenue + outreach log
-- [ ] Implement drag-and-drop stage movement
-- [ ] Implement "Create Login" for new MCs
+  - Drag-and-drop between stages (updates DB)
+  - Empty state per column
+- [ ] Build MC detail page with revenue + outreach log (read-only view with edit links)
+- [ ] Implement "Create Login" to generate account + send email
+- [ ] Delete MC with confirmation
+- [ ] Outreach log entries with types (call, email, meeting, demo, other)
+- [ ] Follow-up date reminders (red badge if overdue)
+- [ ] Bulk actions: delete multiple, change stage for multiple
 
 ### Design & Polish
 - [ ] All pages follow Dribbble card system (rounded-2xl, shadows, hover lift)
@@ -445,6 +524,11 @@ All pages follow the directives in `CLAUDE.md`:
 - [ ] Timeline components with icons and timestamps
 - [ ] Responsive: columns scroll on mobile, full-width on desktop
 - [ ] Accessibility: data-testid, keyboard nav, focus rings
+- [ ] Confirmation modals for destructive actions (delete)
+- [ ] Form validation + inline error messages
+- [ ] Empty states with helpful messaging
+- [ ] Loading states for async operations
+- [ ] Toast notifications for success/error messages
 
 ---
 

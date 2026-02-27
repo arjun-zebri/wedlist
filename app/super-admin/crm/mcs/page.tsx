@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Mail, Phone, MoreHorizontal } from 'lucide-react';
+import { Mail, Phone, MoreHorizontal, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 const PIPELINE_STAGES = [
@@ -73,7 +73,7 @@ function MCCard({ mc, stage }: { mc: MC; stage: string }) {
 
   return (
     <div
-      onClick={() => router.push(`/super-admin/crm/mcs/${mc.id}`)}
+      onClick={() => router.push(`/super-admin/crm/mcs/${mc.id}/edit`)}
       className="rounded-2xl bg-white p-4 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-all group cursor-pointer border border-gray-100"
     >
       {/* Header */}
@@ -156,6 +156,7 @@ function KanbanColumn({ stage }: { stage: string }) {
 }
 
 export default function MCPipeline() {
+  const router = useRouter();
   const [viewMode, setViewMode] = useState<'kanban' | 'list'>('kanban');
 
   return (
@@ -166,12 +167,21 @@ export default function MCPipeline() {
           <h1 className="text-4xl font-bold text-gray-900 mb-2">MC Pipeline</h1>
           <p className="text-gray-600">Manage your MC business development pipeline</p>
         </div>
-        <button
-          onClick={() => setViewMode(viewMode === 'kanban' ? 'list' : 'kanban')}
-          className="px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-        >
-          {viewMode === 'kanban' ? 'List View' : 'Kanban View'}
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => router.push('/super-admin/crm/mcs/new')}
+            className="px-4 py-2 rounded-lg bg-[#E31C5F] text-white text-sm font-medium hover:bg-[#C4184F] transition-colors flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add MC
+          </button>
+          <button
+            onClick={() => setViewMode(viewMode === 'kanban' ? 'list' : 'kanban')}
+            className="px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            {viewMode === 'kanban' ? 'List View' : 'Kanban View'}
+          </button>
+        </div>
       </div>
 
       {/* Kanban View */}

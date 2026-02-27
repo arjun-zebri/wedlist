@@ -1,7 +1,8 @@
 'use client';
 
-import { Mail, Phone, Calendar, User } from 'lucide-react';
+import { Mail, Phone, Calendar, User, Plus, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const INQUIRY_TYPES = {
   couple: 'Couple',
@@ -24,6 +25,8 @@ const STATUS_COLORS = {
   closed: 'bg-gray-200 text-gray-700',
 };
 
+const SOURCE_OPTIONS = ['website', 'google', 'referral', 'social', 'other'];
+
 // Sample inquiry data
 const INQUIRIES = [
   {
@@ -35,6 +38,7 @@ const INQUIRIES = [
     eventDate: '2025-06-15',
     venue: 'The Rocks, Sydney',
     status: 'new' as const,
+    source: 'website',
     message: 'We are looking for an MC for our wedding in June 2025. Would love to discuss availability and rates.',
     created: '2025-02-25',
   },
@@ -46,6 +50,7 @@ const INQUIRIES = [
     phone: '0412 345 679',
     vendorType: 'photographer',
     status: 'contacted' as const,
+    source: 'referral',
     message: 'Interested in partnering with WedList for photographer referrals.',
     created: '2025-02-20',
   },
@@ -58,6 +63,7 @@ const INQUIRIES = [
     eventDate: '2025-05-10',
     venue: 'Taronga Park, Sydney',
     status: 'qualified' as const,
+    source: 'google',
     message: 'Looking for an experienced MC for our intimate wedding ceremony.',
     created: '2025-02-18',
   },
@@ -66,23 +72,37 @@ const INQUIRIES = [
 export default function InquiriesPage() {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedSource, setSelectedSource] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredInquiries = INQUIRIES.filter((inquiry) => {
     if (selectedStatus && inquiry.status !== selectedStatus) return false;
     if (selectedType && inquiry.type !== selectedType) return false;
+    if (selectedSource && inquiry.source !== selectedSource) return false;
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      return (
+        inquiry.name.toLowerCase().includes(query) ||
+        inquiry.email.toLowerCase().includes(query) ||
+        ('companyName' in inquiry && inquiry.companyName?.toLowerCase().includes(query))
+      );
+    }
     return true;
   });
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Inquiries</h1>
-        <p className="text-gray-600">Manage inquiries from couples and vendors</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Inquiries</h1>
+          <p className="text-gray-600">Manage inquiries from couples and vendors</p>
+        </div>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      {/* Type Filters */}
+      <div>
+        <p className="text-xs font-medium text-gray-500 uppercase mb-3 tracking-wide">Type</p>
         <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setSelectedType(null)}
@@ -109,7 +129,11 @@ export default function InquiriesPage() {
             Vendors
           </button>
         </div>
+      </div>
 
+      {/* Status Filters */}
+      <div>
+        <p className="text-xs font-medium text-gray-500 uppercase mb-3 tracking-wide">Status</p>
         <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setSelectedStatus(null)}
@@ -133,12 +157,24 @@ export default function InquiriesPage() {
         </div>
       </div>
 
+      {/* Search */}
+      <div>
+        <input
+          type="text"
+          placeholder="Search by name, email, or company..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+        />
+      </div>
+
       {/* Inquiries List */}
       <div className="space-y-3">
         {filteredInquiries.map((inquiry) => (
-          <button
+          <Link
             key={inquiry.id}
-            className="w-full rounded-2xl bg-white p-5 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-0.5 transition-all text-left group border border-gray-100"
+            href={`/super-admin/inquiries/${inquiry.id}`}
+            className="w-full block rounded-2xl bg-white p-5 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-0.5 transition-all text-left group border border-gray-100"
           >
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
               {/* Left side */}
@@ -195,7 +231,7 @@ export default function InquiriesPage() {
                 <span>{new Date(inquiry.created).toLocaleDateString()}</span>
               </div>
             </div>
-          </button>
+          </Link>
         ))}
       </div>
 
