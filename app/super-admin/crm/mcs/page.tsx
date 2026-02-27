@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Mail, Phone, MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
 
@@ -69,37 +69,47 @@ interface MC {
 }
 
 function MCCard({ mc, stage }: { mc: MC; stage: string }) {
-  return (
-    <Link href={`/super-admin/crm/mcs/${mc.id}`}>
-      <div className="rounded-2xl bg-white p-4 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-all group cursor-pointer border border-gray-100">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex-1 min-w-0">
-            <p className="font-semibold text-gray-900 truncate group-hover:text-[#E31C5F]">{mc.name}</p>
-            <div className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium mt-2 ${STAGE_BADGE_COLORS[stage as keyof typeof STAGE_BADGE_COLORS]}`}>
-              {mc.status}
-            </div>
-          </div>
-          <button className="p-1 rounded-lg hover:bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity">
-            <MoreHorizontal className="w-4 h-4 text-gray-400" />
-          </button>
-        </div>
+  const router = useRouter();
 
-        {/* Contact Info */}
-        <div className="space-y-2 text-sm mb-3">
-          <div className="flex items-center gap-2 text-gray-600 truncate">
-            <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <a href={`mailto:${mc.email}`} className="truncate hover:text-[#E31C5F]">
-              {mc.email}
-            </a>
-          </div>
-          <div className="flex items-center gap-2 text-gray-600">
-            <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <a href={`tel:${mc.phone}`} className="hover:text-[#E31C5F]">
-              {mc.phone}
-            </a>
+  return (
+    <div
+      onClick={() => router.push(`/super-admin/crm/mcs/${mc.id}`)}
+      className="rounded-2xl bg-white p-4 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-all group cursor-pointer border border-gray-100"
+    >
+      {/* Header */}
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-gray-900 truncate group-hover:text-[#E31C5F]">{mc.name}</p>
+          <div className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium mt-2 ${STAGE_BADGE_COLORS[stage as keyof typeof STAGE_BADGE_COLORS]}`}>
+            {mc.status}
           </div>
         </div>
+        <button className="p-1 rounded-lg hover:bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => e.stopPropagation()}>
+          <MoreHorizontal className="w-4 h-4 text-gray-400" />
+        </button>
+      </div>
+
+      {/* Contact Info */}
+      <div className="space-y-2 text-sm mb-3">
+        <div className="flex items-center gap-2 text-gray-600 truncate">
+          <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          <span className="truncate hover:text-[#E31C5F] cursor-pointer" onClick={(e) => {
+            e.stopPropagation();
+            window.location.href = `mailto:${mc.email}`;
+          }}>
+            {mc.email}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 text-gray-600">
+          <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          <span className="hover:text-[#E31C5F] cursor-pointer" onClick={(e) => {
+            e.stopPropagation();
+            window.location.href = `tel:${mc.phone}`;
+          }}>
+            {mc.phone}
+          </span>
+        </div>
+      </div>
 
         {/* Footer */}
         {mc.mRR !== null && (
@@ -108,8 +118,7 @@ function MCCard({ mc, stage }: { mc: MC; stage: string }) {
             <p className="text-lg font-bold text-green-600">${mc.mRR}/mo</p>
           </div>
         )}
-      </div>
-    </Link>
+    </div>
   );
 }
 
