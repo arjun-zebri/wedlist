@@ -19,6 +19,16 @@ import {
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import CustomSelect from "@/components/CustomSelect";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  closestCorners,
+  useDroppable,
+} from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/sortable";
 
 const PIPELINE_STAGES = [
   "prospect",
@@ -237,13 +247,33 @@ function KPISummary() {
 // ──────────────────────────────────────
 // Kanban Card
 // ──────────────────────────────────────
-function MCCard({ mc, stage }: { mc: MC; stage: Stage }) {
+function DraggableMCCard({ mc, stage }: { mc: MC; stage: Stage }) {
   const router = useRouter();
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: `mc-${mc.id}` });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
 
   return (
     <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
       onClick={() => router.push(`/super-admin/crm/mcs/${mc.id}/edit`)}
-      className="rounded-2xl bg-white p-4 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-all group cursor-pointer border border-gray-100"
+      className={`rounded-2xl bg-white p-4 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-all group cursor-pointer border border-gray-100 ${
+        isDragging ? "opacity-50" : ""
+      }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1 min-w-0">
@@ -309,8 +339,17 @@ function MCCard({ mc, stage }: { mc: MC; stage: Stage }) {
 // Kanban Column
 // ──────────────────────────────────────
 function KanbanColumn({ stage, mcs }: { stage: Stage; mcs: MC[] }) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: `stage-${stage}`,
+  });
+
   return (
-    <div className="flex flex-col gap-4">
+    <div
+      ref={setNodeRef}
+      className={`flex flex-col gap-4 transition-colors ${
+        isOver ? "bg-rose-50/30 rounded-lg p-2" : ""
+      }`}
+    >
       <div className="sticky top-0 z-10">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
@@ -343,9 +382,14 @@ function KanbanColumn({ stage, mcs }: { stage: Stage; mcs: MC[] }) {
         </div>
       ) : (
         <div className="space-y-3">
-          {mcs.map((mc) => (
-            <MCCard key={mc.id} mc={mc} stage={stage} />
-          ))}
+          <SortableContext
+            items={mcs.map((mc) => `mc-${mc.id}`)}
+            strategy={verticalListSortingStrategy}
+          >
+            {mcs.map((mc) => (
+              <DraggableMCCard key={mc.id} mc={mc} stage={stage} />
+            ))}
+          </SortableContext>
         </div>
       )}
     </div>
@@ -423,8 +467,19 @@ export default function CRMPage() {
   const [viewMode, setViewMode] = useState<"kanban" | "list">("kanban");
   const [searchQuery, setSearchQuery] = useState("");
   const [stageFilter, setStageFilter] = useState<Stage | "all">("all");
+  const [mcData, setMcData] = useState(MC_DATA);
+  const [activeDragId, setActiveDragId] = useState<string | null>(null);
+  const [draggedMC, setDraggedMC] = useState<(MC & { stage: Stage }) | null>(null);
 
-  const allMCs = useMemo(() => getAllMCs(), []);
+  const allMCs = useMemo(() => {
+    const all: (MC & { stage: Stage })[] = [];
+    for (const stage of PIPELINE_STAGES) {
+      for (const mc of mcData[stage]) {
+        all.push({ ...mc, stage });
+      }
+    }
+    return all;
+  }, [mcData]);
 
   const filteredMCs = useMemo(() => {
     return allMCs.filter((mc) => {
@@ -455,6 +510,68 @@ export default function CRMPage() {
     }
     return result;
   }, [filteredMCs]);
+
+  // Handle drag end - move MC to new stage
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveDragId(null);
+    setDraggedMC(null);
+
+    if (!over) return;
+
+    const draggedId = active.id as string;
+    const mcId = parseInt(draggedId.replace("mc-", ""));
+    const overId = over.id as string;
+
+    // Determine source and target stages
+    let sourceStage: Stage | null = null;
+    let targetStage: Stage | null = null;
+    let draggedMC: MC | null = null;
+
+    // Find the MC and source stage
+    for (const stage of PIPELINE_STAGES) {
+      const mc = mcData[stage].find((m) => m.id === mcId);
+      if (mc) {
+        draggedMC = mc;
+        sourceStage = stage;
+        break;
+      }
+    }
+
+    // Find target stage from drop zone ID
+    if (overId.startsWith("stage-")) {
+      targetStage = overId.replace("stage-", "") as Stage;
+    } else if (overId.startsWith("mc-")) {
+      // Dropped on another MC, find its stage
+      const targetMcId = parseInt(overId.replace("mc-", ""));
+      for (const stage of PIPELINE_STAGES) {
+        if (mcData[stage].find((m) => m.id === targetMcId)) {
+          targetStage = stage;
+          break;
+        }
+      }
+    }
+
+    // Move MC to target stage if different
+    if (
+      draggedMC &&
+      sourceStage &&
+      targetStage &&
+      sourceStage !== targetStage
+    ) {
+      const newMcData = { ...mcData };
+
+      // Remove from source stage
+      newMcData[sourceStage] = newMcData[sourceStage].filter(
+        (m) => m.id !== mcId
+      );
+
+      // Add to target stage
+      newMcData[targetStage] = [...newMcData[targetStage], draggedMC];
+
+      setMcData(newMcData);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full gap-0">
@@ -543,37 +660,97 @@ export default function CRMPage() {
       </div>
 
       {/* Scrollable Content Area */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto hide-scrollbar">
         {/* Kanban View */}
         {viewMode === "kanban" && (
-          <div className="overflow-x-auto">
-            <div
-              className="inline-flex gap-6 pb-4"
-              style={{ minWidth: stageFilter === "all" ? "1800px" : "100%" }}
-            >
-              {(stageFilter === "all" ? PIPELINE_STAGES : [stageFilter]).map(
-                (stage) => (
-                  <div key={stage} className="flex-shrink-0 w-80">
-                    <KanbanColumn
-                      stage={stage}
-                      mcs={filteredByStage[stage]}
-                    />
-                  </div>
-                )
-              )}
+          <DndContext
+            collisionDetection={closestCorners}
+            onDragEnd={handleDragEnd}
+            onDragStart={(event) => {
+              const draggedId = event.active.id as string;
+              setActiveDragId(draggedId);
+
+              // Find and set the dragged MC
+              const mcId = parseInt(draggedId.replace("mc-", ""));
+              for (const stage of PIPELINE_STAGES) {
+                const mc = mcData[stage].find((m) => m.id === mcId);
+                if (mc) {
+                  setDraggedMC({ ...mc, stage });
+                  break;
+                }
+              }
+            }}
+          >
+            <div className="overflow-x-auto hide-scrollbar">
+              <div
+                className="inline-flex gap-6 pb-4"
+                style={{ minWidth: stageFilter === "all" ? "1800px" : "100%" }}
+              >
+                {(stageFilter === "all" ? PIPELINE_STAGES : [stageFilter]).map(
+                  (stage) => (
+                    <div key={stage} className="flex-shrink-0 w-80">
+                      <KanbanColumn
+                        stage={stage}
+                        mcs={filteredByStage[stage]}
+                      />
+                    </div>
+                  )
+                )}
+              </div>
             </div>
-          </div>
+            <DragOverlay>
+              {draggedMC ? (
+                <div className="rounded-2xl bg-white p-4 shadow-[0_6px_20px_rgba(227,28,95,0.25)] border border-gray-100 w-80 cursor-grabbing">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-900 truncate">
+                        {draggedMC.name}
+                      </p>
+                      <div
+                        className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium mt-2 ${
+                          LISTING_STATUS_COLORS[draggedMC.listingStatus] ||
+                          "bg-gray-100 text-gray-700"
+                        }`}
+                      >
+                        {draggedMC.listingStatus}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5 text-sm mb-3">
+                    <div className="flex items-center gap-2 text-gray-600 truncate">
+                      <Mail className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                      <span className="truncate text-xs">{draggedMC.email}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Phone className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                      <span className="text-xs">{draggedMC.phone}</span>
+                    </div>
+                  </div>
+
+                  {draggedMC.mRR !== null && draggedMC.mRR > 0 && (
+                    <div className="pt-3 border-t border-gray-100">
+                      <p className="text-xs text-gray-500">MRR</p>
+                      <p className="text-base font-bold text-green-600">
+                        ${draggedMC.mRR}/mo
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ) : null}
+            </DragOverlay>
+          </DndContext>
         )}
 
         {/* List View */}
         {viewMode === "list" && (
-          <div className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100 overflow-auto flex-1 flex flex-col">
+          <div className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100 overflow-auto hide-scrollbar flex-1 flex flex-col">
             {filteredMCs.length === 0 ? (
               <div className="p-12 text-center">
                 <p className="text-gray-400">No MCs match your search</p>
               </div>
             ) : (
-              <div className="overflow-auto flex-1">
+              <div className="overflow-auto hide-scrollbar flex-1">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-200 bg-gray-50/50">
