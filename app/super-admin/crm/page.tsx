@@ -311,7 +311,7 @@ export default function CRMPage() {
   }, [filteredMCs]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 flex flex-col h-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -388,7 +388,7 @@ export default function CRMPage() {
 
       {/* Kanban View */}
       {viewMode === 'kanban' && (
-        <div className="overflow-x-auto pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <div className="overflow-auto flex-1 pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
           <div className="grid gap-6" style={{ gridTemplateColumns: `repeat(${stageFilter === 'all' ? 5 : 1}, minmax(300px, 1fr))` }}>
             {(stageFilter === 'all' ? PIPELINE_STAGES : [stageFilter]).map((stage) => (
               <KanbanColumn key={stage} stage={stage} mcs={filteredByStage[stage]} />
@@ -399,13 +399,13 @@ export default function CRMPage() {
 
       {/* List View */}
       {viewMode === 'list' && (
-        <div className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100 overflow-auto flex-1 flex flex-col">
           {filteredMCs.length === 0 ? (
             <div className="p-12 text-center">
               <p className="text-gray-400">No MCs match your search</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-auto flex-1">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200 bg-gray-50/50">

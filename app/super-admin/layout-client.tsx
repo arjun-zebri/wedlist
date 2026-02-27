@@ -156,9 +156,9 @@ export default function SuperAdminLayoutClient({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-rose-50/20">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-rose-50/20">
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-white border-r border-gray-200 shadow-[1px_0_8px_rgba(0,0,0,0.03)]">
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-white border-r border-gray-200 shadow-[1px_0_8px_rgba(0,0,0,0.03)] flex-shrink-0">
         <div className="flex items-center h-16 px-6 border-b border-gray-100">
           <Link href="/super-admin" className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-[#E31C5F] flex items-center justify-center">
@@ -196,8 +196,8 @@ export default function SuperAdminLayoutClient({
       </aside>
 
       {/* Main Content */}
-      <div className="min-h-screen w-full lg:pl-64">
-        <header className="sticky top-0 z-40 flex items-center h-16 px-4 border-b border-gray-100 bg-white/95 backdrop-blur-md lg:hidden">
+      <div className="flex-1 w-full lg:pl-64 flex flex-col overflow-y-auto">
+        <header className="sticky top-0 z-40 flex items-center h-16 px-4 border-b border-gray-100 bg-white/95 backdrop-blur-md lg:hidden flex-shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
             className="p-2 -ml-1 rounded-xl hover:bg-gray-100 transition-colors"
@@ -212,7 +212,7 @@ export default function SuperAdminLayoutClient({
           </div>
         </header>
 
-        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="p-4 sm:p-6 lg:p-8 pb-8 sm:pb-12 lg:pb-16">{children}</main>
       </div>
     </div>
   );
