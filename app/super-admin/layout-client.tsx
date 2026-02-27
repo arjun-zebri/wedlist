@@ -156,7 +156,7 @@ export default function SuperAdminLayoutClient({
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-white to-rose-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-rose-50/20">
       {/* Sidebar - Desktop */}
       <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-white border-r border-gray-200 shadow-[1px_0_8px_rgba(0,0,0,0.03)]">
         <div className="flex items-center h-16 px-6 border-b border-gray-100">
@@ -196,7 +196,7 @@ export default function SuperAdminLayoutClient({
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 lg:pl-64">
+      <div className="min-h-screen w-full lg:pl-64">
         <header className="sticky top-0 z-40 flex items-center h-16 px-4 border-b border-gray-100 bg-white/95 backdrop-blur-md lg:hidden">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -212,7 +212,7 @@ export default function SuperAdminLayoutClient({
           </div>
         </header>
 
-        <main className="p-4 sm:p-6 lg:p-8 max-w-7xl">{children}</main>
+        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
     </div>
   );
