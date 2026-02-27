@@ -196,7 +196,7 @@ export default function SuperAdminLayoutClient({
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 w-full lg:pl-64 flex flex-col overflow-y-auto">
+      <div className="flex-1 w-full lg:pl-64 flex flex-col overflow-hidden">
         <header className="sticky top-0 z-40 flex items-center h-16 px-4 border-b border-gray-100 bg-white/95 backdrop-blur-md lg:hidden flex-shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -212,7 +212,7 @@ export default function SuperAdminLayoutClient({
           </div>
         </header>
 
-        <main className="p-4 sm:p-6 lg:p-8 pb-8 sm:pb-12 lg:pb-16">{children}</main>
+        <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 pb-8 sm:pb-12 lg:pb-16">{children}</main>
       </div>
     </div>
   );

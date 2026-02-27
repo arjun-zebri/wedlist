@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Mail, Phone, DollarSign, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import CustomSelect from '@/components/CustomSelect';
+import CustomDatePicker from '@/components/CustomDatePicker';
 
 export default function NewMCPage() {
   const router = useRouter();
@@ -128,41 +130,33 @@ export default function NewMCPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Pipeline Status</h2>
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                MC Stage *
-              </label>
-              <select
-                name="stage"
-                value={formData.stage}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
-              >
-                <option value="prospect">Prospect</option>
-                <option value="trial">Trial</option>
-                <option value="listed">Listed</option>
-                <option value="active">Active</option>
-                <option value="churned">Churned</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="MC Stage"
+              value={formData.stage}
+              onChange={(value) => handleChange({ target: { name: 'stage', value } } as any)}
+              options={[
+                { value: 'prospect', label: 'Prospect' },
+                { value: 'trial', label: 'Trial' },
+                { value: 'listed', label: 'Listed' },
+                { value: 'active', label: 'Active' },
+                { value: 'churned', label: 'Churned' },
+              ]}
+              required
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Listing Status *
-              </label>
-              <select
-                name="listingStatus"
-                value={formData.listingStatus}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
-              >
-                <option value="free">Free</option>
-                <option value="trial">Trial</option>
-                <option value="paid">Paid</option>
-                <option value="expired">Expired</option>
-                <option value="rejected">Rejected</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Listing Status"
+              value={formData.listingStatus}
+              onChange={(value) => handleChange({ target: { name: 'listingStatus', value } } as any)}
+              options={[
+                { value: 'free', label: 'Free' },
+                { value: 'trial', label: 'Trial' },
+                { value: 'paid', label: 'Paid' },
+                { value: 'expired', label: 'Expired' },
+                { value: 'rejected', label: 'Rejected' },
+              ]}
+              required
+            />
           </div>
         </div>
 
@@ -191,18 +185,10 @@ export default function NewMCPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  Renewal Date
-                </div>
-              </label>
-              <input
-                type="date"
-                name="renewalDate"
+              <CustomDatePicker
+                label="Renewal Date"
                 value={formData.renewalDate}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                onChange={(value) => handleChange({ target: { name: 'renewalDate', value } } as any)}
               />
             </div>
           </div>
@@ -242,15 +228,15 @@ export default function NewMCPage() {
 
           {formData.linkAccount && (
             <div className="mt-4 pt-4 border-t border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Select Account
-              </label>
-              <select
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
-              >
-                <option value="">Choose an MC account...</option>
-                {/* TODO: Load existing MC accounts from database */}
-              </select>
+              <CustomSelect
+                label="Select Account"
+                value=""
+                onChange={() => {}}
+                placeholder="Choose an MC account..."
+                options={[
+                  /* TODO: Load existing MC accounts from database */
+                ]}
+              />
             </div>
           )}
         </div>

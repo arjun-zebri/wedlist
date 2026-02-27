@@ -22,22 +22,39 @@ const STATUS_COLORS = {
 };
 
 // Sample couple inquiry for qualification workflow
-const SAMPLE_INQUIRY = {
+const SAMPLE_INQUIRY: {
+  id: number;
+  name: string;
+  type: 'couple';
+  email: string;
+  phone: string;
+  eventDate: string;
+  venue: string;
+  guestCount: number;
+  status: 'new' | 'contacted' | 'qualified' | 'lost' | 'closed';
+  source: string;
+  message: string;
+  created: string;
+  category: string;
+  qualificationNotes: string;
+  vendorsMatched: number[];
+  budget: string;
+} = {
   id: 1,
   name: 'John & Jane Smith',
-  type: 'couple' as const,
+  type: 'couple',
   email: 'john@example.com',
   phone: '0412 345 678',
   eventDate: '2025-06-15',
   venue: 'The Rocks, Sydney',
   guestCount: 150,
-  status: 'new' as const,
+  status: 'new',
   source: 'website',
   message: 'We are looking for an MC for our wedding in June 2025. Professional with great testimonials.',
   created: '2025-02-25',
   category: 'MC',
   qualificationNotes: '',
-  vendorsMatched: [] as number[],
+  vendorsMatched: [],
   budget: '$1000-1500',
 };
 

@@ -7,7 +7,7 @@ import Link from 'next/link';
 const INQUIRY_TYPES = {
   couple: 'Couple Inquiry',
   vendor: 'Vendor Registration',
-};
+} as const;
 
 const INQUIRY_STATUSES = {
   new: 'New',
@@ -15,7 +15,7 @@ const INQUIRY_STATUSES = {
   qualified: 'Qualified',
   lost: 'Lost',
   closed: 'Closed',
-};
+} as const;
 
 const STATUS_COLORS = {
   new: 'bg-gray-100 text-gray-700',
@@ -23,36 +23,67 @@ const STATUS_COLORS = {
   qualified: 'bg-green-100 text-green-700',
   lost: 'bg-red-100 text-red-700',
   closed: 'bg-gray-200 text-gray-700',
-};
+} as const;
+
+type InquiryStatus = keyof typeof INQUIRY_STATUSES;
+
+interface BaseInquiry {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  status: InquiryStatus;
+  source: string;
+  message: string;
+  created: string;
+}
+
+interface CoupleInquiry extends BaseInquiry {
+  type: 'couple';
+  eventDate: string;
+  venue: string;
+  guestCount: number;
+  category: string;
+  qualificationNotes: string;
+  vendorsMatched: number[];
+}
+
+interface VendorInquiry extends BaseInquiry {
+  type: 'vendor';
+  vendorType: string;
+  onboardingNotes: string;
+}
+
+type Inquiry = CoupleInquiry | VendorInquiry;
 
 // Couple inquiries that need to be qualified and sent to vendors
 // Vendor inquiries for onboarding/partnerships
-const INQUIRIES = [
+const INQUIRIES: Inquiry[] = [
   {
     id: 1,
     name: 'John & Jane Smith',
-    type: 'couple' as const,
+    type: 'couple',
     email: 'john@example.com',
     phone: '0412 345 678',
     eventDate: '2025-06-15',
     venue: 'The Rocks, Sydney',
     guestCount: 150,
-    status: 'new' as const,
+    status: 'new',
     source: 'website',
     message: 'We are looking for an MC for our wedding in June 2025. Professional with great testimonials.',
     created: '2025-02-25',
-    category: 'MC', // what service they need
+    category: 'MC',
     qualificationNotes: '',
-    vendorsMatched: [] as number[], // IDs of vendors this has been sent to
+    vendorsMatched: [],
   },
   {
     id: 2,
     name: 'Sarah Photography Studio',
-    type: 'vendor' as const,
+    type: 'vendor',
     email: 'info@sarahphoto.com',
     phone: '0412 345 679',
     vendorType: 'photographer',
-    status: 'contacted' as const,
+    status: 'contacted',
     source: 'referral',
     message: 'Interested in partnering with WedList for photographer referrals. 15+ years experience.',
     created: '2025-02-20',
@@ -61,13 +92,13 @@ const INQUIRIES = [
   {
     id: 3,
     name: 'Michael & Rachel Lee',
-    type: 'couple' as const,
+    type: 'couple',
     email: 'michael@example.com',
     phone: '0412 345 680',
     eventDate: '2025-05-10',
     venue: 'Taronga Park, Sydney',
     guestCount: 80,
-    status: 'qualified' as const,
+    status: 'qualified',
     source: 'google',
     message: 'Looking for an experienced MC for our intimate wedding ceremony. Budget: $1000-1500.',
     created: '2025-02-18',
@@ -97,8 +128,8 @@ export default function InquiriesPage() {
   });
 
   // Separate couple inquiries (need qualification) from vendor registrations
-  const coupleInquiries = filteredInquiries.filter(i => i.type === 'couple');
-  const vendorInquiries = filteredInquiries.filter(i => i.type === 'vendor');
+  const coupleInquiries = filteredInquiries.filter((i) => i.type === 'couple') as CoupleInquiry[];
+  const vendorInquiries = filteredInquiries.filter((i) => i.type === 'vendor') as VendorInquiry[];
 
   return (
     <div className="space-y-6">
@@ -186,7 +217,7 @@ export default function InquiriesPage() {
             </h2>
           </div>
 
-          {coupleInquiries.map((inquiry: any) => (
+          {coupleInquiries.map((inquiry) => (
             <div
               key={inquiry.id}
               className="rounded-2xl bg-white shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100 overflow-hidden hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] transition-shadow"
@@ -316,7 +347,7 @@ export default function InquiriesPage() {
             </h2>
           </div>
 
-          {vendorInquiries.map((inquiry: any) => (
+          {vendorInquiries.map((inquiry) => (
             <div
               key={inquiry.id}
               className="rounded-2xl bg-white p-5 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-0.5 transition-all border border-gray-100"

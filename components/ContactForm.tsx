@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import CustomDatePicker from "@/components/CustomDatePicker";
 
 const contactSchema = z.object({
   couple_name: z.string().min(2, "Name must be at least 2 characters"),
@@ -32,9 +33,13 @@ export default function ContactForm({ mcId, mcName }: ContactFormProps) {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
+    setValue,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
+
+  const weddingDate = watch('wedding_date');
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
@@ -135,17 +140,10 @@ export default function ContactForm({ mcId, mcName }: ContactFormProps) {
         </div>
 
         <div>
-          <label
-            htmlFor="wedding_date"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Wedding Date
-          </label>
-          <input
-            type="date"
-            id="wedding_date"
-            {...register("wedding_date")}
-            className="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm placeholder-gray-400 shadow-sm transition-colors focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+          <CustomDatePicker
+            label="Wedding Date"
+            value={weddingDate || ''}
+            onChange={(value) => setValue('wedding_date', value)}
           />
         </div>
 
