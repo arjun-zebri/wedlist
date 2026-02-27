@@ -319,7 +319,7 @@ export default function InquiriesPage() {
                   {/* Action Buttons */}
                   <div className="flex gap-2 pt-2">
                     <Link
-                      href={`/super-admin/inquiries/${inquiry.id}`}
+                      href={`/super-admin/inquiries/couple/${inquiry.id}`}
                       className="flex-1 px-4 py-2.5 rounded-lg bg-[#E31C5F] text-white text-sm font-medium hover:bg-[#C4184F] transition-colors text-center"
                     >
                       View & Qualify
@@ -393,7 +393,7 @@ export default function InquiriesPage() {
                 </div>
 
                 <Link
-                  href={`/super-admin/inquiries/${inquiry.id}`}
+                  href={`/super-admin/inquiries/vendor/${inquiry.id}`}
                   className="ml-4 p-2.5 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
                 >
                   <ChevronRight className="w-5 h-5 text-gray-400" />
