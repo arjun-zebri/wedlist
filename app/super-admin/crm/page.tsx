@@ -190,55 +190,55 @@ function KPISummary() {
   const churnedCount = MC_DATA.churned.length;
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="rounded-2xl bg-white p-5 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="rounded-lg bg-white p-3 shadow-[0_1px_2px_rgba(227,28,95,0.08)] border border-gray-100 flex items-center justify-between">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
             <Users className="w-4 h-4 text-gray-600" />
           </div>
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide truncate">
             Total MCs
           </p>
         </div>
-        <p className="text-2xl font-bold text-gray-900">{totalMCs}</p>
+        <p className="text-lg font-bold text-gray-900 flex-shrink-0">{totalMCs}</p>
       </div>
 
-      <div className="rounded-2xl bg-white p-5 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center">
+      <div className="rounded-lg bg-white p-3 shadow-[0_1px_2px_rgba(227,28,95,0.08)] border border-gray-100 flex items-center justify-between">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
             <TrendingUp className="w-4 h-4 text-green-600" />
           </div>
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide truncate">
             Active
           </p>
         </div>
-        <p className="text-2xl font-bold text-gray-900">{activeCount}</p>
+        <p className="text-lg font-bold text-gray-900 flex-shrink-0">{activeCount}</p>
       </div>
 
-      <div className="rounded-2xl bg-white p-5 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center">
+      <div className="rounded-lg bg-white p-3 shadow-[0_1px_2px_rgba(227,28,95,0.08)] border border-gray-100 flex items-center justify-between">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
             <BarChart3 className="w-4 h-4 text-green-600" />
           </div>
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide truncate">
             MRR
           </p>
         </div>
-        <p className="text-2xl font-bold text-gray-900">
+        <p className="text-lg font-bold text-gray-900 flex-shrink-0">
           ${totalMRR.toLocaleString()}
         </p>
       </div>
 
-      <div className="rounded-2xl bg-white p-5 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center">
+      <div className="rounded-lg bg-white p-3 shadow-[0_1px_2px_rgba(227,28,95,0.08)] border border-gray-100 flex items-center justify-between">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
             <AlertCircle className="w-4 h-4 text-red-600" />
           </div>
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide truncate">
             Churned
           </p>
         </div>
-        <p className="text-2xl font-bold text-gray-900">{churnedCount}</p>
+        <p className="text-lg font-bold text-gray-900 flex-shrink-0">{churnedCount}</p>
       </div>
     </div>
   );
