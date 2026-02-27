@@ -25,9 +25,6 @@ export default function PackagesSection({ packages }: PackagesSectionProps) {
     <>
       <div className="border-b border-gray-200 py-12">
         <h2 className="flex items-center gap-3 text-2xl font-bold text-gray-900 mb-8">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
-            <DollarSign className="h-4 w-4 text-gray-900" />
-          </div>
           Packages
         </h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">

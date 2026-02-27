@@ -200,7 +200,7 @@ export default function ContactForm({ mcId, mcName }: ContactFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-lg bg-gray-900 px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-lg bg-[#E31C5F] px-4 py-3 text-sm font-semibold text-white transition-transform duration-200 hover:bg-[#C4184F] hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#E31C5F] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:translate-y-0"
         >
           {isSubmitting ? "Sending..." : "Send Message"}
         </button>

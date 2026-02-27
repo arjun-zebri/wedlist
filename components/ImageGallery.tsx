@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Images, Star } from "lucide-react";
+import { Images } from "lucide-react";
 import ImageGalleryModal from "./ImageGalleryModal";
 
 interface Photo {
@@ -15,13 +15,11 @@ interface Photo {
 interface ImageGalleryProps {
   photos: Photo[];
   mcName: string;
-  featured?: boolean;
 }
 
 export default function ImageGallery({
   photos,
   mcName,
-  featured = false,
 }: ImageGalleryProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStartIndex, setModalStartIndex] = useState(0);
@@ -84,21 +82,11 @@ export default function ImageGallery({
           </div>
         </div>
 
-        {/* Featured Badge - Top Left */}
-        {featured && (
-          <div className="absolute left-6 top-6 z-10">
-            <span className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-md">
-              <Star className="h-4 w-4 fill-current" />
-              Featured
-            </span>
-          </div>
-        )}
-
         {/* Show All Photos - Bottom Right */}
         {photos.length > 1 && (
           <button
             onClick={() => openModal(0)}
-            className="absolute bottom-6 right-6 z-10 flex items-center gap-2 rounded-lg border border-gray-900 bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-md transition-all hover:bg-gray-50"
+            className="absolute bottom-6 right-6 z-10 flex items-center gap-2 rounded-lg border border-gray-900 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-900 shadow-md transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
           >
             <Images className="h-4 w-4" />
             Show all {photos.length} photos
@@ -120,15 +108,6 @@ export default function ImageGallery({
             priority
           />
         </button>
-
-        {/* Featured Badge - Mobile */}
-        {featured && (
-          <div className="absolute left-4 top-4 z-10">
-            <span className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-md">
-              <Star className="h-4 w-4 fill-current" />
-            </span>
-          </div>
-        )}
 
         {/* Show All Photos - Mobile */}
         {photos.length > 1 && (
