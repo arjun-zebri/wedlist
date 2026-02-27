@@ -350,7 +350,7 @@ export default function EditBlogPostPage() {
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-[0_20px_25px_rgba(0,0,0,0.15)]">
             <h2 className="text-xl font-bold text-gray-900 mb-2">Delete Blog Post?</h2>
             <p className="text-gray-600 mb-6">
-              This will permanently delete "{formData.title}". This action cannot be undone.
+              This will permanently delete &quot;{formData.title}&quot;. This action cannot be undone.
             </p>
 
             <div className="flex gap-3">

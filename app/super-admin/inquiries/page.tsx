@@ -83,8 +83,7 @@ export default function InquiriesPage() {
       const query = searchQuery.toLowerCase();
       return (
         inquiry.name.toLowerCase().includes(query) ||
-        inquiry.email.toLowerCase().includes(query) ||
-        ('companyName' in inquiry && inquiry.companyName?.toLowerCase().includes(query))
+        inquiry.email.toLowerCase().includes(query)
       );
     }
     return true;

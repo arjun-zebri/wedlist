@@ -269,7 +269,7 @@ export default function EditMCPage() {
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-[0_20px_25px_rgba(0,0,0,0.15)]">
             <h2 className="text-xl font-bold text-gray-900 mb-2">Delete MC Record?</h2>
             <p className="text-gray-600 mb-6">
-              This will permanently delete {formData.name}'s MC record. This action cannot be undone.
+              This will permanently delete {formData.name}&apos;s MC record. This action cannot be undone.
             </p>
 
             <div className="flex gap-3">

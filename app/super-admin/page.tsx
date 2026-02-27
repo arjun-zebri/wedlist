@@ -51,7 +51,7 @@ export default function SuperAdminDashboard() {
       {/* Header */}
       <div>
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
-        <p className="text-gray-600">Welcome back. Here's what's happening with your business.</p>
+        <p className="text-gray-600">Welcome back. Here&apos;s what&apos;s happening with your business.</p>
       </div>
 
       {/* KPI Cards */}
