@@ -1,3 +1,10 @@
+## Product Modules
+
+- See [SUPER_ADMIN.md](./SUPER_ADMIN.md) for the super admin interface (`/super-admin/*`) — blog, inquiries, MC business lead CRM.
+- See [CRM.md](./CRM.md) for the MC couple leads CRM (`/admin/leads/*`) — where MCs manage couple enquiries.
+
+---
+
 ## Core Directive
 
 The design must visually and experientially match **Dribbble.com**.
