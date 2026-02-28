@@ -167,7 +167,7 @@ export default function InquiriesPage() {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-4xl font-bold text-gray-900">Inquiries</h1>
+            <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight">Inquiries</h1>
             {newLeads > 0 && (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#E31C5F]/10 text-[#E31C5F] ring-1 ring-[#E31C5F]/20">
                 <Sparkles className="w-3 h-3" />
@@ -179,7 +179,7 @@ export default function InquiriesPage() {
             Manage couple leads and vendor applications
           </p>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#E31C5F] text-white rounded-xl font-semibold hover:bg-[#C4184F] transition-colors shadow-[0_2px_8px_rgba(227,28,95,0.2)]">
+        <button className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#E31C5F] text-white rounded-xl font-semibold hover:bg-[#C4184F] transition-colors duration-200 shadow-[0_2px_8px_rgba(227,28,95,0.25)]">
           <Plus className="w-4 h-4" />
           Add Inquiry
         </button>
@@ -240,7 +240,7 @@ export default function InquiriesPage() {
             placeholder="Search inquiries..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
           />
         </div>
 
@@ -287,7 +287,7 @@ export default function InquiriesPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-1">
               <Heart className="w-5 h-5 text-[#E31C5F] fill-[#E31C5F]" />
-              <h2 className="font-semibold text-gray-900 text-lg">
+              <h2 className="font-semibold font-display text-gray-900 text-lg">
                 Couple Leads
               </h2>
               {coupleInquiries.filter(
@@ -310,7 +310,7 @@ export default function InquiriesPage() {
                   <Link
                     key={inquiry.id}
                     href={`/super-admin/inquiries/couple/${inquiry.id}`}
-                    className="group block rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100 hover:shadow-[0_4px_12px_rgba(227,28,95,0.15)] hover:-translate-y-0.5 transition-all"
+                    className="group block rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100 hover:shadow-[0_4px_12px_rgba(227,28,95,0.15)] hover:-translate-y-0.5 transition-[transform,box-shadow] duration-300"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
@@ -385,7 +385,7 @@ export default function InquiriesPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-1">
               <Building2 className="w-5 h-5 text-green-600" />
-              <h2 className="font-semibold text-gray-900 text-lg">
+              <h2 className="font-semibold font-display text-gray-900 text-lg">
                 Vendor Applications
               </h2>
               <span className="text-xs text-gray-500 ml-auto">
@@ -399,7 +399,7 @@ export default function InquiriesPage() {
                   <Link
                     key={inquiry.id}
                     href={`/super-admin/inquiries/vendor/${inquiry.id}`}
-                    className="group block rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100 hover:shadow-[0_4px_12px_rgba(227,28,95,0.15)] hover:-translate-y-0.5 transition-all"
+                    className="group block rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100 hover:shadow-[0_4px_12px_rgba(227,28,95,0.15)] hover:-translate-y-0.5 transition-[transform,box-shadow] duration-300"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">

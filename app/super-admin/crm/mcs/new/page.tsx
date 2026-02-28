@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Mail, Phone, DollarSign, Calendar } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, DollarSign, Calendar, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import CustomSelect from '@/components/CustomSelect';
 import CustomDatePicker from '@/components/CustomDatePicker';
@@ -50,16 +50,23 @@ export default function NewMCPage() {
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-1.5 text-sm">
+        <Link href="/super-admin/crm" className="text-gray-500 hover:text-gray-900 transition-colors duration-200">MC CRM</Link>
+        <ChevronRight className="w-4 h-4 text-gray-400" />
+        <span className="text-gray-900 font-medium">Add MC</span>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
+      <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
         >
           <ArrowLeft className="w-5 h-5 text-gray-600" />
         </button>
         <div>
-          <h1 className="text-4xl font-bold text-gray-900">Add New MC</h1>
+          <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight">Add New MC</h1>
           <p className="text-gray-600 mt-1">Create a new MC record to begin outreach</p>
         </div>
       </div>
@@ -68,7 +75,7 @@ export default function NewMCPage() {
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
         {/* Basic Information */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Basic Information</h2>
 
           <div className="space-y-4">
             <div>
@@ -82,7 +89,7 @@ export default function NewMCPage() {
                 onChange={handleChange}
                 required
                 placeholder="e.g. James Brown"
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -101,7 +108,7 @@ export default function NewMCPage() {
                   onChange={handleChange}
                   required
                   placeholder="james@example.com"
-                  className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
                 />
               </div>
 
@@ -118,7 +125,7 @@ export default function NewMCPage() {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="0412 345 678"
-                  className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
                 />
               </div>
             </div>
@@ -127,7 +134,7 @@ export default function NewMCPage() {
 
         {/* Pipeline & Listing Status */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Pipeline Status</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Pipeline Status</h2>
 
           <div className="grid grid-cols-2 gap-4">
             <CustomSelect
@@ -162,7 +169,7 @@ export default function NewMCPage() {
 
         {/* Financial Information */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Financial Details</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Financial Details</h2>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -180,7 +187,7 @@ export default function NewMCPage() {
                 placeholder="0.00"
                 step="0.01"
                 min="0"
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -196,7 +203,7 @@ export default function NewMCPage() {
 
         {/* Internal Notes */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Internal Notes</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Internal Notes</h2>
 
           <textarea
             name="notes"
@@ -204,13 +211,13 @@ export default function NewMCPage() {
             onChange={handleChange}
             placeholder="Add any internal notes about this MC..."
             rows={4}
-            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
           />
         </div>
 
         {/* Account Linking */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Account Linking</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Account Linking</h2>
 
           <label className="flex items-center gap-3 cursor-pointer">
             <input

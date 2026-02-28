@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, Save, X, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, X, Trash2, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function EditBlogPostPage() {
   const router = useRouter();
@@ -85,24 +86,31 @@ export default function EditBlogPostPage() {
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-1.5 text-sm">
+        <Link href="/super-admin/blog" className="text-gray-500 hover:text-gray-900 transition-colors duration-200">Blog</Link>
+        <ChevronRight className="w-4 h-4 text-gray-400" />
+        <span className="text-gray-900 font-medium">Edit Post</span>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
           >
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </button>
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">Edit Blog Post</h1>
+            <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight">Edit Blog Post</h1>
             <p className="text-gray-600 mt-1">Update and manage your blog post</p>
           </div>
         </div>
 
         <button
           onClick={() => setShowDeleteDialog(true)}
-          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
           title="Delete post"
         >
           <Trash2 className="w-5 h-5" />
@@ -113,7 +121,7 @@ export default function EditBlogPostPage() {
       <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
         {/* Basic Information */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Basic Information</h2>
 
           <div className="space-y-4">
             <div>
@@ -126,7 +134,7 @@ export default function EditBlogPostPage() {
                 value={formData.title}
                 onChange={handleChange}
                 required
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -140,7 +148,7 @@ export default function EditBlogPostPage() {
                 value={formData.slug}
                 onChange={handleChange}
                 required
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -154,7 +162,7 @@ export default function EditBlogPostPage() {
                 onChange={handleChange}
                 required
                 rows={2}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -167,7 +175,7 @@ export default function EditBlogPostPage() {
                 name="image"
                 value={formData.image}
                 onChange={handleChange}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
           </div>
@@ -175,7 +183,7 @@ export default function EditBlogPostPage() {
 
         {/* Content Editor */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Content</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Content</h2>
 
           <div className="mb-3 flex gap-2 text-xs border-b border-gray-200 pb-3">
             <button type="button" className="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 font-medium">
@@ -201,13 +209,13 @@ export default function EditBlogPostPage() {
             onChange={handleChange}
             required
             rows={12}
-            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20 font-mono"
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20 font-mono"
           />
         </div>
 
         {/* Tags */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Tags</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Tags</h2>
 
           <div className="flex gap-2 mb-3">
             <input
@@ -221,7 +229,7 @@ export default function EditBlogPostPage() {
                   addTag();
                 }
               }}
-              className="flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+              className="flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
             />
             <button
               type="button"
@@ -255,7 +263,7 @@ export default function EditBlogPostPage() {
 
         {/* SEO */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">SEO Settings</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">SEO Settings</h2>
 
           <div className="space-y-4">
             <div>
@@ -267,7 +275,7 @@ export default function EditBlogPostPage() {
                 name="seoTitle"
                 value={formData.seoTitle}
                 onChange={handleChange}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
               <p className="text-xs text-gray-500 mt-1">{formData.seoTitle.length}/60 characters</p>
             </div>
@@ -281,7 +289,7 @@ export default function EditBlogPostPage() {
                 value={formData.seoDescription}
                 onChange={handleChange}
                 rows={2}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
               <p className="text-xs text-gray-500 mt-1">{formData.seoDescription.length}/160 characters</p>
             </div>
@@ -290,7 +298,7 @@ export default function EditBlogPostPage() {
 
         {/* Status & Publishing */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Publishing</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Publishing</h2>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -301,7 +309,7 @@ export default function EditBlogPostPage() {
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               >
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
@@ -318,7 +326,7 @@ export default function EditBlogPostPage() {
                 name="publishedDate"
                 value={formData.publishedDate}
                 onChange={handleChange}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
           </div>
@@ -347,8 +355,8 @@ export default function EditBlogPostPage() {
       {/* Delete Confirmation Dialog */}
       {showDeleteDialog && (
         <div className="fixed inset-0 bg-black/50 z-[1300] flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-[0_20px_25px_rgba(0,0,0,0.15)]">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Delete Blog Post?</h2>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <h2 className="text-xl font-bold font-display text-gray-900 mb-2">Delete Blog Post?</h2>
             <p className="text-gray-600 mb-6">
               This will permanently delete &quot;{formData.title}&quot;. This action cannot be undone.
             </p>

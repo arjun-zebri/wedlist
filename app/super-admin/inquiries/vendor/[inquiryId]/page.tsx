@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, Mail, Phone, MessageSquare, Trash2, CheckCircle2, AlertCircle, Briefcase, Calendar, Building2, Check, Link2 } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MessageSquare, Trash2, CheckCircle2, AlertCircle, Briefcase, Calendar, Building2, Check, Link2, ChevronRight, DollarSign } from 'lucide-react';
+import Link from 'next/link';
 import CustomSelect from '@/components/CustomSelect';
 
 const INQUIRY_STATUSES = {
@@ -131,24 +132,31 @@ export default function VendorInquiryDetailPage() {
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-1.5 text-sm">
+        <Link href="/super-admin/inquiries" className="text-gray-500 hover:text-gray-900 transition-colors duration-200">Inquiries</Link>
+        <ChevronRight className="w-4 h-4 text-gray-400" />
+        <span className="text-gray-900 font-medium">Vendor Application</span>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
           >
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </button>
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">Vendor Application</h1>
+            <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight">Vendor Application</h1>
             <p className="text-gray-600 mt-1">Review and onboard vendor</p>
           </div>
         </div>
 
         <button
           onClick={() => setShowDeleteDialog(true)}
-          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
           title="Delete inquiry"
         >
           <Trash2 className="w-5 h-5" />
@@ -159,7 +167,7 @@ export default function VendorInquiryDetailPage() {
       <div className="bg-gradient-to-br from-white via-white to-rose-50/30 rounded-2xl p-8 shadow-[0_2px_12px_rgba(227,28,95,0.12)] border border-rose-100/50">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{inquiry.name}</h1>
+            <h2 className="text-3xl font-bold font-display text-gray-900">{inquiry.name}</h2>
             <p className="text-gray-600 mt-1">Vendor Application • Applied {new Date(inquiry.created).toLocaleDateString('en-AU')}</p>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-semibold ${STATUS_COLORS[inquiry.status as keyof typeof STATUS_COLORS]}`}>
@@ -168,7 +176,7 @@ export default function VendorInquiryDetailPage() {
         </div>
 
         <div className="grid grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-rose-200 transition-colors">
+          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-rose-200 transition-colors duration-200">
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-rose-50 rounded-lg">
                 <Briefcase className="w-4 h-4 text-[#E31C5F]" />
@@ -180,10 +188,10 @@ export default function VendorInquiryDetailPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-amber-200 transition-colors">
+          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-rose-200 transition-colors duration-200">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-amber-50 rounded-lg">
-                <Calendar className="w-4 h-4 text-amber-700" />
+              <div className="p-2.5 bg-rose-50 rounded-lg">
+                <Calendar className="w-4 h-4 text-[#E31C5F]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500 font-medium">Experience</p>
@@ -192,10 +200,10 @@ export default function VendorInquiryDetailPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-amber-200 transition-colors">
+          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-rose-200 transition-colors duration-200">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-amber-50 rounded-lg">
-                <Building2 className="w-4 h-4 text-amber-700" />
+              <div className="p-2.5 bg-rose-50 rounded-lg">
+                <Building2 className="w-4 h-4 text-[#E31C5F]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500 font-medium">Service Area</p>
@@ -204,10 +212,10 @@ export default function VendorInquiryDetailPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-amber-200 transition-colors">
+          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-rose-200 transition-colors duration-200">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-amber-50 rounded-lg">
-                <span className="text-sm font-bold text-amber-700">$</span>
+              <div className="p-2.5 bg-rose-50 rounded-lg">
+                <DollarSign className="w-4 h-4 text-[#E31C5F]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500 font-medium">Base Price</p>
@@ -231,9 +239,9 @@ export default function VendorInquiryDetailPage() {
               <div key={step.key} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-200 ${
                       isActive
-                        ? 'bg-amber-500 text-white shadow-lg shadow-amber-200'
+                        ? 'bg-[#E31C5F] text-white shadow-[0_4px_12px_rgba(227,28,95,0.3)]'
                         : isCompleted
                         ? 'bg-green-100 text-green-700'
                         : 'bg-gray-100 text-gray-400'
@@ -265,25 +273,25 @@ export default function VendorInquiryDetailPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Contact Information */}
           <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Mail className="w-5 h-5 text-amber-700" />
+            <h2 className="text-lg font-semibold font-display text-gray-900 mb-4 flex items-center gap-2">
+              <Mail className="w-5 h-5 text-[#E31C5F]" />
               Contact Information
             </h2>
 
             <div className="space-y-3">
               <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
-                <Mail className="w-4 h-4 text-amber-700" />
+                <Mail className="w-4 h-4 text-[#E31C5F]" />
                 <span
-                  className="text-amber-700 hover:underline cursor-pointer font-medium"
+                  className="text-[#E31C5F] hover:underline cursor-pointer font-medium"
                   onClick={() => window.location.href = `mailto:${inquiry.email}`}
                 >
                   {inquiry.email}
                 </span>
               </div>
               <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
-                <Phone className="w-4 h-4 text-amber-700" />
+                <Phone className="w-4 h-4 text-[#E31C5F]" />
                 <span
-                  className="text-amber-700 hover:underline cursor-pointer font-medium"
+                  className="text-[#E31C5F] hover:underline cursor-pointer font-medium"
                   onClick={() => window.location.href = `tel:${inquiry.phone}`}
                 >
                   {inquiry.phone}
@@ -291,12 +299,12 @@ export default function VendorInquiryDetailPage() {
               </div>
               {inquiry.portfolio && (
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
-                  <Link2 className="w-4 h-4 text-amber-700" />
+                  <Link2 className="w-4 h-4 text-[#E31C5F]" />
                   <a
                     href={inquiry.portfolio}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-amber-700 hover:underline cursor-pointer font-medium"
+                    className="text-[#E31C5F] hover:underline cursor-pointer font-medium"
                   >
                     View Portfolio
                   </a>
@@ -307,7 +315,7 @@ export default function VendorInquiryDetailPage() {
 
           {/* Message */}
           <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold font-display text-gray-900 mb-4 flex items-center gap-2">
               <MessageSquare className="w-5 h-5" />
               Application Message
             </h2>
@@ -317,7 +325,7 @@ export default function VendorInquiryDetailPage() {
 
           {/* Onboarding Notes */}
           <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold font-display text-gray-900 mb-4 flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5" />
               Onboarding Notes
             </h2>
@@ -333,7 +341,7 @@ export default function VendorInquiryDetailPage() {
                   onChange={(e) => setOnboardingNotes(e.target.value)}
                   placeholder="Add notes about this vendor application... (portfolio quality, pricing, communication, etc.)"
                   rows={4}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors focus:border-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-700/20"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
                 />
               </div>
 
@@ -377,7 +385,7 @@ export default function VendorInquiryDetailPage() {
             ) : (
               <button
                 onClick={() => setIsEditingStatus(true)}
-                className={`w-full px-4 py-3 rounded-lg text-sm font-semibold text-center transition-all hover:shadow-md ${STATUS_COLORS[inquiry.status as keyof typeof STATUS_COLORS]}`}
+                className={`w-full px-4 py-3 rounded-xl text-sm font-semibold text-center transition-[box-shadow] duration-200 hover:shadow-[0_2px_8px_rgba(227,28,95,0.12)] ${STATUS_COLORS[inquiry.status as keyof typeof STATUS_COLORS]}`}
               >
                 {INQUIRY_STATUSES[inquiry.status as keyof typeof INQUIRY_STATUSES]}
               </button>
@@ -413,7 +421,7 @@ export default function VendorInquiryDetailPage() {
             <div className="space-y-2">
               <a
                 href={`mailto:${inquiry.email}`}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 text-white font-semibold hover:bg-amber-700 transition-colors text-sm shadow-[0_4px_12px_rgba(217,119,6,0.3)]"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#E31C5F] text-white font-semibold hover:bg-[#C4184F] transition-colors duration-200 text-sm shadow-[0_4px_12px_rgba(227,28,95,0.3)]"
               >
                 <Mail className="w-4 h-4" />
                 Email
@@ -433,8 +441,8 @@ export default function VendorInquiryDetailPage() {
       {/* Delete Confirmation Dialog */}
       {showDeleteDialog && (
         <div className="fixed inset-0 bg-black/50 z-[1300] flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-[0_20px_25px_rgba(0,0,0,0.15)]">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Delete Application?</h2>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <h2 className="text-xl font-bold font-display text-gray-900 mb-2">Delete Application?</h2>
             <p className="text-gray-600 mb-6">
               This will permanently delete this vendor application. This action cannot be undone.
             </p>

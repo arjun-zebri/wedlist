@@ -74,7 +74,7 @@ function MCCard({ mc, stage }: { mc: MC; stage: string }) {
   return (
     <div
       onClick={() => router.push(`/super-admin/crm/mcs/${mc.id}/edit`)}
-      className="rounded-2xl bg-white p-4 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-all group cursor-pointer border border-gray-100"
+      className="rounded-2xl bg-white p-4 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300 group cursor-pointer border border-gray-100"
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
@@ -164,20 +164,20 @@ export default function MCPipeline() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">MC Pipeline</h1>
+          <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight mb-2">MC Pipeline</h1>
           <p className="text-gray-600">Manage your MC business development pipeline</p>
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => router.push('/super-admin/crm/mcs/new')}
-            className="px-4 py-2 rounded-lg bg-[#E31C5F] text-white text-sm font-medium hover:bg-[#C4184F] transition-colors flex items-center gap-2"
+            className="px-4 py-2.5 rounded-xl bg-[#E31C5F] text-white text-sm font-semibold hover:bg-[#C4184F] transition-colors duration-200 shadow-[0_2px_8px_rgba(227,28,95,0.25)] flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
             Add MC
           </button>
           <button
             onClick={() => setViewMode(viewMode === 'kanban' ? 'list' : 'kanban')}
-            className="px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors duration-200"
           >
             {viewMode === 'kanban' ? 'List View' : 'Kanban View'}
           </button>

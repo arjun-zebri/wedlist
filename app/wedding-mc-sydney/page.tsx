@@ -320,13 +320,13 @@ export default async function WeddingMCSydney({
                   <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-50 shadow-[0_2px_8px_rgba(227,28,95,0.08)]">
                     <Search className="h-7 w-7 text-[#E31C5F]" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900 font-display">No MCs found</h2>
+                  <h2 className="text-xl font-bold text-gray-900 font-display tracking-tight">No MCs found</h2>
                   <p className="mt-3 text-sm text-gray-600 leading-relaxed">
                     We couldn&apos;t find any MCs matching your criteria. Try adjusting your filters or search terms.
                   </p>
                   <Link
                     href="/wedding-mc-sydney"
-                    className="mt-6 inline-flex items-center rounded-lg bg-[#E31C5F] px-6 py-2.5 text-sm font-medium text-white hover:bg-[#C4184F] transition-colors"
+                    className="mt-6 inline-flex items-center rounded-xl bg-[#E31C5F] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#C4184F] shadow-[0_2px_8px_rgba(227,28,95,0.25)] transition-colors duration-200"
                   >
                     Clear all filters
                   </Link>

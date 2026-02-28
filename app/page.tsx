@@ -290,14 +290,14 @@ export default async function Home() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   href="/wedding-mc-sydney"
-                  className="group px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
+                  className="group px-8 py-3 bg-[#E31C5F] text-white rounded-xl font-semibold hover:bg-[#C4184F] shadow-[0_2px_8px_rgba(227,28,95,0.25)] transition-colors duration-200"
                 >
                   Browse MCs
-                  <ArrowRight className="ml-2 inline-block h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  <ArrowRight className="ml-2 inline-block h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-200" />
                 </Link>
                 <a
                   href="#how-it-works"
-                  className="px-8 py-3 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                  className="px-8 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors duration-200"
                 >
                   How it works
                 </a>
@@ -385,10 +385,10 @@ export default async function Home() {
                 <div className="mt-12 text-center">
                   <Link
                     href="/wedding-mc-sydney"
-                    className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
+                    className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-xl font-semibold hover:bg-[#C4184F] shadow-[0_2px_8px_rgba(227,28,95,0.25)] transition-colors duration-200"
                   >
                     View All Sydney MCs
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-200" />
                   </Link>
                 </div>
               </div>
@@ -452,10 +452,10 @@ export default async function Home() {
 
               <Link
                 href="/wedding-mc-sydney"
-                className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
+                className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-xl font-semibold hover:bg-[#C4184F] shadow-[0_2px_8px_rgba(227,28,95,0.25)] transition-colors duration-200"
               >
                 Start Browsing
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-200" />
               </Link>
 
               <p className="mt-6 text-sm text-gray-500">

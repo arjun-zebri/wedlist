@@ -85,7 +85,7 @@ export default function SuperAdminLayoutClient({
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-rose-50 mb-4">
                 <Lock className="w-6 h-6 text-[#E31C5F]" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold font-display text-gray-900">
                 WedList Super Admin
               </h1>
               <p className="mt-2 text-sm text-gray-500">
@@ -106,7 +106,7 @@ export default function SuperAdminLayoutClient({
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-xl border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                  className="block w-full rounded-xl border border-gray-300 px-4 py-3 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
                   placeholder="your@email.com"
                   required
                   disabled={isLoading}
@@ -124,7 +124,7 @@ export default function SuperAdminLayoutClient({
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-xl border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                  className="block w-full rounded-xl border border-gray-300 px-4 py-3 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
                   placeholder="Enter your password"
                   required
                   disabled={isLoading}

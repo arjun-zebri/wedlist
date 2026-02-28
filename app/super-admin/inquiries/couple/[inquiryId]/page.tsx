@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, Mail, Phone, Calendar, Users, MessageSquare, Send, Trash2, CheckCircle2, AlertCircle, Flag, MapPin, DollarSign, TrendingUp, Check } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, Calendar, Users, MessageSquare, Send, Trash2, CheckCircle2, AlertCircle, Flag, MapPin, DollarSign, TrendingUp, Check, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import CustomSelect from '@/components/CustomSelect';
 
@@ -158,24 +158,31 @@ export default function CoupleInquiryDetailPage() {
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-1.5 text-sm">
+        <Link href="/super-admin/inquiries" className="text-gray-500 hover:text-gray-900 transition-colors duration-200">Inquiries</Link>
+        <ChevronRight className="w-4 h-4 text-gray-400" />
+        <span className="text-gray-900 font-medium">Couple Inquiry</span>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
           >
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </button>
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">Couple Inquiry</h1>
+            <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight">Couple Inquiry</h1>
             <p className="text-gray-600 mt-1">Qualify and match to vendors</p>
           </div>
         </div>
 
         <button
           onClick={() => setShowDeleteDialog(true)}
-          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
           title="Delete inquiry"
         >
           <Trash2 className="w-5 h-5" />
@@ -186,7 +193,7 @@ export default function CoupleInquiryDetailPage() {
       <div className="bg-gradient-to-br from-white via-white to-rose-50/30 rounded-2xl p-8 shadow-[0_2px_12px_rgba(227,28,95,0.12)] border border-rose-100/50">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{inquiry.name}</h1>
+            <h2 className="text-3xl font-bold font-display text-gray-900">{inquiry.name}</h2>
             <p className="text-gray-600 mt-1">Wedding Inquiry • Added {new Date(inquiry.created).toLocaleDateString('en-AU')}</p>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-semibold ${STATUS_COLORS[inquiry.status as keyof typeof STATUS_COLORS]}`}>
@@ -260,9 +267,9 @@ export default function CoupleInquiryDetailPage() {
               <div key={step.key} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-200 ${
                       isActive
-                        ? 'bg-[#E31C5F] text-white shadow-lg shadow-rose-200'
+                        ? 'bg-[#E31C5F] text-white shadow-[0_4px_12px_rgba(227,28,95,0.3)]'
                         : isCompleted
                         ? 'bg-green-100 text-green-700'
                         : 'bg-gray-100 text-gray-400'
@@ -294,7 +301,7 @@ export default function CoupleInquiryDetailPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Contact Information */}
           <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold font-display text-gray-900 mb-4 flex items-center gap-2">
               <Mail className="w-5 h-5 text-[#E31C5F]" />
               Contact Information
             </h2>
@@ -323,7 +330,7 @@ export default function CoupleInquiryDetailPage() {
 
           {/* Message */}
           <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold font-display text-gray-900 mb-4 flex items-center gap-2">
               <MessageSquare className="w-5 h-5" />
               Message
             </h2>
@@ -333,7 +340,7 @@ export default function CoupleInquiryDetailPage() {
 
           {/* Qualification Section */}
           <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold font-display text-gray-900 mb-4 flex items-center gap-2">
               <Flag className="w-5 h-5" />
               Qualify & Match Vendors
             </h2>
@@ -349,7 +356,7 @@ export default function CoupleInquiryDetailPage() {
                   onChange={(e) => setQualificationNotes(e.target.value)}
                   placeholder="Add notes about this lead... (budget fit, timing, requirements, etc.)"
                   rows={3}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
                 />
               </div>
 
@@ -365,14 +372,14 @@ export default function CoupleInquiryDetailPage() {
                       <div
                         key={vendor.id}
                         onClick={() => handleToggleVendor(vendor.id)}
-                        className={`relative p-4 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
+                        className={`relative p-4 rounded-xl cursor-pointer transition-[border-color,box-shadow,background-color] duration-200 border-2 ${
                           isSelected
                             ? 'bg-rose-50 border-[#E31C5F] shadow-[0_4px_12px_rgba(227,28,95,0.15)]'
                             : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-[0_2px_8px_rgba(0,0,0,0.05)]'
                         }`}
                       >
                         <div className="flex items-start gap-4">
-                          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors duration-200 ${
                             isSelected
                               ? 'bg-[#E31C5F] border-[#E31C5F]'
                               : 'border-gray-300 bg-white'
@@ -438,7 +445,7 @@ export default function CoupleInquiryDetailPage() {
                   <Send className="w-5 h-5 text-green-700" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-green-900">Ready to Send</h2>
+                  <h2 className="text-lg font-semibold font-display text-green-900">Ready to Send</h2>
                   <p className="text-sm text-green-700 mt-1">
                     This lead is qualified and ready to be sent to <strong>{selectedVendors.length}</strong> vendor{selectedVendors.length !== 1 ? 's' : ''}.
                   </p>
@@ -473,7 +480,7 @@ export default function CoupleInquiryDetailPage() {
             ) : (
               <button
                 onClick={() => setIsEditingStatus(true)}
-                className={`w-full px-4 py-3 rounded-lg text-sm font-semibold text-center transition-all hover:shadow-md ${STATUS_COLORS[inquiry.status as keyof typeof STATUS_COLORS]}`}
+                className={`w-full px-4 py-3 rounded-xl text-sm font-semibold text-center transition-[box-shadow] duration-200 hover:shadow-[0_2px_8px_rgba(227,28,95,0.12)] ${STATUS_COLORS[inquiry.status as keyof typeof STATUS_COLORS]}`}
               >
                 {INQUIRY_STATUSES[inquiry.status as keyof typeof INQUIRY_STATUSES]}
               </button>
@@ -536,8 +543,8 @@ export default function CoupleInquiryDetailPage() {
       {/* Delete Confirmation Dialog */}
       {showDeleteDialog && (
         <div className="fixed inset-0 bg-black/50 z-[1300] flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-[0_20px_25px_rgba(0,0,0,0.15)]">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Delete Inquiry?</h2>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <h2 className="text-xl font-bold font-display text-gray-900 mb-2">Delete Inquiry?</h2>
             <p className="text-gray-600 mb-6">
               This will permanently delete this inquiry. This action cannot be undone.
             </p>

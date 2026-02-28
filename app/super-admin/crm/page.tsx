@@ -271,7 +271,7 @@ function DraggableMCCard({ mc, stage }: { mc: MC; stage: Stage }) {
       {...attributes}
       {...listeners}
       onClick={() => router.push(`/super-admin/crm/mcs/${mc.id}/edit`)}
-      className={`rounded-2xl bg-white p-4 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-all group cursor-pointer border border-gray-100 ${
+      className={`rounded-2xl bg-white p-4 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300 group cursor-pointer border border-gray-100 ${
         isDragging ? "opacity-50" : ""
       }`}
     >
@@ -580,7 +580,7 @@ export default function CRMPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-1">
+            <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight mb-1">
               MC Pipeline
             </h1>
             <p className="text-gray-500 text-sm">
@@ -609,7 +609,7 @@ export default function CRMPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, email, or phone..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
             />
           </div>
 
@@ -631,7 +631,7 @@ export default function CRMPage() {
             </div>
 
             {/* View Toggle */}
-            <div className="flex rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden flex-shrink-0">
+            <div className="flex rounded-xl border border-gray-200 bg-white shadow-[0_1px_2px_rgba(227,28,95,0.06)] overflow-hidden flex-shrink-0">
               <button
                 onClick={() => setViewMode("kanban")}
                 className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium transition-colors whitespace-nowrap ${

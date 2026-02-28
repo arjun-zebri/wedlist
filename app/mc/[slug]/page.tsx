@@ -320,7 +320,7 @@ export default async function MCProfilePage({
                         {sortedVideos.map((video) => (
                           <div
                             key={video.id}
-                            className="overflow-hidden rounded-2xl border border-gray-200 shadow-[0_2px_8px_rgba(227,28,95,0.04)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.08)] transition-shadow duration-300"
+                            className="overflow-hidden rounded-2xl border border-gray-100 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.12)] transition-[box-shadow] duration-300"
                           >
                             <div className="relative aspect-video bg-gray-900">
                               <iframe
@@ -358,7 +358,7 @@ export default async function MCProfilePage({
                         {sortedReviews.slice(0, 5).map((review) => (
                           <div
                             key={review.id}
-                            className="w-[280px] flex-shrink-0 rounded-xl border border-gray-200 bg-white p-6 relative overflow-hidden group transition-transform duration-300"
+                            className="w-[280px] flex-shrink-0 rounded-xl border border-gray-100 bg-white p-6 relative overflow-hidden group shadow-[0_2px_8px_rgba(227,28,95,0.08)] transition-[transform,box-shadow] duration-300"
                           >
                             <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-[#E31C5F]/60 rounded-tl-lg" />
                             <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-[#E31C5F]/60 rounded-br-lg" />
@@ -413,10 +413,10 @@ export default async function MCProfilePage({
                         {sortedReviews.slice(0, 4).map((review) => (
                           <div
                             key={review.id}
-                            className="rounded-xl border border-gray-200 bg-white p-7 relative overflow-hidden flex flex-col group transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(227,28,95,0.12)]"
+                            className="rounded-xl border border-gray-100 bg-white p-7 relative overflow-hidden flex flex-col group shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(227,28,95,0.12)] transition-[transform,box-shadow] duration-300"
                           >
-                            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#E31C5F]/60 rounded-tl-lg group-hover:border-[#E31C5F] group-hover:w-8 group-hover:h-8 transition-all duration-300" />
-                            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#E31C5F]/60 rounded-br-lg group-hover:border-[#E31C5F] group-hover:w-8 group-hover:h-8 transition-all duration-300" />
+                            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#E31C5F]/60 rounded-tl-lg group-hover:border-[#E31C5F] transition-[border-color] duration-300" />
+                            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#E31C5F]/60 rounded-br-lg group-hover:border-[#E31C5F] transition-[border-color] duration-300" />
                             <div className="flex items-start justify-between mb-6">
                               <div className="flex items-center gap-1">
                                 {Array.from({ length: 5 }).map((_, i) => (
@@ -476,7 +476,7 @@ export default async function MCProfilePage({
                 {/* Right Column - Sticky Contact Card */}
                 <div className="lg:col-span-1">
                   <div className="sticky top-24">
-                    <div className="rounded-2xl bg-white p-7 sm:p-8 shadow-[0_4px_24px_rgba(227,28,95,0.08)] border border-gray-200">
+                    <div className="rounded-2xl bg-white p-7 sm:p-8 shadow-[0_4px_24px_rgba(227,28,95,0.08)] border border-gray-100">
                       {/* Contact Details Above Form */}
                       {(mc.phone || mc.email || mc.website) && (
                         <div className="mb-7 space-y-3.5 border-b border-gray-200 pb-7">

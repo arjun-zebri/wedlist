@@ -50,14 +50,14 @@ export default function SuperAdminDashboard() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
+        <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight mb-2">Dashboard</h1>
         <p className="text-gray-600">Welcome back. Here&apos;s what&apos;s happening with your business.</p>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Total MCs */}
-        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow">
+        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow duration-200 border border-gray-100">
           <div className="flex items-start justify-between mb-4">
             <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
               <Users className="w-5 h-5 text-blue-600" />
@@ -69,7 +69,7 @@ export default function SuperAdminDashboard() {
         </div>
 
         {/* Active Listings */}
-        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow">
+        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow duration-200 border border-gray-100">
           <div className="flex items-start justify-between mb-4">
             <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-green-600" />
@@ -81,7 +81,7 @@ export default function SuperAdminDashboard() {
         </div>
 
         {/* Monthly Revenue */}
-        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow">
+        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow duration-200 border border-gray-100">
           <div className="flex items-start justify-between mb-4">
             <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
               <BarChart3 className="w-5 h-5 text-green-600" />
@@ -93,7 +93,7 @@ export default function SuperAdminDashboard() {
         </div>
 
         {/* Churned This Month */}
-        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow">
+        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow duration-200 border border-gray-100">
           <div className="flex items-start justify-between mb-4">
             <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
               <AlertCircle className="w-5 h-5 text-red-600" />
@@ -105,7 +105,7 @@ export default function SuperAdminDashboard() {
         </div>
 
         {/* Upcoming Renewals */}
-        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow">
+        <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_20px_rgba(227,28,95,0.15)] transition-shadow duration-200 border border-gray-100">
           <div className="flex items-start justify-between mb-4">
             <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
               <Calendar className="w-5 h-5 text-amber-600" />
@@ -121,7 +121,7 @@ export default function SuperAdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Quick Actions */}
         <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] lg:col-span-1">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h2>
+          <h2 className="text-lg font-bold font-display text-gray-900 mb-4">Quick Actions</h2>
           <div className="space-y-3">
             <Link
               href="/super-admin/crm/mcs"
@@ -149,7 +149,7 @@ export default function SuperAdminDashboard() {
 
         {/* Recent Activity */}
         <div className="rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] lg:col-span-2">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Recent Activity</h2>
+          <h2 className="text-lg font-bold font-display text-gray-900 mb-4">Recent Activity</h2>
           <div className="space-y-4">
             {SAMPLE_ACTIVITIES.map((activity) => (
               <div key={activity.id} className="flex items-start gap-4 pb-4 border-b border-gray-100 last:border-b-0 last:pb-0">

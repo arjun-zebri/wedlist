@@ -187,14 +187,14 @@ export default function ListWithUsPage() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <a
                   href="mailto:hello@wedlist.com.au?subject=Free Listing Request"
-                  className="group px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
+                  className="group px-8 py-3 bg-[#E31C5F] text-white rounded-xl font-semibold hover:bg-[#C4184F] shadow-[0_2px_8px_rgba(227,28,95,0.25)] transition-colors duration-200"
                 >
                   List for Free
-                  <ArrowRight className="ml-2 inline-block h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  <ArrowRight className="ml-2 inline-block h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-200" />
                 </a>
                 <a
                   href="#how-it-works"
-                  className="px-8 py-3 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                  className="px-8 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors duration-200"
                 >
                   See how it works
                 </a>
@@ -251,7 +251,7 @@ export default function ListWithUsPage() {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="group rounded-2xl bg-white p-6 sm:p-8 border border-gray-300 shadow-[0_2px_8px_rgba(227,28,95,0.06)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.12)] hover:-translate-y-1 transition-all duration-300"
+                    className="group rounded-2xl bg-white p-6 sm:p-8 border border-gray-100 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300"
                   >
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-rose-50 flex items-center justify-center mb-4 sm:mb-5">
                       <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#E31C5F]" />
@@ -336,7 +336,7 @@ export default function ListWithUsPage() {
                       key={item.step}
                       className="flex items-start gap-6 group"
                     >
-                      <div className="relative z-10 flex-shrink-0 w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-[0_2px_8px_rgba(227,28,95,0.06)] group-hover:shadow-[0_4px_12px_rgba(227,28,95,0.12)] group-hover:border-[#E31C5F]/30 flex items-center justify-center transition-all duration-300">
+                      <div className="relative z-10 flex-shrink-0 w-12 h-12 rounded-xl bg-white border border-gray-100 shadow-[0_2px_8px_rgba(227,28,95,0.08)] group-hover:shadow-[0_4px_12px_rgba(227,28,95,0.12)] group-hover:border-[#E31C5F]/30 flex items-center justify-center transition-[box-shadow,border-color] duration-300">
                         <item.icon className="w-5 h-5 text-[#E31C5F]" />
                       </div>
                       <div className="pt-1">
@@ -455,7 +455,7 @@ export default function ListWithUsPage() {
                 ].map((pillar) => (
                   <div
                     key={pillar.title}
-                    className="group rounded-2xl bg-white p-6 sm:p-8 border border-gray-300 shadow-[0_2px_8px_rgba(227,28,95,0.06)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.12)] hover:-translate-y-1 transition-all duration-300"
+                    className="group rounded-2xl bg-white p-6 sm:p-8 border border-gray-100 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300"
                   >
                     <div className="w-12 h-12 rounded-xl bg-rose-50 flex items-center justify-center mb-5">
                       <pillar.icon className="w-6 h-6 text-[#E31C5F]" />
@@ -600,7 +600,7 @@ export default function ListWithUsPage() {
               <div className="flex gap-4 pl-4 pr-4 pb-4 sm:pl-6 sm:pr-6 md:pb-0 md:grid md:grid-cols-3 md:gap-6 md:mx-auto md:max-w-5xl md:px-8 w-max md:w-auto">
                 {/* Free */}
                 <div
-                  className="relative w-[85vw] flex-shrink-0 sm:w-[320px] md:w-auto md:flex-shrink rounded-2xl bg-white p-6 sm:p-8 border border-gray-300 shadow-[0_2px_8px_rgba(227,28,95,0.06)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.12)] hover:-translate-y-1 transition-all duration-300"
+                  className="relative w-[85vw] flex-shrink-0 sm:w-[320px] md:w-auto md:flex-shrink rounded-2xl bg-white p-6 sm:p-8 border border-gray-100 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300"
                   style={{ scrollSnapAlign: 'start' }}
                 >
                   <h3 className="text-lg font-bold text-gray-900">Free Listing</h3>
@@ -617,14 +617,14 @@ export default function ListWithUsPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href="mailto:hello@wedlist.com.au?subject=Free Listing Request" className="block w-full text-center rounded-lg border border-gray-300 px-4 py-2.5 sm:py-3 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+                  <a href="mailto:hello@wedlist.com.au?subject=Free Listing Request" className="block w-full text-center rounded-xl border border-gray-300 px-4 py-2.5 sm:py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors duration-200">
                     List for Free
                   </a>
                 </div>
 
                 {/* Pro — same size card, badge uses absolute + scroll container pt-5 prevents clip */}
                 <div
-                  className="relative w-[85vw] flex-shrink-0 sm:w-[320px] md:w-auto md:flex-shrink rounded-2xl bg-white p-6 sm:p-8 border-2 border-[#E31C5F] shadow-[0_4px_16px_rgba(227,28,95,0.12)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.18)] hover:-translate-y-1 transition-all duration-300"
+                  className="relative w-[85vw] flex-shrink-0 sm:w-[320px] md:w-auto md:flex-shrink rounded-2xl bg-white p-6 sm:p-8 border-2 border-[#E31C5F] shadow-[0_4px_16px_rgba(227,28,95,0.12)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.18)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300"
                   style={{ scrollSnapAlign: 'start' }}
                 >
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
@@ -646,14 +646,14 @@ export default function ListWithUsPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href="mailto:hello@wedlist.com.au?subject=Pro Plan Inquiry" className="block w-full text-center rounded-lg bg-[#E31C5F] px-4 py-2.5 sm:py-3 text-sm font-medium text-white hover:bg-[#C4184F] transition-colors">
+                  <a href="mailto:hello@wedlist.com.au?subject=Pro Plan Inquiry" className="block w-full text-center rounded-xl bg-[#E31C5F] px-4 py-2.5 sm:py-3 text-sm font-semibold text-white hover:bg-[#C4184F] shadow-[0_2px_8px_rgba(227,28,95,0.25)] transition-colors duration-200">
                     Start Pro
                   </a>
                 </div>
 
                 {/* Teams */}
                 <div
-                  className="relative w-[85vw] flex-shrink-0 sm:w-[320px] md:w-auto md:flex-shrink rounded-2xl bg-white p-6 sm:p-8 border border-gray-300 shadow-[0_2px_8px_rgba(227,28,95,0.06)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.12)] hover:-translate-y-1 transition-all duration-300"
+                  className="relative w-[85vw] flex-shrink-0 sm:w-[320px] md:w-auto md:flex-shrink rounded-2xl bg-white p-6 sm:p-8 border border-gray-100 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300"
                   style={{ scrollSnapAlign: 'start' }}
                 >
                   <h3 className="text-lg font-bold text-gray-900">Teams</h3>
@@ -669,7 +669,7 @@ export default function ListWithUsPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href="mailto:hello@wedlist.com.au?subject=Teams Plan Inquiry" className="block w-full text-center rounded-lg border border-gray-300 px-4 py-2.5 sm:py-3 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+                  <a href="mailto:hello@wedlist.com.au?subject=Teams Plan Inquiry" className="block w-full text-center rounded-xl border border-gray-300 px-4 py-2.5 sm:py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors duration-200">
                     Reach out to us
                   </a>
                 </div>
@@ -756,7 +756,7 @@ export default function ListWithUsPage() {
                 ].map((review) => (
                   <div
                     key={review.name}
-                    className="w-[85vw] flex-shrink-0 sm:w-[340px] md:w-auto md:flex-shrink rounded-2xl bg-white p-5 sm:p-8 border border-gray-300 shadow-[0_2px_8px_rgba(227,28,95,0.06)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.12)] transition-shadow duration-300 flex flex-col"
+                    className="w-[85vw] flex-shrink-0 sm:w-[340px] md:w-auto md:flex-shrink rounded-2xl bg-white p-5 sm:p-8 border border-gray-100 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_8px_24px_rgba(227,28,95,0.12)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300 flex flex-col"
                     style={{ scrollSnapAlign: 'start' }}
                   >
                     {/* Stars */}
@@ -863,10 +863,10 @@ export default function ListWithUsPage() {
 
               <a
                 href="mailto:hello@wedlist.com.au?subject=Free Listing Request"
-                className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-lg font-medium hover:bg-[#C4184F] transition-colors"
+                className="group inline-flex items-center px-8 py-3 bg-[#E31C5F] text-white rounded-xl font-semibold hover:bg-[#C4184F] shadow-[0_2px_8px_rgba(227,28,95,0.25)] transition-colors duration-200"
               >
                 List for Free
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-200" />
               </a>
 
               <p className="mt-6 text-sm text-gray-500">

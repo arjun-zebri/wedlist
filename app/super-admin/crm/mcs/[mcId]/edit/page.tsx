@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, Mail, Phone, DollarSign, Calendar, Trash2 } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, DollarSign, Calendar, Trash2, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import CustomSelect from '@/components/CustomSelect';
 import CustomDatePicker from '@/components/CustomDatePicker';
@@ -68,24 +68,31 @@ export default function EditMCPage() {
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-1.5 text-sm">
+        <Link href="/super-admin/crm" className="text-gray-500 hover:text-gray-900 transition-colors duration-200">MC CRM</Link>
+        <ChevronRight className="w-4 h-4 text-gray-400" />
+        <span className="text-gray-900 font-medium">Edit MC</span>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
           >
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </button>
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">Edit MC</h1>
+            <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight">Edit MC</h1>
             <p className="text-gray-600 mt-1">Update MC details and pipeline status</p>
           </div>
         </div>
 
         <button
           onClick={() => setShowDeleteDialog(true)}
-          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
           title="Delete MC"
         >
           <Trash2 className="w-5 h-5" />
@@ -96,7 +103,7 @@ export default function EditMCPage() {
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
         {/* Basic Information */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Basic Information</h2>
 
           <div className="space-y-4">
             <div>
@@ -109,7 +116,7 @@ export default function EditMCPage() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -127,7 +134,7 @@ export default function EditMCPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
                 />
               </div>
 
@@ -143,7 +150,7 @@ export default function EditMCPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
                 />
               </div>
             </div>
@@ -152,7 +159,7 @@ export default function EditMCPage() {
 
         {/* Pipeline & Listing Status */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Pipeline Status</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Pipeline Status</h2>
 
           <div className="grid grid-cols-2 gap-4">
             <CustomSelect
@@ -187,7 +194,7 @@ export default function EditMCPage() {
 
         {/* Financial Information */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Financial Details</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Financial Details</h2>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -204,7 +211,7 @@ export default function EditMCPage() {
                 onChange={handleChange}
                 step="0.01"
                 min="0"
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -220,14 +227,14 @@ export default function EditMCPage() {
 
         {/* Internal Notes */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Internal Notes</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Internal Notes</h2>
 
           <textarea
             name="notes"
             value={formData.notes}
             onChange={handleChange}
             rows={4}
-            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
           />
         </div>
 
@@ -252,8 +259,8 @@ export default function EditMCPage() {
       {/* Delete Confirmation Dialog */}
       {showDeleteDialog && (
         <div className="fixed inset-0 bg-black/50 z-[1300] flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-[0_20px_25px_rgba(0,0,0,0.15)]">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Delete MC Record?</h2>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <h2 className="text-xl font-bold font-display text-gray-900 mb-2">Delete MC Record?</h2>
             <p className="text-gray-600 mb-6">
               This will permanently delete {formData.name}&apos;s MC record. This action cannot be undone.
             </p>

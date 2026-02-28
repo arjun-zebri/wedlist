@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Save, X } from 'lucide-react';
+import { ArrowLeft, Save, X, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function NewBlogPostPage() {
   const router = useRouter();
@@ -74,16 +75,23 @@ export default function NewBlogPostPage() {
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-1.5 text-sm">
+        <Link href="/super-admin/blog" className="text-gray-500 hover:text-gray-900 transition-colors duration-200">Blog</Link>
+        <ChevronRight className="w-4 h-4 text-gray-400" />
+        <span className="text-gray-900 font-medium">New Post</span>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
+      <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
         >
           <ArrowLeft className="w-5 h-5 text-gray-600" />
         </button>
         <div>
-          <h1 className="text-4xl font-bold text-gray-900">Create Blog Post</h1>
+          <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight">Create Blog Post</h1>
           <p className="text-gray-600 mt-1">Write and publish a new blog post</p>
         </div>
       </div>
@@ -92,7 +100,7 @@ export default function NewBlogPostPage() {
       <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
         {/* Basic Information */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Basic Information</h2>
 
           <div className="space-y-4">
             <div>
@@ -106,7 +114,7 @@ export default function NewBlogPostPage() {
                 onChange={handleChange}
                 required
                 placeholder="e.g. 10 Tips for the Perfect Wedding MC"
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -121,7 +129,7 @@ export default function NewBlogPostPage() {
                 onChange={handleChange}
                 required
                 placeholder="auto-generated from title"
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -136,7 +144,7 @@ export default function NewBlogPostPage() {
                 required
                 placeholder="Brief summary of the post (for previews)"
                 rows={2}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
 
@@ -150,7 +158,7 @@ export default function NewBlogPostPage() {
                 value={formData.image}
                 onChange={handleChange}
                 placeholder="https://example.com/image.jpg"
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
             </div>
           </div>
@@ -158,7 +166,7 @@ export default function NewBlogPostPage() {
 
         {/* Content Editor */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Content</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Content</h2>
 
           <div className="mb-3 flex gap-2 text-xs border-b border-gray-200 pb-3">
             <button type="button" className="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 font-medium">
@@ -185,13 +193,13 @@ export default function NewBlogPostPage() {
             required
             placeholder="Write your blog post content here (supports markdown)..."
             rows={12}
-            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20 font-mono"
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20 font-mono"
           />
         </div>
 
         {/* Tags */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Tags</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Tags</h2>
 
           <div className="flex gap-2 mb-3">
             <input
@@ -205,7 +213,7 @@ export default function NewBlogPostPage() {
                   addTag();
                 }
               }}
-              className="flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+              className="flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
             />
             <button
               type="button"
@@ -239,7 +247,7 @@ export default function NewBlogPostPage() {
 
         {/* SEO */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">SEO Settings</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">SEO Settings</h2>
 
           <div className="space-y-4">
             <div>
@@ -252,7 +260,7 @@ export default function NewBlogPostPage() {
                 value={formData.seoTitle}
                 onChange={handleChange}
                 placeholder="SEO title for search results"
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
               <p className="text-xs text-gray-500 mt-1">{formData.seoTitle.length}/60 characters</p>
             </div>
@@ -267,7 +275,7 @@ export default function NewBlogPostPage() {
                 onChange={handleChange}
                 placeholder="SEO description for search results"
                 rows={2}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
               />
               <p className="text-xs text-gray-500 mt-1">{formData.seoDescription.length}/160 characters</p>
             </div>
@@ -276,13 +284,13 @@ export default function NewBlogPostPage() {
 
         {/* Status & Actions */}
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Status</h2>
+          <h2 className="text-lg font-semibold font-display text-gray-900 mb-4">Status</h2>
 
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm transition-colors focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition-colors duration-200 hover:shadow-[0_2px_12px_rgba(227,28,95,0.1)] focus:border-[#E31C5F] focus:outline-none focus:ring-2 focus:ring-[#E31C5F]/20"
           >
             <option value="draft">Draft</option>
             <option value="published">Published</option>

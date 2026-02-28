@@ -44,12 +44,12 @@ export default function BlogPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Blog</h1>
+          <h1 className="text-4xl font-bold font-display text-gray-900 tracking-tight mb-2">Blog</h1>
           <p className="text-gray-600">Create and manage blog posts</p>
         </div>
         <button
           onClick={() => router.push('/super-admin/blog/new')}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#E31C5F] text-white rounded-xl font-semibold hover:bg-[#C4184F] transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#E31C5F] text-white rounded-xl font-semibold hover:bg-[#C4184F] transition-colors duration-200 shadow-[0_2px_8px_rgba(227,28,95,0.25)]"
         >
           <Plus className="w-4 h-4" />
           New Post
@@ -96,7 +96,7 @@ export default function BlogPage() {
           <Link
             key={post.id}
             href={`/super-admin/blog/${post.id}/edit`}
-            className="block rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-all group border border-gray-100"
+            className="block rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(227,28,95,0.08)] hover:shadow-[0_6px_16px_rgba(227,28,95,0.15)] hover:-translate-y-1 transition-[transform,box-shadow] duration-300 group border border-gray-100"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
