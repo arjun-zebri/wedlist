@@ -131,19 +131,24 @@ export default function VendorInquiryDetailPage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Navigation */}
-      <div className="flex items-center justify-between">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm font-medium">Back</span>
-        </button>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => router.back()}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-gray-600" />
+          </button>
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900">Vendor Application</h1>
+            <p className="text-gray-600 mt-1">Review and onboard vendor</p>
+          </div>
+        </div>
 
         <button
           onClick={() => setShowDeleteDialog(true)}
-          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           title="Delete inquiry"
         >
           <Trash2 className="w-5 h-5" />
@@ -151,7 +156,7 @@ export default function VendorInquiryDetailPage() {
       </div>
 
       {/* Vendor Header Card */}
-      <div className="bg-gradient-to-br from-white via-white to-amber-50/30 rounded-2xl p-8 shadow-[0_2px_12px_rgba(227,28,95,0.12)] border border-amber-100/50">
+      <div className="bg-gradient-to-br from-white via-white to-rose-50/30 rounded-2xl p-8 shadow-[0_2px_12px_rgba(227,28,95,0.12)] border border-rose-100/50">
         <div className="flex items-start justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">{inquiry.name}</h1>
@@ -163,10 +168,10 @@ export default function VendorInquiryDetailPage() {
         </div>
 
         <div className="grid grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-amber-200 transition-colors">
+          <div className="bg-white rounded-xl p-4 border border-gray-100 hover:border-rose-200 transition-colors">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-amber-50 rounded-lg">
-                <Briefcase className="w-4 h-4 text-amber-700" />
+              <div className="p-2.5 bg-rose-50 rounded-lg">
+                <Briefcase className="w-4 h-4 text-[#E31C5F]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500 font-medium">Service Type</p>

@@ -158,19 +158,24 @@ export default function CoupleInquiryDetailPage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Navigation */}
-      <div className="flex items-center justify-between">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm font-medium">Back</span>
-        </button>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => router.back()}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-gray-600" />
+          </button>
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900">Couple Inquiry</h1>
+            <p className="text-gray-600 mt-1">Qualify and match to vendors</p>
+          </div>
+        </div>
 
         <button
           onClick={() => setShowDeleteDialog(true)}
-          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           title="Delete inquiry"
         >
           <Trash2 className="w-5 h-5" />

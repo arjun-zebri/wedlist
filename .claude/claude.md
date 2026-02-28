@@ -1,7 +1,9 @@
 ## Product Modules
 
+- See [DESIGN.md](./DESIGN.md) for the **complete design system** — colors, typography, spacing, shadows, components, and all visual tokens. **Read this before building any UI.**
 - See [SUPER_ADMIN.md](./SUPER_ADMIN.md) for the super admin interface (`/super-admin/*`) — blog, inquiries, MC business lead CRM.
 - See [CRM.md](./CRM.md) for the MC couple leads CRM (`/admin/leads/*`) — where MCs manage couple enquiries.
+- See [DROPDOWNS_AND_PICKERS.md](./DROPDOWNS_AND_PICKERS.md) for custom form component specs (CustomSelect, CustomDatePicker).
 
 ---
 
